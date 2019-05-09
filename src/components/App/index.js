@@ -12,6 +12,7 @@ import PasswordForgetPage from '../PasswordForget';
 import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
+import Clients from '../Clients';
 
 import * as ROUTES from '../../constants/routes';
 
@@ -19,7 +20,6 @@ const App = () => (
   <Router>
     <div>
       <Navigation />
-      <AddNew />
 
       <hr />
 
@@ -29,6 +29,8 @@ const App = () => (
       <Route path={ROUTES.HOME} component={HomePage} />
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.ADMIN} component={AdminPage} />
+      <Route path={ROUTES.ADD_NEW} component={AddNew} />
+      <Route path={ROUTES.CLIENTS} component={Clients} />
     </div>
   </Router>
 );

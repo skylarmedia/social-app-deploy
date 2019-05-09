@@ -3,12 +3,12 @@ import 'firebase/auth';
 import FirebaseContext, { withFirebase } from './context';
 
 const config = {
-    apiKey: process.env.REACT_APP_API_KEY,
-    authDomain: process.env.REACT_APP_AUTH_DOMAIN,
-    databaseURL: process.env.REACT_APP_DATABASE_URL,
-    projectId: process.env.REACT_APP_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_I
+    apiKey: "AIzaSyB4seBRXpVJ3dZDfCddTWze8UCYEVZ8qkc",
+    authDomain: "skylar-social-17190.firebaseapp.com",
+    databaseURL: "https://skylar-social-17190.firebaseio.com",
+    projectId: "skylar-social-17190",
+    storageBucket: "skylar-social-17190.appspot.com",
+    messagingSenderId: "861778122764",
   };
 
   class Firebase {
@@ -16,7 +16,10 @@ const config = {
           app.initializeApp(config);
 
           this.auth = app.auth();
+
+      console.log(app);
       }
+
 
       doCreateUserWithEmailAndPassword = (email, password) => 
       this.auth.createUserWithEmailAndPassword(email, password);
@@ -28,8 +31,13 @@ const config = {
 
       doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
+
       doPasswordUpdate = password =>
         this.auth.currentUser.updatePassword(password);
+
+    
   }
+
+
 
 export default Firebase;
