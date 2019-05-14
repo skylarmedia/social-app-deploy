@@ -1,5 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
+import 'firebase/database';
+
 import FirebaseContext, { withFirebase } from './context';
 
 const config = {
@@ -9,6 +11,7 @@ const config = {
     projectId: "skylar-social-17190",
     storageBucket: "skylar-social-17190.appspot.com",
     messagingSenderId: "861778122764",
+    appId: "1:861778122764:web:682881979cd4294e"
   };
 
   class Firebase {
@@ -17,9 +20,10 @@ const config = {
 
           this.auth = app.auth();
 
-      console.log(app);
+          this.db = app.database();
       }
 
+      clients = () => this.db.ref('clients');
 
       doCreateUserWithEmailAndPassword = (email, password) => 
       this.auth.createUserWithEmailAndPassword(email, password);
@@ -31,9 +35,17 @@ const config = {
 
       doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
-
       doPasswordUpdate = password =>
         this.auth.currentUser.updatePassword(password);
+
+      writeUserData = (image, name) => {
+          this.database().ref().set({
+              image:image,
+              name:name
+          })
+      }
+
+  
 
     
   }

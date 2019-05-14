@@ -1,12 +1,14 @@
 import * as firebase from 'firebase';
 
 const config = {
-    apiKey: "some_random_key",
-    authDomain: "some_random_authDomain",
-    databaseURL: "some_random_databaseURL",
-    projectId: "some_random_projectId",
-    storageBucket: "some_random_bucket",
-    messagingSenderId: "some_random_Id"
+    apiKey: "AIzaSyB4seBRXpVJ3dZDfCddTWze8UCYEVZ8qkc",
+    authDomain: "skylar-social-17190.firebaseapp.com",
+    databaseURL: "https://skylar-social-17190.firebaseio.com",
+    projectId: "skylar-social-17190",
+    storageBucket: "skylar-social-17190.appspot.com",
+    messagingSenderId: "861778122764",
+    appId: "1:861778122764:web:682881979cd4294e"
 };
 
-export const firebaseApp = firebase.initializeApp(config);
+firebase.initializeApp(config);
+export default firebase;
