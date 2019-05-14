@@ -22,7 +22,9 @@ const config = {
 
       client = clientId => this.db.ref(`clients/${clientId}`);
 
-      clients = () => this.db.collection('clients');    
+      getClients = () => this.db.collection('clients').get();
+
+      addClient = () => this.db.collection('clients');
 
       doCreateUserWithEmailAndPassword = (email, password) => 
       this.auth.createUserWithEmailAndPassword(email, password);

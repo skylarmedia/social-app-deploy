@@ -20,28 +20,12 @@ class AddNew extends Component{
         console.log(this.props)
     }
 
-    updateInput = e => {
-        this.setState({
-          [e.target.name]: e.target.value
-        });
-      }
-
-      addClient = e => {
-        e.preventDefault();
-        this.setState({
-          name: '',
-          image: ''
-        });
-      };
+    
 
     render(){
         return(
         <div>
-            <form onSubmit={this.addClient}>
-                <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name}/>
-                <input type="text" name="image" placeholder="Image" onChange={this.updateInput} value={this.state.image}/>
-                <button type="submit">Submit</button>
-            </form>
+           
         </div>
         )
     }
@@ -49,6 +33,4 @@ class AddNew extends Component{
 }
 
 
-export default compose(
-    withFirebase(AddNew)
-)
+export default AddNew;
