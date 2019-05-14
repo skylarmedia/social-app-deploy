@@ -1,32 +1,54 @@
 import React, { Component } from 'react';
-import Firebase from '../Firebase';
+import { compose }  from 'recompose';
 import withFirebase from '../Firebase';
+
+import * as ROUTES from '../../constants/routes';
+import { format } from 'util';
 
 class AddNew extends Component{
     constructor(props){
         super(props);
 
         this.state = {
-            clientName: '',
+            name: '',
             image: ''
         }
 
-       this.onChange = this.onChange.bind(this);
     }
 
-    onChange(event){
-        console.log(event);
+    componentDidMount(){
+        console.log(this.props)
     }
+
+    updateInput = e => {
+        this.setState({
+          [e.target.name]: e.target.value
+        });
+      }
+
+      addClient = e => {
+        e.preventDefault();
+        this.setState({
+          name: '',
+          image: ''
+        });
+      };
 
     render(){
         return(
-            <form onSubmit={this.formPost}>
-                <input type="text" name="client" onChange={this.onChange}/>
-                <input type="submit" value="submit" />
+        <div>
+            <form onSubmit={this.addClient}>
+                <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name}/>
+                <input type="text" name="image" placeholder="Image" onChange={this.updateInput} value={this.state.image}/>
+                <button type="submit">Submit</button>
             </form>
+        </div>
         )
     }
 
 }
 
-export default AddNew;
+
+export default compose(
+    withFirebase(AddNew)
+)

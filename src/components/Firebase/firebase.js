@@ -1,8 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth';
-import 'firebase/database';
-
-import FirebaseContext, { withFirebase } from './context';
+import 'firebase/firestore';
 
 const config = {
     apiKey: "AIzaSyB4seBRXpVJ3dZDfCddTWze8UCYEVZ8qkc",
@@ -19,11 +17,12 @@ const config = {
           app.initializeApp(config);
 
           this.auth = app.auth();
-
-          this.db = app.database();
+          this.db = app.firestore();
       }
 
-      clients = () => this.db.ref('clients');
+      client = clientId => this.db.ref(`clients/${clientId}`);
+
+      clients = () => this.db.collection('clients');    
 
       doCreateUserWithEmailAndPassword = (email, password) => 
       this.auth.createUserWithEmailAndPassword(email, password);
