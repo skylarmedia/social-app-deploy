@@ -26,6 +26,8 @@ const config = {
 
       addClient = () => this.db.collection('clients');
 
+      deleteClient = (id) => this.db.collection('clients').doc(id).delete();
+
       doCreateUserWithEmailAndPassword = (email, password) => 
       this.auth.createUserWithEmailAndPassword(email, password);
 

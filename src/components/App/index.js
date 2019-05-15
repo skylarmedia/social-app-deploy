@@ -12,6 +12,7 @@ import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import Clients from '../Clients';
+import Dates from '../Dates';
 
 import * as ROUTES from '../../constants/routes';
 
@@ -28,6 +29,7 @@ const App = () => (
       <Route path={ROUTES.ACCOUNT} component={AccountPage} />
       <Route path={ROUTES.ADD_NEW} component={AddNew} />
       <Route path={ROUTES.CLIENTS} component={Clients} />
+      <Route path={ROUTES.DATES} component={Dates} />
     </div>
   </Router>
   
