@@ -15,7 +15,7 @@ class Home extends Component{
     super(props)
     this.state = {
       loading: false,
-      isHidden: true,
+      isHidden: false,
       name: '',
       image: ''
     }
@@ -23,14 +23,13 @@ class Home extends Component{
     this.toggleAddNew = this.toggleAddNew.bind(this);
   }
 
-  componentWillMount(){
-    this.props.firebase.getClients().then(snapshot => {
+  getPosts = () => this.props.firebase.getClients().then(snapshot => {
       snapshot.docs.forEach(doc => {
-
         const clientList = document.getElementById('client-list');
 
-
         let li = document.createElement('li');
+        li.setAttribute('data-id', doc.id);
+
         let h2 = document.createElement('h2');
         let image = document.createElement('img');
         image.setAttribute('src', doc.data().image);
@@ -42,9 +41,10 @@ class Home extends Component{
 
         clientList.appendChild(li)
       })
-    })
+    });
 
-  }
+
+
 
   toggleAddNew(){
     this.setState({
@@ -53,11 +53,14 @@ class Home extends Component{
   }
 
 
+
   updateInput = e => {
     this.setState({
       [e.target.name]: e.target.value
     });
   }
+
+
 
   addClient = e => {
     e.preventDefault();
@@ -74,23 +77,28 @@ class Home extends Component{
 
 
   render(){
-    return(
-    <div>
-      <ul id="client-list"></ul>
-      <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
-      <form onSubmit={this.addClient}>
+
+    const AddForm = () => (
+      <div id="add-new-form-wrapper">
+      <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
+      <form onSubmit={this.addClient} id="add-new-form">
         <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name}/>
         <input type="text" name="image" placeholder="Image" onChange={this.updateInput} value={this.state.image}/>
         <button type="submit">Submit</button>
       </form>
     </div>
     )
+    return(
+    <div>
+      {this.getPosts()}
+      <ul id="client-list"></ul>
+      <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
+      {this.state.isHidden ? <AddForm /> : ''}
+    </div>
+    )
   }
 
-
 }
-
-
 
 export default compose(
   withFirebase,
