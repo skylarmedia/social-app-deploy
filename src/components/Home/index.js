@@ -20,17 +20,17 @@ class Home extends Component {
       image: '',
       data: []
     }
-    
-    this.baseState = this.state 
+
+    this.baseState = this.state
 
     this.toggleAddNew = this.toggleAddNew.bind(this);
   }
 
   getPosts() {
     this.props.firebase.getClients().then(snapshot => {
-    this.setState({
-      data:snapshot.docs
-    })
+      this.setState({
+        data: snapshot.docs
+      })
       // snapshot.docs.forEach(doc => {
       //   const clientList = document.getElementById('client-list');
 
@@ -54,7 +54,7 @@ class Home extends Component {
 
       //   button.addEventListener('click', event => {
       //     event.stopPropagation();
-          
+
       //     let id = event.target.parentElement.getAttribute('data-id');
       //     this.props.firebase.deleteClient(id);
       //     this.forceUpdate();
@@ -67,7 +67,7 @@ class Home extends Component {
 
   // Component lifecycle methods
 
-  componentWillMount(){
+  componentWillMount() {
     this.getPosts()
   }
 
@@ -109,22 +109,27 @@ class Home extends Component {
   render() {
 
     const renderPosts = this.state.data.map((item) => (
+
+      <li data-id={item.id} className="client-wrapper col-sm-4">
+        <button onClick={() => this.deletePost(item.id)}>X</button>
         <Link to={`/dates/${item.id}`}>
-          <li data-id={item.id}>
-            <button onClick={() => this.deletePost(item.id)}>X</button>
-            <h2>{item.data().name}</h2>
-            <img src={item.data().image}/>
-          </li>
+          <h2>{item.data().name}</h2>
         </Link>
+        <Link to={`/dates/${item.id}`}>
+          <img src={item.data().image} />
+        </Link>
+      </li>
+
     ));
 
     return (
       <div>
-        <ul id="client-list">{renderPosts}</ul>
+        <ul id="client-list" className="row">{renderPosts}</ul>
         <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
-        {this.state.isHidden ? <div id="add-new-form-wrapper">
+        {this.state.isHidden ? 
+        <div id="add-new-form-wrapper">
           <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
-          <form onSubmit={this.addClient} id="add-new-form">
+          <form onSubmit={this.addClient.bind(this)} id="add-new-form">
             <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name} />
             <input type="text" name="image" placeholder="Image" onChange={this.updateInput} value={this.state.image} />
             <button type="submit">Submit</button>
@@ -134,7 +139,6 @@ class Home extends Component {
       </div>
     )
   }
-
 
 }
 

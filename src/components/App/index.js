@@ -4,6 +4,10 @@ import {
   Route,
 } from 'react-router-dom';
 
+import { withFirebase } from '../Firebase';
+
+import { AuthUserContext } from '../Session';
+
 import Navigation from '../Navigation';
 import AddNew from '../AddNew';
 import SignUpPage from '../SignUp';
@@ -13,27 +17,63 @@ import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import Clients from '../Clients';
 import Dates from '../Dates';
+import Calendar from '../Calendar';
 
 import * as ROUTES from '../../constants/routes';
-
-const App = () => (
-  <Router>
-    <div>
-      <Navigation />
-
-      <hr />
-
-      <Route path={ROUTES.SIGN_UP} component={SignUpPage}/>
-      <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route path={ROUTES.HOME} component={HomePage} props="prop1"/>
-      <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-      <Route path={ROUTES.ADD_NEW} component={AddNew} />
-      <Route path={ROUTES.CLIENTS} component={Clients} />
-      <Route path={ROUTES.DATES} component={Dates} />
-    </div>
-  </Router>
-  
-);
+import { withAuthentication } from '../Session';
 
 
-export default App;
+// class App extends Component {
+//   constructor(props) {
+//     super(props)
+
+//     this.state = {
+//       authUser: null
+//     }
+//   }
+
+//   componentDidMount() {
+//     this.listener =  this.props.firebase.auth.onAuthStateChanged(authUser => {
+//       authUser
+//         ? this.setState({ authUser })
+//         : this.setState({ authUser: null });
+//     });
+//   }
+
+//   componentWillUnmount(){
+//     this.listener();
+//   }
+
+  // render() {
+  //   return (
+  //     <AuthUserContext.Provider value={this.state.authUser}>
+
+  const App = () => (
+        <Router>
+          <div>
+            <Navigation />
+
+            <hr />
+
+            <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+            <Route path={ROUTES.HOME} component={HomePage} props="prop1" />
+            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+            <Route path={ROUTES.ADD_NEW} component={AddNew} />
+            <Route path={ROUTES.CLIENTS} component={Clients} />
+            <Route path={ROUTES.DATES} component={Dates} />
+            <Route path={ROUTES.CALENDAR} component={Calendar} />
+          </div>
+        </Router>
+  )
+  //     </AuthUserContext.Provider>
+  //   )
+  // }
+
+
+// }
+
+
+
+
+export default withAuthentication(App);

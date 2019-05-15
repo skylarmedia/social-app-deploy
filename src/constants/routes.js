@@ -7,4 +7,5 @@ export const ADMIN = '/admin';
 export const PASSWORD_FORGET = '/pw-forget';
 export const ADD_NEW= '/add-new';
 export const CLIENTS = '/clients';
-export const DATES = '/dates'
+export const DATES = '/dates/:id';
+export const CALENDAR = '/calendar';

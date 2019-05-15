@@ -1,9 +1,4 @@
-import React from 'react';
+import AuthUserContext from './context';
+import withAuthentication from './withAuthentication';
 
-const SignIn = () => (
-  <div>
-    <h1>SignIn</h1>
-  </div>
-);
-
-export default SignIn;
+export { AuthUserContext, withAuthentication };
