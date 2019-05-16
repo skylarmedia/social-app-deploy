@@ -1,147 +1,119 @@
-import React, { Component } from 'react';
-import { withFirebase } from '../Firebase';
-import { FirebaseContext } from '../Firebase';
-import { Link } from 'react-router-dom';
-import AddNew from '../AddNew';
-import { compose } from 'recompose';
-import Firebase from '../Firebase';
-import * as ROUTES from '../../constants/routes';
-import { throwStatement, thisExpression, tsExpressionWithTypeArguments } from '@babel/types';
+            import React, { Component } from 'react';
+            import { withFirebase } from '../Firebase';
+            import { FirebaseContext } from '../Firebase';
+            import { Link } from 'react-router-dom';
+            import AddNew from '../AddNew';
+            import { compose } from 'recompose';
+            import Firebase from '../Firebase';
+            import * as ROUTES from '../../constants/routes';
+            import { throwStatement, thisExpression, tsExpressionWithTypeArguments } from '@babel/types';
 
 
 
-class Home extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      loading: false,
-      isHidden: false,
-      name: '',
-      image: '',
-      data: []
-    }
+            class Home extends Component {
+              constructor(props) {
+                super(props)
+                this.state = {
+                  loading: false,
+                  isHidden: false,
+                  name: '',
+                  image: '',
+                  data: []
+                }
 
-    this.baseState = this.state
+                this.baseState = this.state
 
-    this.toggleAddNew = this.toggleAddNew.bind(this);
-  }
+                this.toggleAddNew = this.toggleAddNew.bind(this);
+              }
 
-  getPosts() {
-    this.props.firebase.getClients().then(snapshot => {
-      this.setState({
-        data: snapshot.docs
-      })
-      // snapshot.docs.forEach(doc => {
-      //   const clientList = document.getElementById('client-list');
+              getPosts() {
+                this.props.firebase.getClients().then(snapshot => {
+                  this.setState({
+                    data: snapshot.docs
+                  })
+                });
+              }
 
-      //   let li = document.createElement('li');
-      //   li.setAttribute('data-id', doc.id);
+              // Component lifecycle methods
 
-      //   let h2 = document.createElement('h2');
-      //   let image = document.createElement('img');
-      //   let button = document.createElement('div');
+              componentWillMount() {
+                this.getPosts()
+              }
 
-      //   button.textContent = 'x';
-      //   h2.textContent = doc.data().name;
-      //   image.setAttribute('src', doc.data().image);
+              componentDidUpdate(){
+                console.log('updated')
+              }
 
-      //   li.appendChild(h2);
-      //   li.appendChild(image);
-      //   li.appendChild(button);
+              toggleAddNew() {
+                this.setState({
+                  isHidden: !this.state.isHidden
+                })
+              }
 
+              updateInput = e => {
+                this.setState({
+                  [e.target.name]: e.target.value
+                });
+              }
 
-      //   // Delete Method
+              deletePost = (id) => {
+                this.props.firebase.deleteClient(id);
+                this.getPosts();
+              }
 
-      //   button.addEventListener('click', event => {
-      //     event.stopPropagation();
+              addClient = e => {
+                e.preventDefault();
 
-      //     let id = event.target.parentElement.getAttribute('data-id');
-      //     this.props.firebase.deleteClient(id);
-      //     this.forceUpdate();
-      //   })
-
-      //   clientList.appendChild(li)
-      // })
-    });
-  }
-
-  // Component lifecycle methods
-
-  componentWillMount() {
-    this.getPosts()
-  }
-
-  toggleAddNew() {
-    this.setState({
-      isHidden: !this.state.isHidden
-    })
-  }
-
-  updateInput = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    });
-  }
-
-  resetForm = () => {
-    this.setState(this.baseState)
-  }
-
-  deletePost = (id) => {
-    this.props.firebase.deleteClient(id);
-  }
-
-  addClient = e => {
-    e.preventDefault();
-
-    this.props.firebase.addClient().add({
-      name: this.state.name,
-      image: this.state.image
-    })
-    this.setState({
-      name: '',
-      image: ''
-    });
-    this.resetForm();
-  };
+                this.props.firebase.addClient().add({
+                  name: this.state.name,
+                  image: this.state.image
+                })
+                this.setState({
+                  name: '',
+                  image: '',
+                  data: this.state.data,
+                  isHidden: !this.state.isHidden
+                });
+                this.getPosts()
+              };
 
 
-  render() {
+              render() {
 
-    const renderPosts = this.state.data.map((item) => (
+                const renderPosts = this.state.data.map((item) => (
 
-      <li data-id={item.id} className="client-wrapper col-sm-4">
-        <button onClick={() => this.deletePost(item.id)}>X</button>
-        <Link to={`/dates/${item.id}`}>
-          <h2>{item.data().name}</h2>
-        </Link>
-        <Link to={`/dates/${item.id}`}>
-          <img src={item.data().image} />
-        </Link>
-      </li>
+                  <div data-id={item.id} className="client-wrapper col-sm-4">
+                    <button onClick={() => this.deletePost(item.id)}>X</button>
+                    <Link to={`/dates/${item.id}`}>
+                      <h2>{item.data().name}</h2>
+                    </Link>
+                    <Link to={`/dates/${item.id}`}>
+                      <img src={item.data().image} />
+                    </Link>
+                  </div>
 
-    ));
+                ));
 
-    return (
-      <div>
-        <ul id="client-list" className="row">{renderPosts}</ul>
-        <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
-        {this.state.isHidden ? 
-        <div id="add-new-form-wrapper">
-          <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
-          <form onSubmit={this.addClient.bind(this)} id="add-new-form">
-            <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name} />
-            <input type="text" name="image" placeholder="Image" onChange={this.updateInput} value={this.state.image} />
-            <button type="submit">Submit</button>
-          </form>
-        </div> :
-          ''}
-      </div>
-    )
-  }
+                return (
+                  <div>
+                    <ul id="client-list" className="row">{renderPosts}</ul>
+                    <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
+                    {this.state.isHidden ? 
+                    <div id="add-new-form-wrapper">
+                      <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
+                      <form onSubmit={this.addClient.bind(this)} id="add-new-form">
+                        <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name} />
+                        <input type="text" name="image" placeholder="Image" onChange={this.updateInput} value={this.state.image} />
+                        <button type="submit">Submit</button>
+                      </form>
+                    </div> :
+                      ''}
+                  </div>
+                )
+              }
 
-}
+            }
 
-export default compose(
-  withFirebase,
-)(Home);
+            export default compose(
+              withFirebase,
+            )(Home);

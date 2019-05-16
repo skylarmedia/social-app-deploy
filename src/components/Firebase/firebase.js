@@ -26,7 +26,9 @@ const config = {
 
       addClient = () => this.db.collection('clients');
 
-      getDates = () => this.db.collection('clients');
+      getDates = (id) => this.db.collection('clients').doc(id).get();
+
+      updateDate = (clientId)=> this.db.collection('clients').doc(clientId);
 
       deleteClient = (id) => this.db.collection('clients').doc(id).delete();
       
