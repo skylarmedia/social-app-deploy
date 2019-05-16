@@ -194,6 +194,8 @@ class Calendar extends React.Component {
       </table>
     );
   };
+
+  
   onDayClick = (e, d) => {
     this.setState(
       {

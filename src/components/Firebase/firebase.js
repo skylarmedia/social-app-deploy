@@ -26,7 +26,7 @@ const config = {
 
       addClient = () => this.db.collection('clients');
 
-      getDates = (id) => this.db.collection('clients').doc(id).get();
+      getDates = (id) => this.db.collection('clients').doc(id).collection('dates').get()
 
       updateDate = (clientId)=> this.db.collection('clients').doc(clientId);
 

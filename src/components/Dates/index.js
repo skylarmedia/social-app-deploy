@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
-import * as admin from 'firebase-admin';
-import { relativeTimeThreshold } from 'moment';
 
 
 class Dates extends Component {
@@ -15,10 +13,8 @@ class Dates extends Component {
             user: null,
             showAddDate: false,
             date: [],
-            currentList: [],
             month:1,
-            year: 2019,
-            dateObj: {}
+            year:2019
         }
 
         this.submitForm = this.submitForm.bind(this);
@@ -34,43 +30,41 @@ class Dates extends Component {
     toggleAddDate() {
         this.setState({
             showAddDate: !this.state.showAddDate
-        })
+        });
     }
 
     firstRender() {
-        this.props.firebase.getDates(this.props.match.params.id).then(snapshot => {
-            const list = snapshot.docs;
-            console.log(snapshot.docs, 'list')
-
-            // list.map(item => {
-            //     if (item.data().date !== undefined) {
-            //         this.setState({
-            //             date: item.data().date
-            //         })
-            //     }
-            // })
+        this.props.firebase.getClients().then(snapshot => {
+            const list = snapshot.docs
+            list.map(item => {
+                if (item.data().date !== undefined) {
+                    this.setState({
+                        date: item.data().date
+                    })
+                }
+            })
         })
         console.log(this.state, 'date state');
     }
 
     submitForm = e => {
         e.preventDefault();
-        console.log(e, 'form event');
-        console.log(this.state, 'form event of state');
+        const currentDates = this.state.date;
+        const monthSubmission = this.state.month;
+        const yearSubmission = this.state.year;
+        const emptyObj = {}
 
-        this.state.dateObj['month'] = this.state.month;
-        this.state.dateObj['year'] = this.state.year;
+        emptyObj["month"] = monthSubmission;
+        emptyObj["year"] = yearSubmission;
 
-        console.log(this.state.date)
+        currentDates.push(emptyObj);
+        console.log(currentDates);
         this.props.firebase.updateDate(this.props.match.params.id).set({
-            date:{
-                month:2,
-                year: 2020
-            }
+            date: currentDates
         })
 
         this.setState({
-            showAddDate: !this.state.showAddDate
+            showAddDate:!this.state.showAddDate
         })
     }
 
@@ -89,11 +83,10 @@ class Dates extends Component {
         this.setState({
             month: e.target.value
         })
-        console.log(this.state, 'state after month render');
     }
 
     handleYear = (e) => {
-        console.log(e.target.value, 'year event');
+        console.log(e, 'year event');
         this.setState({
             year: e.target.value
         })
@@ -102,13 +95,8 @@ class Dates extends Component {
     render() {
 
         const renderDates = this.state.date.map(item => (
-            <li>
-                <Link to={{
-                    pathname:ROUTES.CALENDAR,
-                    state:{
-                        date:this.date
-                    }
-                }}>
+            <li data-month={item.month} data-year={item.year}>
+                <Link to={`/calendar?month=${item.month}?year=${item.year}`}>
                     {this.convert(item.month)} {item.year}
                 </Link>
             </li>
@@ -140,7 +128,7 @@ class Dates extends Component {
                             <option value="12">December</option>
                         </select>
 
-                        <select onChange={this.handleYear.bind(this)} value={this.state.value}>
+                        <select onChange={this.handleYear.bind(this)}>
                             <option value="2019">2019</option>
                             <option value="2020">2020</option>
                         </select>
