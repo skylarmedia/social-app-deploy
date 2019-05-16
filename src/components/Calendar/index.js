@@ -27,10 +27,11 @@ class Calendar extends React.Component {
     selectedDay: null
   };
 
-  componentWillMount(){
-    
-  }
-  
+  // componentDidMount(){
+  //   console.log(this.props, 'received props');
+  //   console.log(this.state, 'received state');
+  // }
+
   daysInMonth = () => {
     return this.state.dateObject.daysInMonth();
   };

@@ -6,6 +6,7 @@ import * as ROUTES from '../../constants/routes';
 import Calendar from '../Calendar'
 
 
+
 class Dates extends Component {
     constructor(props) {
         super(props)
@@ -17,7 +18,16 @@ class Dates extends Component {
             month:1,
             year:2019,
             chosenMonth: '',
-            chosenYear:''
+            chosenYear:'',
+            showCalendar: false,
+            passDates: (month, year) => {
+                this.setState({
+                    chosenMonth:month,
+                    chosenYear:year,
+                    showCalendar: true
+                })
+             }
+            
         }
 
         this.submitForm = this.submitForm.bind(this);
@@ -96,22 +106,15 @@ class Dates extends Component {
         console.log('hello')
     }
 
-    checkClick(){
-        console.log('clicked')
-    }
-
 
 
     render() {
 
         const renderDates = this.state.date.map(item => (
-            <Link to={`/calendar?year=${item.year}&month=${item.month}`}>
+            <button onClick={this.passDates.bind(this, item.month, item.year)} to="/calendar">
                 {this.convert(item.month)} {item.year}
-            </Link>
+            </button>
         ));
-
- 
-
 
         return (
             <div>
@@ -119,7 +122,6 @@ class Dates extends Component {
                 {this.props.match.params.id}<br />
                 Dates
                 {renderDates}
-                {/* <Link to={`/add-new/${this.props.match.params.id}`}>Add New</Link> */}
                 {this.state.showAddDate ?
                     <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
                         <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">Close</button>
@@ -137,7 +139,6 @@ class Dates extends Component {
                             <option value="11">November</option>
                             <option value="12">December</option>
                         </select>
-
                         <select onChange={this.handleYear.bind(this)}>
                             <option value="2019">2019</option>
                             <option value="2020">2020</option>
@@ -148,8 +149,11 @@ class Dates extends Component {
                     :
                     ''
                 }
-
-                <Calendar />
+                {this.state.showCalender ? 
+                <Calendar impData={this.state}/>
+                : ''
+                }
+                }
                 <button onClick={this.toggleAddDate.bind(this)}>Add New</button>
             </div>
         )
