@@ -18,6 +18,7 @@ import AdminPage from '../Admin';
 import Clients from '../Clients';
 import Dates from '../Dates';
 import Calendar from '../Calendar';
+import CalendarSingle from '../CalendarSingle';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -57,12 +58,14 @@ import { withAuthentication } from '../Session';
 
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route path={ROUTES.HOME} component={HomePage} props="prop1" />
+            <Route path={ROUTES.HOME} component={HomePage}/>
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.ADD_NEW} component={AddNew} />
             <Route path={ROUTES.CLIENTS} component={Clients} />
             <Route path={ROUTES.DATES} component={Dates} />
             <Route path={ROUTES.CALENDAR} component={Calendar} />
+            <Route path={ROUTES.CALENDARSINGLE} component={CalendarSingle} />
+            
           </div>
         </Router>
   )

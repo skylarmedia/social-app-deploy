@@ -2,17 +2,35 @@ import React from "react";
 import moment from "moment";
 import { Link } from 'react-router-dom';
 import "./calendar.css";
+
+const parts = window.location.search.substr(1).split("&");
+    const $_GET = {};
+    for (var i = 0; i < parts.length; i++) {
+        var temp = parts[i].split("=");
+        $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+    }
+
+    const year = $_GET['year'];
+    const month = $_GET['month'];
+
 class Calendar extends React.Component {
+
+  
   weekdayshort = moment.weekdaysShort();
 
   state = {
     showCalendarTable: true,
     showMonthTable: false,
-    dateObject: moment(),
+    dateObject: moment(`${year}-${month}`),
     allmonths: moment.months(),
     showYearNav: false,
     selectedDay: null
   };
+
+  componentWillMount(){
+    
+  }
+  
   daysInMonth = () => {
     return this.state.dateObject.daysInMonth();
   };
@@ -220,7 +238,7 @@ class Calendar extends React.Component {
       // let selectedClass = (d == this.state.selectedDay ? " selected-day " : "")
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
-        <Link to="/" className="calendar-link">
+        <Link to="/" className="calendar-link" >
             {d}
         </Link>
         </td>

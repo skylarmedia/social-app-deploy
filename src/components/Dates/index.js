@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
+import Calendar from '../Calendar'
 
 
 class Dates extends Component {
@@ -14,15 +15,15 @@ class Dates extends Component {
             showAddDate: false,
             date: [],
             month:1,
-            year:2019
+            year:2019,
+            chosenMonth: '',
+            chosenYear:''
         }
 
         this.submitForm = this.submitForm.bind(this);
     }
 
     componentWillMount() {
-        // const { id } = this.props.match.params;
-        // console.log(this.props, 'props')
         this.firstRender();
     }
 
@@ -44,7 +45,6 @@ class Dates extends Component {
                 }
             })
         })
-        console.log(this.state, 'date state');
     }
 
     submitForm = e => {
@@ -92,15 +92,25 @@ class Dates extends Component {
         })
     }
 
+    redirectDate = () => {
+        console.log('hello')
+    }
+
+    checkClick(){
+        console.log('clicked')
+    }
+
+
+
     render() {
 
         const renderDates = this.state.date.map(item => (
-            <li data-month={item.month} data-year={item.year}>
-                <Link to={`/calendar?month=${item.month}?year=${item.year}`}>
-                    {this.convert(item.month)} {item.year}
-                </Link>
-            </li>
+            <Link to={`/calendar?year=${item.year}&month=${item.month}`}>
+                {this.convert(item.month)} {item.year}
+            </Link>
         ));
+
+ 
 
 
         return (
@@ -138,6 +148,8 @@ class Dates extends Component {
                     :
                     ''
                 }
+
+                <Calendar />
                 <button onClick={this.toggleAddDate.bind(this)}>Add New</button>
             </div>
         )
