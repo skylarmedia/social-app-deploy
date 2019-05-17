@@ -19,6 +19,7 @@ const config = {
 
           this.auth = app.auth();
           this.db = app.firestore();
+          this.storage = app.storage();
       }
 
       client = clientId => this.db.ref(`clients/${clientId}`);
@@ -34,7 +35,7 @@ const config = {
           year:year
       })
 
-      getStorage = () => this.storage();
+      getStorage = () => this.storage;
 
       deleteClient = (id) => this.db.collection('clients').doc(id).delete();
       
