@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 import { Link } from 'react-router-dom';
 import "./calendar.css";
+import CalendarSingle from '../CalendarSingle';
 
 const parts = window.location.search.substr(1).split("&");
     const $_GET = {};
@@ -21,7 +22,8 @@ class Calendar extends React.Component {
   state = {
     showCalendarTable: true,
     showMonthTable: false,
-    dateObject: moment(`${year}-${month}`),
+    // dateObject: moment(`${year}-${month}`),
+    dateObject: moment(),
     allmonths: moment.months(),
     showYearNav: false,
     selectedDay: null
@@ -239,7 +241,7 @@ class Calendar extends React.Component {
       // let selectedClass = (d == this.state.selectedDay ? " selected-day " : "")
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
-        <Link to="/" className="calendar-link" >
+        <Link to="/calendar" >
             {d}
         </Link>
         </td>

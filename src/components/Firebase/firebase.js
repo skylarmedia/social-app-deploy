@@ -28,11 +28,14 @@ const config = {
 
       getDates = (id) => this.db.collection('clients').doc(id).collection('dates').get()
 
-      updateDate = (clientId)=> this.db.collection('clients').doc(clientId);
+      addDate = (id, month, year)=> this.db.collection('clients').doc(id).collection('dates').add({
+          month:month,
+          year:year
+      })
 
       deleteClient = (id) => this.db.collection('clients').doc(id).delete();
       
-      addDates = () => this.db.collections('clients')
+    //   addDates = () => this.db.collections('clients')
 
       doCreateUserWithEmailAndPassword = (email, password) => 
       this.auth.createUserWithEmailAndPassword(email, password);

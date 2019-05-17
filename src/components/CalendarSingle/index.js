@@ -8,14 +8,17 @@ class CalendarSingle extends Component{
         super(props)
     }
 
+    
 
 
 
     render(){
         return(
-            <div></div>
+            <div>Calendar Single</div>
         )
     }
 }
 
-export default CalendarSingle;
+export default compose(
+    withFirebase
+)(CalendarSingle)

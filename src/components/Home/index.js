@@ -36,12 +36,12 @@
 
               // Component lifecycle methods
 
-              componentWillMount() {
-                this.getPosts()
+              componentDidMount() {
+                this.getPosts();
               }
 
               componentDidUpdate(){
-                console.log('updated')
+                this.getPosts();
               }
 
               toggleAddNew() {
@@ -96,7 +96,7 @@
 
                 return (
                   <div>
-                    <ul id="client-list" className="row">{renderPosts}</ul>
+                    <div id="client-list" className="row">{renderPosts}</div>
                     <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
                     {this.state.isHidden ? 
                     <div id="add-new-form-wrapper">

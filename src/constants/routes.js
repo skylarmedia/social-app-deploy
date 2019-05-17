@@ -9,4 +9,4 @@ export const ADD_NEW= '/add-new';
 export const CLIENTS = '/clients';
 export const DATES = '/dates/:id';
 export const CALENDAR = '/calendar';
-export const CALENDARSINGLE = '/calendar:id';
+export const CALENDARSINGLE = '/calendar-single/'

@@ -45,34 +45,52 @@ class Dates extends Component {
     }
 
     firstRender() {
-        this.props.firebase.getClients().then(snapshot => {
-            const list = snapshot.docs
+
+        this.props.firebase.getDates(this.props.match.params.id).then(snapshot => {
+            console.log(snapshot.docs)
+            const list = snapshot.docs;
             list.map(item => {
-                if (item.data().date !== undefined) {
-                    this.setState({
-                        date: item.data().date
-                    })
-                }
+                console.log(item.data(), 'item');
+                const obj = {};
+                const dateArr = this.state.date;
+                obj["month"] = item.data().month;
+                obj["year"] = item.data().year;
+
+                dateArr.push(obj);
+
+                this.setState({
+                    date:dateArr
+                });
+                console.log(this.state, 'state after render');
+                console.log(dateArr, 'date array');
             })
         })
+
+        // this.props.firebase.getClients().then(snapshot => {
+        //     const list = snapshot.docs
+        //     list.map(item => {
+        //         if (item.data().date !== undefined) {
+        //             this.setState({
+        //                 date: item.data().date
+        //             })
+        //         }
+        //     })
+        // })
     }
 
     submitForm = e => {
         e.preventDefault();
-        const currentDates = this.state.date;
-        const monthSubmission = this.state.month;
-        const yearSubmission = this.state.year;
-        const emptyObj = {}
+        // const currentDates = this.state.date;
+        // const monthSubmission = this.state.month;
+        // const yearSubmission = this.state.year;
+        // const emptyObj = {}
 
-        emptyObj["month"] = monthSubmission;
-        emptyObj["year"] = yearSubmission;
+        // emptyObj["month"] = monthSubmission;
+        // emptyObj["year"] = yearSubmission;
 
-        currentDates.push(emptyObj);
-        console.log(currentDates);
-        this.props.firebase.updateDate(this.props.match.params.id).set({
-            date: currentDates
-        })
-
+        // currentDates.push(emptyObj);
+        // // console.log(currentDates);
+        this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
         this.setState({
             showAddDate:!this.state.showAddDate
         })
@@ -106,16 +124,22 @@ class Dates extends Component {
         console.log('hello')
     }
 
+    passDates(){
+        console.log('clicked');
+        console.log(this.props)
+    }
+
 
 
     render() {
 
         const renderDates = this.state.date.map(item => (
-            <button onClick={this.passDates.bind(this, item.month, item.year)} to="/calendar">
+            <Link to={`/calendar?month=${item.month}&year=${item.year}`}>
                 {this.convert(item.month)} {item.year}
-            </button>
+                <br/>
+            </Link>
         ));
-
+        console.log(this.state, 'state in render');
         return (
             <div>
                 <Link to='/Home'>Back</Link><br />

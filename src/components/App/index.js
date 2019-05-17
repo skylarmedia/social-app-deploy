@@ -64,7 +64,7 @@ import { withAuthentication } from '../Session';
             <Route path={ROUTES.CLIENTS} component={Clients} />
             <Route path={ROUTES.DATES} component={Dates} />
             <Route path={ROUTES.CALENDAR} component={Calendar} />
-            <Route path={ROUTES.CALENDARSINGLE} component={CalendarSingle} />
+            <Route path={`/calendar-single/:day`} component={CalendarSingle} />
             
           </div>
         </Router>
