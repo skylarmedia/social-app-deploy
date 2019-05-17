@@ -8,13 +8,19 @@ class CalendarSingle extends Component{
         super(props)
     }
 
+    componentDidMount(){
+        console.log(this.props, 'props')
+    }
+
     
 
 
 
     render(){
         return(
-            <div>Calendar Single</div>
+            <div>
+                {this.props.day}
+            </div>
         )
     }
 }

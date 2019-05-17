@@ -19,6 +19,7 @@ import Clients from '../Clients';
 import Dates from '../Dates';
 import Calendar from '../Calendar';
 import CalendarSingle from '../CalendarSingle';
+import AddPost from '../AddPost';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -54,7 +55,7 @@ import { withAuthentication } from '../Session';
             <Navigation />
 
             <hr />
-
+            <Route path={ROUTES.ADD_POST} component={AddPost} />
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
             <Route exact path={ROUTES.HOME} component={HomePage}/>
@@ -63,7 +64,7 @@ import { withAuthentication } from '../Session';
             <Route path={ROUTES.CLIENTS} component={Clients} />
             <Route path={ROUTES.DATES} component={Dates} />
             <Route calenderHere={true} path={ROUTES.CALENDAR} component={Calendar} />
-            <Route exact path={`/calendar-single/:day`} component={CalendarSingle} />
+            <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
             
           </div>
         </Router>

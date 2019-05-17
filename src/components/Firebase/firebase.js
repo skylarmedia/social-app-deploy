@@ -1,6 +1,7 @@
 import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
+import 'firebase/storage';
 
 const config = {
     apiKey: "AIzaSyB4seBRXpVJ3dZDfCddTWze8UCYEVZ8qkc",
@@ -32,6 +33,8 @@ const config = {
           month:month,
           year:year
       })
+
+      getStorage = () => this.storage();
 
       deleteClient = (id) => this.db.collection('clients').doc(id).delete();
       

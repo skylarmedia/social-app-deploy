@@ -10,3 +10,4 @@ export const CLIENTS = '/clients';
 export const DATES = '/dates/:id';
 export const CALENDAR = '/calendar';
 export const CALENDARSINGLE = '/calendar-single/'
+export const ADD_POST = '/add-post/'

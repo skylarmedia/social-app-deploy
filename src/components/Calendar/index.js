@@ -37,8 +37,9 @@ class Calendar extends React.Component {
     selectedDay: null
   };
 
-  componentDidMount(){
+  componentWillMount(){
     console.log(this.props, 'props')
+    console.log(this.state, 'state')
   }
 
   daysInMonth = () => {
@@ -248,9 +249,10 @@ class Calendar extends React.Component {
       // let selectedClass = (d == this.state.selectedDay ? " selected-day " : "")
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
-        <Link to="/calendar" >
-            {d}
+        <Link to="/calendar-single/" >
+            <CalendarSingle day={d} firebase={this.props.firebase}/>
         </Link>
+        <Link to="add-post">+</Link>
         </td>
         
       );
