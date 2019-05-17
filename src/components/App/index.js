@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   BrowserRouter as Router,
-  Route,
+  Route, Switch
 } from 'react-router-dom';
 
 import { withFirebase } from '../Firebase';
@@ -22,7 +22,6 @@ import CalendarSingle from '../CalendarSingle';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
-
 
 // class App extends Component {
 //   constructor(props) {
@@ -58,13 +57,13 @@ import { withAuthentication } from '../Session';
 
             <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
             <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route path={ROUTES.HOME} component={HomePage}/>
+            <Route exact path={ROUTES.HOME} component={HomePage}/>
             <Route path={ROUTES.ACCOUNT} component={AccountPage} />
             <Route path={ROUTES.ADD_NEW} component={AddNew} />
             <Route path={ROUTES.CLIENTS} component={Clients} />
             <Route path={ROUTES.DATES} component={Dates} />
-            <Route path={ROUTES.CALENDAR} component={Calendar} />
-            <Route path={`/calendar-single/:day`} component={CalendarSingle} />
+            <Route calenderHere={true} path={ROUTES.CALENDAR} component={Calendar} />
+            <Route exact path={`/calendar-single/:day`} component={CalendarSingle} />
             
           </div>
         </Router>

@@ -19,6 +19,4 @@ class CalendarSingle extends Component{
     }
 }
 
-export default compose(
-    withFirebase
-)(CalendarSingle)
+export default CalendarSingle;

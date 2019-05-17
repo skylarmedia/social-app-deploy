@@ -3,8 +3,11 @@ import moment from "moment";
 import { Link } from 'react-router-dom';
 import "./calendar.css";
 import CalendarSingle from '../CalendarSingle';
+import { withFirebase } from '../Firebase';
+import { compose } from "redux";
 
 const parts = window.location.search.substr(1).split("&");
+
     const $_GET = {};
     for (var i = 0; i < parts.length; i++) {
         var temp = parts[i].split("=");
@@ -15,6 +18,11 @@ const parts = window.location.search.substr(1).split("&");
     const month = $_GET['month'];
 
 class Calendar extends React.Component {
+  constructor(props){
+    super(props)
+
+
+  }
 
   
   weekdayshort = moment.weekdaysShort();
@@ -23,16 +31,15 @@ class Calendar extends React.Component {
     showCalendarTable: true,
     showMonthTable: false,
     // dateObject: moment(`${year}-${month}`),
-    dateObject: moment(),
+    dateObject: moment(`${year}-${month}`),
     allmonths: moment.months(),
     showYearNav: false,
     selectedDay: null
   };
 
-  // componentDidMount(){
-  //   console.log(this.props, 'received props');
-  //   console.log(this.state, 'received state');
-  // }
+  componentDidMount(){
+    console.log(this.props, 'props')
+  }
 
   daysInMonth = () => {
     return this.state.dateObject.daysInMonth();
@@ -327,4 +334,6 @@ class Calendar extends React.Component {
   }
 }
 
-export default Calendar;
+export default compose(
+  withFirebase(Calendar)
+)
