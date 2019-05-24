@@ -3,6 +3,8 @@ import { withFirebase } from '../Firebase';
 import { compose } from "redux";
 import FileUploader from 'react-firebase-file-uploader';
 import TimePicker from 'react-time-picker';
+import { SketchPicker } from 'react-color';
+import ShowCategory from '../ShowCategory';
 
 class AddPost extends Component {
     constructor(props) {
@@ -12,12 +14,23 @@ class AddPost extends Component {
             title: '',
             copy: '',
             values: [],
-            time: '10:00'
+            time: '10:00',
+            hashtags: [],
+            filesArr: [],
+            image: '',
+            imageURL: '',
+            progress: 0,
+            showCategoryState: false
         }
 
         this.handleTitle = this.handleTitle.bind(this);
         this.renderAddLinks = this.renderAddLinks.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
+        this.submitFile = this.submitFile.bind(this);
+        this.fileChangeHandler = this.fileChangeHandler.bind(this);
+        this.customOnChangeHandler = this.customOnChangeHandler.bind(this);
+        this.onSubmitForm = this.onSubmitForm.bind(this);
+        this.showCategory = this.showCategory.bind(this);
     }
 
     handleTitle(e) {
@@ -36,6 +49,15 @@ class AddPost extends Component {
         console.log(this.props, 'addpost');
     }
 
+    fileChangeHandler = (event) => {
+        console.log(event, 'file upload');
+        const { target: { files } } = event;
+        const filesToStore = this.state.filesArr
+
+        this.setState({ files: filesToStore });
+        console.log(this.state, 'state after upload');
+    }
+
 
     createUI() {
         return this.state.values.map((el, i) =>
@@ -44,6 +66,21 @@ class AddPost extends Component {
                 <input type='button' value='remove' onClick={this.removeClick.bind(this, i)} />
             </div>
         )
+    }
+
+    createSpeaker() {
+        return this.state.values.map((el, i) =>
+            <div key={i}>
+                <input type="text" value={el || ''} onChange={this.handleChangeColour.bind(this, i)} />
+                <input type='button' value='remove' onClick={this.removeClickColour.bind(this, i)} />
+            </div>
+        )
+    }
+
+    handleChangeColour(i, event) {
+        let values = [...this.state.values];
+        values[i] = event.target.value;
+        this.setState({ values });
     }
 
     handleChange(i, event) {
@@ -79,14 +116,122 @@ class AddPost extends Component {
         console.log(file);
     }
 
-    onChange = time => this.setState({ time })
+    onChange = time => this.setState({ time });
+
+    submitFile(e) {
+        e.preventDefault();
+        console.log('send file');
+        this.props.firebase.getStorage.child('images');
+    }
+
+    customOnChangeHandler = (event) => {
+        const { target: { files } } = event;
+        const filesToStore = [];
+
+        files.forEach(file => filesToStore.push(file));
+
+        this.setState({ files: filesToStore });
+    }
+
+    showCategory = e => {
+        e.preventDefault();
+
+        this.setState({
+            showCategoryState:!this.state.showCategoryState
+        })
+
+    }
+
+
+    /**
+    * Start download handler using the file uploader reference
+    */
+    // startUploadManually = () => {
+    //     const { files } = this.state;
+    //     files.forEach(file => {
+    //         this.fileUploader.startUpload(file)
+    //     });
+    // }
+
+    // handleUploadStart = (filename) => {
+
+    //     this.setState({
+    //         progress:0
+    //     });
+    //     this.setState({
+    //         image:filename,
+    //         progress:0,
+    //     });
+    // }
+
+    // handleUploadSuccess = filename => {
+
+
+    // }
+
+    //     customOnChangeHandler = (event) => {
+    //         const { target: { files } } = event;
+    //         const filesToStore = [];
+
+    //         files.forEach(file => filesToStore.push(file));
+
+    //         this.setState({ files: filesToStore });
+    //     }
+
+    //   console.log(files, 'files after upload');
+    //   console.log(event, 'event file upload');
+
+
+
+
+
+    // startUploadManually = () => {
+    //     // const { files } = this.state;
+    //     // console.log(this.state, 'after upload');
+    //     // files.forEach(file => {
+    //     //   this.fileUploader.startUpload(file)
+    //     // });
+    //   }
+
+    handleTitle = (e) => {
+        this.setState({
+            title: e.target.value
+        });
+        console.log(this.state.title);
+    }
+
+    handleCopy = (e) => {
+        this.setState({
+            copy: e.target.value
+        });
+    }
+
+    handleHashtags = (e) => {
+        this.setState({
+            hashtags: e.target.value
+        });
+    }
+
+    onSubmitForm = (e) => {
+        e.preventDefault();
+        const hashtagArr = this.state.hashtags.split(" ");
+        this.setState({
+            hashtags: hashtagArr
+        })
+    }
+
+    onChangeTime = e => {
+        console.log(e, 'time')
+    }
+
+
+
 
     render() {
-
-        console.log(this.props.firebase.getStorage, 'storage');
+        console.log(this.state, 'state file');
         return (
             <div>
-                <form>
+                <form onSubmit={this.onSubmitForm}>
                     <label>Title
                         <input name="title" value={this.state.value} onChange={this.handleTitle} />
                     </label>
@@ -97,15 +242,42 @@ class AddPost extends Component {
                     <label>Hashtags
                         <input name="hashtags" value={this.state.value} onChange={this.handleHashtags} />
                     </label>
+                    <br />
                     {this.createUI()}
-                    <input type='button' value='add more' onClick={this.addClick.bind(this)} />
-                    <FileUploader accept="image/*" name="fileupload " storageRef={this.props.firebase.getStorage().ref("images")} onUploadSuccess={this.handleUploadSuccess} onProgress={this.handleProgress} onUploadStart={this.handleUploadStart} />
+                    <br /><br />
+                    <button onClick={this.showCategory}>Show Category</button>
+                    <input type='button' value='Add More' onClick={this.addClick.bind(this)} />
+                    {
+                    /* <FileUploader
+                        accept="images/*"
+                        name="image"
+                        storageRef={this.props.firebase.storage.ref('images')}
+                        onUploadStart={this.handleUploadStart}
+                        onUploadSuccess={this.handleUploadSuccess}
+                    />
+
+
+                    {/* <FileUploader
+
+                        onChange={this.customOnChangeHandler} // ⇐ Call your handler
+                        ref={instance => { this.fileUploader = instance; }}  // ⇐ reference the component
+                    /> */}
+
+
+
+                    {/* <input type="file" name="image" onChange={this.handleFileChange} /> */}
+                    {/* <button onClick={this.startUploadManually}>Upload all the things</button> */}
                     <input type="submit" value="Submit" />
                     <TimePicker
-                        onChange={this.onChange}
+                        onChange={this.onChangeTime}
                         value={this.state.time}
                     />
+        
+                    {/* /* <button onClick={this.submitFile}>Send File</button> */}
                 </form>
+                {this.state.showCategoryState ? 
+                    <ShowCategory />
+                    : ''}
             </div>
         )
     }

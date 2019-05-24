@@ -35,7 +35,9 @@ const config = {
           year:year
       })
 
-      getStorage = () => this.storage;
+      storage = this;
+
+      getStorage = () => this.storage();
 
       deleteClient = (id) => this.db.collection('clients').doc(id).delete();
       
@@ -60,6 +62,8 @@ const config = {
               name:name
           })
       }
+
+      
 
   
 

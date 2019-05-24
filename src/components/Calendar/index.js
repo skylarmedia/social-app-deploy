@@ -18,10 +18,15 @@ const parts = window.location.search.substr(1).split("&");
     const month = $_GET['month'];
 
 class Calendar extends React.Component {
-  constructor(props){
-    super(props)
+  // constructor(props){
+  //   super(props);
 
 
+
+  // }
+
+  componentDidMount(){
+    console.log(this.state.currentYear, 'current Year');
   }
 
   
@@ -252,7 +257,7 @@ class Calendar extends React.Component {
         <Link to="/calendar-single/" >
             <CalendarSingle day={d} firebase={this.props.firebase}/>
         </Link>
-        <Link to="add-post">+</Link>
+        <Link to={`add-post/?month=${month}&day=${d}`}>+</Link>
         </td>
         
       );
