@@ -20,6 +20,7 @@ class Dates extends Component {
             chosenMonth: '',
             chosenYear:'',
             showCalendar: false,
+            clientId: '',
             passDates: (month, year) => {
                 this.setState({
                     chosenMonth:month,
@@ -35,6 +36,17 @@ class Dates extends Component {
 
     componentWillMount() {
         this.firstRender();
+    }
+
+    componentDidMount(){
+        var url_string = window.location.href  //window.location.href
+        var url = new URL(url_string);
+        var c = url.searchParams.get("clientId");
+        
+        this.setState({
+            clientId: c
+        })
+        console.log(c, 'c');
     }
 
 
@@ -128,13 +140,13 @@ class Dates extends Component {
         console.log('clicked');
         console.log(this.props)
     }
-
+    
 
 
     render() {
 
         const renderDates = this.state.date.map(item => (
-            <Link to={`/calendar?month=${item.month}&year=${item.year}`}>
+            <Link to={`/calendar?month=${item.month}&year=${item.year}&clientId=${this.state.clientId}`}>
                 {this.convert(item.month)} {item.year}
                 <br/>
             </Link>

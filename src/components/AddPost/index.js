@@ -20,7 +20,9 @@ class AddPost extends Component {
             image: '',
             imageURL: '',
             progress: 0,
-            showCategoryState: false
+            showCategoryState: false,
+            pushColor: '',
+            pushColorText: ''
         }
 
         this.handleTitle = this.handleTitle.bind(this);
@@ -31,6 +33,8 @@ class AddPost extends Component {
         this.customOnChangeHandler = this.customOnChangeHandler.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
         this.showCategory = this.showCategory.bind(this);
+        this.handleColorText = this.handleColorText.bind(this);
+        this.onChangeTime = this.onChangeTime.bind(this);
     }
 
     handleTitle(e) {
@@ -58,6 +62,19 @@ class AddPost extends Component {
         console.log(this.state, 'state after upload');
     }
 
+    handleChangeText(i, event) {
+        let colors = [...this.state.colors];
+        colors[i] = event.target.value;
+        this.setState({ colors });
+        console.log(this.state, 'state change text');
+    }
+
+    handleColorText = e => {
+        this.setState({
+            pushColorText: e.target.value
+        })
+    }
+
 
     createUI() {
         return this.state.values.map((el, i) =>
@@ -68,20 +85,7 @@ class AddPost extends Component {
         )
     }
 
-    createSpeaker() {
-        return this.state.values.map((el, i) =>
-            <div key={i}>
-                <input type="text" value={el || ''} onChange={this.handleChangeColour.bind(this, i)} />
-                <input type='button' value='remove' onClick={this.removeClickColour.bind(this, i)} />
-            </div>
-        )
-    }
 
-    handleChangeColour(i, event) {
-        let values = [...this.state.values];
-        values[i] = event.target.value;
-        this.setState({ values });
-    }
 
     handleChange(i, event) {
         let values = [...this.state.values];
@@ -137,7 +141,7 @@ class AddPost extends Component {
         e.preventDefault();
 
         this.setState({
-            showCategoryState:!this.state.showCategoryState
+            showCategoryState: !this.state.showCategoryState
         })
 
     }
@@ -222,6 +226,17 @@ class AddPost extends Component {
 
     onChangeTime = e => {
         console.log(e, 'time')
+        this.setState({
+            time:e
+        })
+        console.log(this.props, 'props')
+    }
+
+    handleChangeComplete = e => {
+        this.setState({
+            pushColor: e.hex
+        })
+        console.log(this.state, 'hex');
     }
 
 
@@ -245,7 +260,9 @@ class AddPost extends Component {
                     <br />
                     {this.createUI()}
                     <br /><br />
-                    <button onClick={this.showCategory}>Show Category</button>
+                    <input type="text" value={this.state.pushColorText} onChange={this.handleColorText} />input
+                    {/* <button onClick={this.showCategory}>Show Category</button><br/> */}
+                    <SketchPicker onChangeComplete={ this.handleChangeComplete } color={ this.state.pushColor }/><br />
                     <input type='button' value='Add More' onClick={this.addClick.bind(this)} />
                     {
                     /* <FileUploader
@@ -272,10 +289,10 @@ class AddPost extends Component {
                         onChange={this.onChangeTime}
                         value={this.state.time}
                     />
-        
+
                     {/* /* <button onClick={this.submitFile}>Send File</button> */}
                 </form>
-                {this.state.showCategoryState ? 
+                {this.state.showCategoryState ?
                     <ShowCategory />
                     : ''}
             </div>

@@ -25,9 +25,6 @@ class Calendar extends React.Component {
 
   // }
 
-  componentDidMount(){
-    console.log(this.state.currentYear, 'current Year');
-  }
 
   
   weekdayshort = moment.weekdaysShort();
@@ -39,8 +36,22 @@ class Calendar extends React.Component {
     dateObject: moment(`${year}-${month}`),
     allmonths: moment.months(),
     showYearNav: false,
-    selectedDay: null
+    selectedDay: null,
+    clientId:''
   };
+
+  componentDidMount(){
+    var url_string = window.location.href  //window.location.href
+    var url = new URL(url_string);
+    var c = url.searchParams.get("clientId");
+    
+    this.setState({
+        clientId: c
+    })
+    console.log(c, 'c');
+    console.log(this.state, 'after setting ID')
+  }
+
 
   componentWillMount(){
     console.log(this.props, 'props')
@@ -240,7 +251,19 @@ class Calendar extends React.Component {
       }
     );
   };
+
+  getClientId = () => {
+    var url_string = window.location.href  //window.location.href
+    var url = new URL(url_string);
+    var c = url.searchParams.get("clientId");
+    return c
+  }
+
+
   render() {
+
+
+
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
     });
@@ -257,7 +280,7 @@ class Calendar extends React.Component {
         <Link to="/calendar-single/" >
             <CalendarSingle day={d} firebase={this.props.firebase}/>
         </Link>
-        <Link to={`add-post/?month=${month}&day=${d}`}>+</Link>
+        <Link to={`add-post/?month=${month}&day=${d}&${this.getClientId()}`}>+</Link>
         </td>
         
       );
