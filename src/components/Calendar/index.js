@@ -256,6 +256,7 @@ class Calendar extends React.Component {
     var url_string = window.location.href  //window.location.href
     var url = new URL(url_string);
     var c = url.searchParams.get("clientId");
+
     return c
   }
 
@@ -280,7 +281,7 @@ class Calendar extends React.Component {
         <Link to="/calendar-single/" >
             <CalendarSingle day={d} firebase={this.props.firebase}/>
         </Link>
-        <Link to={`add-post/?month=${month}&day=${d}&${this.getClientId()}`}>+</Link>
+        <Link to={`add-post/?month=${month}&day=${d}&clientId=${this.getClientId()}`}>+</Link>
         </td>
         
       );

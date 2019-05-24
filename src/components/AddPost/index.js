@@ -22,7 +22,10 @@ class AddPost extends Component {
             progress: 0,
             showCategoryState: false,
             pushColor: '',
-            pushColorText: ''
+            pushColorText: '',
+            clientId: '',
+            calendarDay: 0,
+            calendarMonth: 0
         }
 
         this.handleTitle = this.handleTitle.bind(this);
@@ -49,8 +52,19 @@ class AddPost extends Component {
         this.setState(prevState => ({ inputs: [...prevState.inputs, ''] }))
     }
 
-    componentDidMount() {
+    componentWillMount() {
         console.log(this.props, 'addpost');
+
+        var url_string = window.location.href  //window.location.href
+        var url = new URL(url_string);
+        var c = url.searchParams.get("clientId");
+        const day = url.searchParams.get('day');
+        const month = url.searchParams.get('month');
+        console.log(c, ' this is the client Id after it has mounted');
+
+        this.setState({
+            clientId: c
+        })
     }
 
     fileChangeHandler = (event) => {
@@ -84,8 +98,6 @@ class AddPost extends Component {
             </div>
         )
     }
-
-
 
     handleChange(i, event) {
         let values = [...this.state.values];
@@ -142,7 +154,9 @@ class AddPost extends Component {
 
         this.setState({
             showCategoryState: !this.state.showCategoryState
-        })
+        });
+
+
 
     }
 
@@ -218,10 +232,15 @@ class AddPost extends Component {
 
     onSubmitForm = (e) => {
         e.preventDefault();
+
         const hashtagArr = this.state.hashtags.split(" ");
         this.setState({
             hashtags: hashtagArr
-        })
+        });
+
+        //Add the rest of the data and uncomment below
+
+        // this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.links, this.state.time)
     }
 
     onChangeTime = e => {

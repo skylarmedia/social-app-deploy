@@ -33,7 +33,19 @@ const config = {
       addDate = (id, month, year)=> this.db.collection('clients').doc(id).collection('dates').add({
           month:month,
           year:year
-      })
+      });
+
+      addPost = (id, title, copy, hashtags, links, time , day, month, year ) => this.db.collection('clients').doc(id).collection('posts').add({
+        title: title,
+        copy: copy,
+        hashtags: hashtags,
+        links: links,
+        time:time,
+
+        day: day,
+        month:month,
+        year:year
+      });
 
       storage = this;
 
