@@ -45,7 +45,10 @@ class Dates extends Component {
         
         this.setState({
             clientId: c
+        }, () => {
+            localStorage.setItem('clientId', this.state.clientId)
         })
+
         console.log(c, 'c');
     }
 

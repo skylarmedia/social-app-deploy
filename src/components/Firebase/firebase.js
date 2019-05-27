@@ -24,7 +24,7 @@ class Firebase {
 
     client = clientId => this.db.ref(`clients/${clientId}`);
 
-    getSocialPosts = (id) => this.db.collection('clients').doc(id).collection('posts');
+    getSocialPosts = (id) => this.db.collection('clients').doc(id).collection('posts').get()
 
     getClients = () => this.db.collection('clients').get();
 

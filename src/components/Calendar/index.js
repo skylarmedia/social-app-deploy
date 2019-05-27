@@ -8,72 +8,66 @@ import { compose } from "redux";
 
 const parts = window.location.search.substr(1).split("&");
 
-    const $_GET = {};
-    for (var i = 0; i < parts.length; i++) {
-        var temp = parts[i].split("=");
-        $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
-    }
+const $_GET = {};
+for (var i = 0; i < parts.length; i++) {
+  var temp = parts[i].split("=");
+  $_GET[decodeURIComponent(temp[0])] = decodeURIComponent(temp[1]);
+}
 
-    const year = $_GET['year'];
-    const month = $_GET['month'];
+const year = $_GET['year'];
+const month = $_GET['month'];
 
 class Calendar extends React.Component {
-  // constructor(props){
-  //   super(props);
+
+  constructor(props) {
+    super(props);
+
+
+    this.state = {
+      showCalendarTable: true,
+      showMonthTable: false,
+      // dateObject: moment(`${year}-${month}`),
+      dateObject: moment(`${year}-${month}`),
+      allmonths: moment.months(),
+      showYearNav: false,
+      selectedDay: null,
+      clientId: '',
+      currentMonth: 0,
+      currentYear: 0,
+      posts: []
+    };
 
 
 
-  // }
+  }
 
-
-  
   weekdayshort = moment.weekdaysShort();
 
-  state = {
-    showCalendarTable: true,
-    showMonthTable: false,
-    // dateObject: moment(`${year}-${month}`),
-    dateObject: moment(`${year}-${month}`),
-    allmonths: moment.months(),
-    showYearNav: false,
-    selectedDay: null,
-    clientId:'',
-    currentMonth: 0,
-    currentYear: 0
-  };
+  componentWillMount() {
+    var url_string = window.location.href  //window.location.href
+    var url = new URL(url_string);
+    var c = url.searchParams.get("clientId");
 
-
-  getSocialPosts(){
-    console.log('ran this function in social posts');
+    this.setState({
+      clientId: c,
+      currentMonth: month,
+      currentYear: year
+    })
 
   }
 
   componentDidMount(){
-    var url_string = window.location.href  //window.location.href
-    var url = new URL(url_string);
-    var c = url.searchParams.get("clientId");
-    
-    this.setState({
-        clientId: c,
-        currentMonth:month,
-        currentYear: year
-    });
+    this.props.firebase.getSocialPosts(this.state.clientId).then(snapshot => {
+      this.setState({
+        posts: snapshot.docs
+      });
+    })
 
-    console.log(year, 'year state');
-
-    console.log(this.props, 'props firebase');
-
-    // console.log(this.props, 'firebase');
-
-    // this.getSocialPosts()
-
-    // this.props.firebase.getSocialPosts(this.state.clientId)
-
-
-    
   }
 
- 
+
+
+
 
 
   daysInMonth = () => {
@@ -258,7 +252,7 @@ class Calendar extends React.Component {
     );
   };
 
-  
+
   onDayClick = (e, d) => {
     this.setState(
       {
@@ -280,6 +274,7 @@ class Calendar extends React.Component {
 
   render() {
 
+ 
 
 
     let weekdayshortname = this.weekdayshort.map(day => {
@@ -295,12 +290,10 @@ class Calendar extends React.Component {
       // let selectedClass = (d == this.state.selectedDay ? " selected-day " : "")
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
-        <Link to="/calendar-single/" >
-            <CalendarSingle day={d}/>
-        </Link>
-        <Link to={`/add-post/?month=${month}&day=${d}&year=2019&clientId=${this.getClientId()}`}>+</Link>
+          <CalendarSingle day={d} posts={this.state.posts} month={month}/>
+          <Link to={`/add-post/?month=${month}&day=${d}&year=2019&clientId=${this.getClientId()}`}>+</Link>
         </td>
-        
+
       );
     }
     var totalSlots = [...blanks, ...daysInMonth];

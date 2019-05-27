@@ -53,6 +53,12 @@ class AddPost extends Component {
         this.setState(prevState => ({ inputs: [...prevState.inputs, ''] }))
     }
 
+    // runGetSocialPosts(id){
+  
+
+    //     console.log('snapshot');
+    // }
+
     componentDidMount() {
         console.log(this.props, 'addpost');
 
@@ -68,6 +74,7 @@ class AddPost extends Component {
             calendarDay: day,
             calendarMonth: month
         })
+
     }
 
     fileChangeHandler = (event) => {
