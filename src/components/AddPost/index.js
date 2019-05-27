@@ -5,6 +5,7 @@ import FileUploader from 'react-firebase-file-uploader';
 import TimePicker from 'react-time-picker';
 import { SketchPicker } from 'react-color';
 import ShowCategory from '../ShowCategory';
+import * as ROUTES from '../../constants/routes';
 
 class AddPost extends Component {
     constructor(props) {
@@ -25,13 +26,13 @@ class AddPost extends Component {
             pushColorText: '',
             clientId: '',
             calendarDay: 0,
-            calendarMonth: 0
+            calendarMonth: 0,
+            calendarYear:2019
         }
 
         this.handleTitle = this.handleTitle.bind(this);
         this.renderAddLinks = this.renderAddLinks.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
-        this.submitFile = this.submitFile.bind(this);
         this.fileChangeHandler = this.fileChangeHandler.bind(this);
         this.customOnChangeHandler = this.customOnChangeHandler.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
@@ -52,35 +53,37 @@ class AddPost extends Component {
         this.setState(prevState => ({ inputs: [...prevState.inputs, ''] }))
     }
 
-    componentWillMount() {
+    componentDidMount() {
         console.log(this.props, 'addpost');
 
         var url_string = window.location.href  //window.location.href
         var url = new URL(url_string);
         var c = url.searchParams.get("clientId");
-        const day = url.searchParams.get('day');
-        const month = url.searchParams.get('month');
+        const day = parseInt(url.searchParams.get('day'));
+        const month = parseInt(url.searchParams.get('month'));
         console.log(c, ' this is the client Id after it has mounted');
 
         this.setState({
-            clientId: c
+            clientId: c,
+            calendarDay: day,
+            calendarMonth: month
         })
     }
 
     fileChangeHandler = (event) => {
-        console.log(event, 'file upload');
+        // console.log(event, 'file upload');
         const { target: { files } } = event;
-        const filesToStore = this.state.filesArr
+        const filesToStore = this.state .filesArr
 
         this.setState({ files: filesToStore });
-        console.log(this.state, 'state after upload');
+        // console.log(this.state, 'state after upload');
     }
 
     handleChangeText(i, event) {
         let colors = [...this.state.colors];
         colors[i] = event.target.value;
         this.setState({ colors });
-        console.log(this.state, 'state change text');
+        // console.log(this.state, 'state change text');
     }
 
     handleColorText = e => {
@@ -125,18 +128,18 @@ class AddPost extends Component {
     }
 
     handleSuccess = (file) => {
-        console.log(file, 'success');
+        // console.log(file, 'success');
     }
 
     onUploadStart = (file) => {
-        console.log(file);
+        // console.log(file);
     }
 
     onChange = time => this.setState({ time });
 
     submitFile(e) {
         e.preventDefault();
-        console.log('send file');
+        // console.log('send file');
         this.props.firebase.getStorage.child('images');
     }
 
@@ -215,7 +218,7 @@ class AddPost extends Component {
         this.setState({
             title: e.target.value
         });
-        console.log(this.state.title);
+        // console.log(this.state.title);
     }
 
     handleCopy = (e) => {
@@ -233,29 +236,48 @@ class AddPost extends Component {
     onSubmitForm = (e) => {
         e.preventDefault();
 
-        const hashtagArr = this.state.hashtags.split(" ");
-        this.setState({
-            hashtags: hashtagArr
-        });
+        const formMonth = this.state.calendarMonth;
+        const clientId = this.state.clientId;
+
+        console.log(this.state, 'after submission');
+
+
+        // // if(hashtagArr instanceof Array){
+        // const hashtagArr = this.state.hashtags.split(" ");
+
+        // this.setState({
+        //     hashtags: hashtagArr
+        // });
+
+        this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear);
+
+        this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
+
+        // console.log(this.state, 'state after form submission');
+        // }else{
+        // alert('not array'); 
+        // }
+
+
 
         //Add the rest of the data and uncomment below
 
-        // this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.links, this.state.time)
+
     }
 
     onChangeTime = e => {
-        console.log(e, 'time')
+        // console.log(e, 'time')
         this.setState({
-            time:e
+            time: e
         })
-        console.log(this.props, 'props')
+        // console.log(this.props, 'props')/
     }
 
     handleChangeComplete = e => {
         this.setState({
             pushColor: e.hex
         })
-        console.log(this.state, 'hex');
+        // console.log(this.state, 'hex');
     }
 
 
@@ -270,18 +292,21 @@ class AddPost extends Component {
                         <input name="title" value={this.state.value} onChange={this.handleTitle} />
                     </label>
                     <br />
+                    <br />
                     <label>Copy
                         <textarea name="copy" value={this.state.value} onChange={this.handleCopy} />
                     </label>
+                    <br />
+                    <br />
                     <label>Hashtags
                         <input name="hashtags" value={this.state.value} onChange={this.handleHashtags} />
                     </label>
                     <br />
                     {this.createUI()}
                     <br /><br />
-                    <input type="text" value={this.state.pushColorText} onChange={this.handleColorText} />input
+                    {/* <input type="text" value={this.state.pushColorText} onChange={this.handleColorText} />Categories */}
                     {/* <button onClick={this.showCategory}>Show Category</button><br/> */}
-                    <SketchPicker onChangeComplete={ this.handleChangeComplete } color={ this.state.pushColor }/><br />
+                    {/* <SketchPicker onChangeComplete={ this.handleChangeComplete } color={ this.state.pushColor }/><br /> */}
                     <input type='button' value='Add More' onClick={this.addClick.bind(this)} />
                     {
                     /* <FileUploader

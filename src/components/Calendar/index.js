@@ -37,8 +37,16 @@ class Calendar extends React.Component {
     allmonths: moment.months(),
     showYearNav: false,
     selectedDay: null,
-    clientId:''
+    clientId:'',
+    currentMonth: 0,
+    currentYear: 0
   };
+
+
+  getSocialPosts(){
+    console.log('ran this function in social posts');
+
+  }
 
   componentDidMount(){
     var url_string = window.location.href  //window.location.href
@@ -46,17 +54,27 @@ class Calendar extends React.Component {
     var c = url.searchParams.get("clientId");
     
     this.setState({
-        clientId: c
-    })
-    console.log(c, 'c');
-    console.log(this.state, 'after setting ID')
-  }
+        clientId: c,
+        currentMonth:month,
+        currentYear: year
+    });
+
+    console.log(year, 'year state');
+
+    console.log(this.props, 'props firebase');
+
+    // console.log(this.props, 'firebase');
+
+    // this.getSocialPosts()
+
+    // this.props.firebase.getSocialPosts(this.state.clientId)
 
 
-  componentWillMount(){
-    console.log(this.props, 'props')
-    console.log(this.state, 'state')
+    
   }
+
+ 
+
 
   daysInMonth = () => {
     return this.state.dateObject.daysInMonth();
@@ -247,7 +265,6 @@ class Calendar extends React.Component {
         selectedDay: d
       },
       () => {
-        console.log("SELECTED DAY: ", this.state.selectedDay);
       }
     );
   };
@@ -279,9 +296,9 @@ class Calendar extends React.Component {
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
         <Link to="/calendar-single/" >
-            <CalendarSingle day={d} firebase={this.props.firebase}/>
+            <CalendarSingle day={d}/>
         </Link>
-        <Link to={`add-post/?month=${month}&day=${d}&clientId=${this.getClientId()}`}>+</Link>
+        <Link to={`/add-post/?month=${month}&day=${d}&year=2019&clientId=${this.getClientId()}`}>+</Link>
         </td>
         
       );

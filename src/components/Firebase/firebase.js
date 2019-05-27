@@ -11,76 +11,78 @@ const config = {
     storageBucket: "skylar-social-17190.appspot.com",
     messagingSenderId: "861778122764",
     appId: "1:861778122764:web:682881979cd4294e"
-  };
+};
 
-  class Firebase {
-      constructor(){
-          app.initializeApp(config);
+class Firebase {
+    constructor() {
+        app.initializeApp(config);
 
-          this.auth = app.auth();
-          this.db = app.firestore();
-          this.storage = app.storage();
-      }
+        this.auth = app.auth();
+        this.db = app.firestore();
+        this.storage = app.storage();
+    }
 
-      client = clientId => this.db.ref(`clients/${clientId}`);
+    client = clientId => this.db.ref(`clients/${clientId}`);
 
-      getClients = () => this.db.collection('clients').get();
+    getSocialPosts = (id) => this.db.collection('clients').doc(id).collection('posts');
 
-      addClient = () => this.db.collection('clients');
+    getClients = () => this.db.collection('clients').get();
 
-      getDates = (id) => this.db.collection('clients').doc(id).collection('dates').get()
+    addClient = () => this.db.collection('clients');
 
-      addDate = (id, month, year)=> this.db.collection('clients').doc(id).collection('dates').add({
-          month:month,
-          year:year
-      });
+    getDates = (id) => this.db.collection('clients').doc(id).collection('dates').get()
 
-      addPost = (id, title, copy, hashtags, links, time , day, month, year ) => this.db.collection('clients').doc(id).collection('posts').add({
+    addDate = (id, month, year) => this.db.collection('clients').doc(id).collection('dates').add({
+        month: month,
+        year: year
+    });
+
+    addPost = (id, title, copy, hashtags, time, day, month, year) => this.db.collection('clients').doc(id).collection('posts').add({
         title: title,
         copy: copy,
         hashtags: hashtags,
-        links: links,
-        time:time,
+        // links: links,
+        time: time,
 
         day: day,
-        month:month,
-        year:year
-      });
+        month: month,
+        year: year
+    });
 
-      storage = this;
+    // storage = this;
 
-      getStorage = () => this.storage();
+    // getStorage = () => this.storage();
 
-      deleteClient = (id) => this.db.collection('clients').doc(id).delete();
-      
+    deleteClient = (id) => this.db.collection('clients').doc(id).delete();
+
     //   addDates = () => this.db.collections('clients')
 
-      doCreateUserWithEmailAndPassword = (email, password) => 
-      this.auth.createUserWithEmailAndPassword(email, password);
+    doCreateUserWithEmailAndPassword = (email, password) =>
+        this.auth.createUserWithEmailAndPassword(email, password);
 
-      doSignInWithEmailAndPassword = (email, password) =>
-      this.auth.signInWithEmailAndPassword(email, password);
+    doSignInWithEmailAndPassword = (email, password) =>
+        this.auth.signInWithEmailAndPassword(email, password);
 
-      doSignOut = () => this.auth.signOut();
+    doSignOut = () => this.auth.signOut();
 
-      doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
+    doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
-      doPasswordUpdate = password =>
+    doPasswordUpdate = password =>
         this.auth.currentUser.updatePassword(password);
 
-      writeUserData = (image, name) => {
-          this.database().ref().set({
-              image:image,
-              name:name
-          })
-      }
+    writeUserData = (image, name) => {
+        this.database().ref().set({
+            image: image,
+            name: name
+        })
+    }
 
-      
 
-  
 
-    
-  }
+
+
+
+}
 
 
 
