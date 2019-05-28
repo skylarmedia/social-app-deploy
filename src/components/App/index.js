@@ -20,6 +20,7 @@ import Dates from '../Dates';
 import Calendar from '../Calendar';
 import CalendarSingle from '../CalendarSingle';
 import AddPost from '../AddPost';
+import EditPost from '../EditPost';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -63,8 +64,10 @@ import { withAuthentication } from '../Session';
             <Route path={ROUTES.ADD_NEW} component={AddNew} />
             <Route path={ROUTES.CLIENTS} component={Clients} />
             <Route path={ROUTES.DATES} component={Dates} />
+            <Route path={ROUTES.EDIT_POST} component={EditPost} />
             <Route calenderHere={true} path={ROUTES.CALENDAR} component={Calendar} />
             <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
+
             
           </div>
         </Router>

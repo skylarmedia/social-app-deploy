@@ -27,7 +27,7 @@ class AddPost extends Component {
             clientId: '',
             calendarDay: 0,
             calendarMonth: 0,
-            calendarYear:2019
+            calendarYear: 2019
         }
 
         this.handleTitle = this.handleTitle.bind(this);
@@ -54,7 +54,7 @@ class AddPost extends Component {
     }
 
     // runGetSocialPosts(id){
-  
+
 
     //     console.log('snapshot');
     // }
@@ -80,7 +80,7 @@ class AddPost extends Component {
     fileChangeHandler = (event) => {
         // console.log(event, 'file upload');
         const { target: { files } } = event;
-        const filesToStore = this.state .filesArr
+        const filesToStore = this.state.filesArr
 
         this.setState({ files: filesToStore });
         // console.log(this.state, 'state after upload');
@@ -113,6 +113,12 @@ class AddPost extends Component {
         let values = [...this.state.values];
         values[i] = event.target.value;
         this.setState({ values });
+        console.log(values);
+ 
+
+        // this.setState({
+        //     values:[...this.state.values, event.target.value]
+        // })
     }
 
     addClick() {
@@ -243,33 +249,14 @@ class AddPost extends Component {
     onSubmitForm = (e) => {
         e.preventDefault();
 
-        const formMonth = this.state.calendarMonth;
-        const clientId = this.state.clientId;
+        console.log(this.state, 'state on form submission')
 
-        console.log(this.state, 'after submission');
+        // const formMonth = this.state.calendarMonth;
+        // const clientId = this.state.clientId;
 
+        // this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values);
 
-        // // if(hashtagArr instanceof Array){
-        // const hashtagArr = this.state.hashtags.split(" ");
-
-        // this.setState({
-        //     hashtags: hashtagArr
-        // });
-
-        this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear);
-
-        this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
-
-        // console.log(this.state, 'state after form submission');
-        // }else{
-        // alert('not array'); 
-        // }
-
-
-
-        //Add the rest of the data and uncomment below
-
-
+        // this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
     }
 
     onChangeTime = e => {

@@ -63,6 +63,7 @@ class Calendar extends React.Component {
       });
     })
 
+
   }
 
 
@@ -273,8 +274,6 @@ class Calendar extends React.Component {
 
 
   render() {
-
- 
 
 
     let weekdayshortname = this.weekdayshort.map(day => {
