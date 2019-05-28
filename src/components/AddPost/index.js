@@ -114,7 +114,7 @@ class AddPost extends Component {
         values[i] = event.target.value;
         this.setState({ values });
         console.log(values);
- 
+
 
         // this.setState({
         //     values:[...this.state.values, event.target.value]
@@ -251,12 +251,12 @@ class AddPost extends Component {
 
         console.log(this.state, 'state on form submission')
 
-        // const formMonth = this.state.calendarMonth;
-        // const clientId = this.state.clientId;
+        const formMonth = this.state.calendarMonth;
+        const clientId = this.state.clientId;
 
-        // this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values);
+        this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values);
 
-        // this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
+        this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
     }
 
     onChangeTime = e => {

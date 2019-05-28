@@ -3,6 +3,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
+import HiddenCalendarSingle from '../HiddenCalendarSingle';
 
 class CalendarSingle extends Component {
     constructor(props) {
@@ -12,6 +13,8 @@ class CalendarSingle extends Component {
             posts: [],
             showCalendarModule: false
         }
+
+        this.toggleShowCalendarModule = this.toggleShowCalendarModule.bind(this);
     }
 
 
@@ -23,61 +26,62 @@ class CalendarSingle extends Component {
     //     }
     // }
 
+
+
+    componentDidMount() {
+        console.log(this.props.posts)
+    }
+
+
     toggleShowCalendarModule = () => {
+
+        alert('ran');
+        // this.setState({
+        //     showCalendarModule: !this.state.showCalendarModule
+        // })
+    }
+
+
+    toggleShowCalendarModule = () => {
+        alert('clicked');
         this.setState({
             showCalendarModule: !this.state.showCalendarModule
         })
     }
 
-    componentDidMount(){
-        console.log(this.props.posts)
-    }
 
-    
+
+
+
 
     render() {
 
-        const truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
 
-        const postsArr = this.props.posts.map((item, index) => {
-           if(item.data().day === this.props.day){
-               return (
-                   <div>{item.data().title}<strong>{index}</strong></div>
-               )
-           }
-        });
 
-        const hiddenPost = this.props.posts.map((item, index) => {
-            console.log(item.data(), 'item in data');
-            if(item.data().day === this.props.day){
-                return (
-                    <div className="calendar-popup">
-                        <div>{item.data().title}<strong>{index}</strong></div>
-                        <div>{truncate(item.data().copy)}</div>
-                        <div>Time:{item.data().time}</div>
-                        <div>Hashtags:{item.data().hashtags}</div>
-                        <div>Links:{item.data().links}</div>
-                  
-                        <Link to={ROUTES.EDIT_POST}>Edit Post</Link>
-                     
-                    </div>
-                )
-            }
-        })
-        
+        // const hiddenPost = this.props.posts
 
-        
+
+
 
         return (
             <div className="calendar-popup-wrapper">
                 {this.props.day}<br />
-                {postsArr}
-                <button onClick={this.toggleShowCalendarModule}>
-                    
-                </button>
-                {this.state.showCalendarModule && 
-                hiddenPost
-                }
+
+
+
+                {this.props.posts.map((item, index) => {
+                    if (item.data().day === this.props.day) {
+                        return (
+                            <button onClick={this.toggleShowCalendarModule}>{item.data().title}<strong>{index}</strong></button>
+                        )
+                    }
+                })}
+
+
+
+
+                <HiddenCalendarSingle posts={this.props.posts} day={this.props.day} toggle={this.toggleShowCalendarModule} showCalendarModule={this.state.showCalendarModule} />
+
             </div>
         )
     }
