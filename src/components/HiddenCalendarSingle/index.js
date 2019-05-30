@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 class HiddenCalendarSingle extends Component {
     constructor(props) {
@@ -19,28 +20,31 @@ class HiddenCalendarSingle extends Component {
         })
     }
 
+    truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
+
 
 
     render() {
-        const truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
+        const friendlyUrlTitle = this.props.title.replace(/\s+/g, '-') + '-' + this.props.month + '-' + this.props.day
+        const hiddenPost = () => (
+            <div>
+                <p>{this.truncate(this.props.copy)}</p>
+                <p>{this.props.time}</p>
+                <Link to={{
+                    pathname: '/edit-post/',
+                    state: {
+                        clientId: friendlyUrlTitle
+                    }
+                }}>Edit Post</Link>
+            </div>
+        )
         return (
             <div>
-                <button onClick={this.toggleIsHidden}>Click to Toggle</button>
+                <button onClick={this.toggleIsHidden}>{this.props.title}</button>
                 {this.state.isHiddenCalendar &&
-                    this.props.posts.map((item, index) => {
-                        console.log(item.data(), 'item in data');
-                        if (item.data().day === this.props.day) {
-                            return (
-                                <div className="calendar-popup" data-index={index}>
-                                    <div>{truncate(item.data().copy)}</div>
-                                    <div>Time:{item.data().time}</div>
-                                    <div>Hashtags:{item.data().hashtags}</div>
-                                    <div>Links:{item.data().links}</div>
-                                </div>
-                            )
-                        }
-                    })}
-                {this.props.day}
+                    hiddenPost()
+                }
+
             </div>
         )
     }

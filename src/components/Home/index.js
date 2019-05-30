@@ -27,6 +27,12 @@ class Home extends Component {
   }
 
   getPosts() {
+
+  }
+
+  // Component lifecycle methods
+
+  componentDidMount() {
     this.props.firebase.getClients().then(snapshot => {
       this.setState({
         data: snapshot.docs
@@ -34,15 +40,9 @@ class Home extends Component {
     });
   }
 
-  // Component lifecycle methods
-
-  componentDidMount() {
-    this.getPosts();
-  }
-
-  componentDidUpdate() {
-    this.getPosts();
-  }
+  // componentDidUpdate() {
+  //   this.getPosts();
+  // }
 
   toggleAddNew() {
     this.setState({
@@ -74,29 +74,30 @@ class Home extends Component {
       data: this.state.data,
       isHidden: !this.state.isHidden
     });
-    this.getPosts()
+    // this.getPosts()
   };
 
 
   render() {
 
-    const renderPosts = this.state.data.map((item) => (
+    // const renderPosts = this.state.data.map((item) => (
 
-      <div data-id={item.id} className="client-wrapper col-sm-4">
-        <button onClick={() => this.deletePost(item.id)}>X</button>
-        <Link to={`/dates/${item.id}?clientId=${item.id}`}>
-          <h2>{item.data().name}</h2>
-        </Link>
-        <Link to={`/dates/${item.id}?clientId=${item.id}`}>
-          <img src={item.data().image} />
-        </Link>
-      </div>
 
-    ));
+    // ));
 
     return (
       <div>
-        <div id="client-list" className="row">{renderPosts}</div>
+        <div id="client-list" className="row">{this.state.data.map(item => (
+          <div data-id={item.id} className="client-wrapper col-sm-4">
+            <button onClick={() => this.deletePost(item.id)}>X</button>
+            <Link to={`/dates/${item.id}?clientId=${item.id}`}>
+              <h2>{item.data().name}</h2>
+            </Link>
+            <Link to={`/dates/${item.id}?clientId=${item.id}`}>
+              <img src={item.data().image} />
+            </Link>
+          </div>
+        ))}</div>
         <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
         {this.state.isHidden ?
           <div id="add-new-form-wrapper">

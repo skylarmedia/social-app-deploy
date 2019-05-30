@@ -14,7 +14,7 @@ class CalendarSingle extends Component {
             showCalendarModule: false
         }
 
-        this.toggleShowCalendarModule = this.toggleShowCalendarModule.bind(this);
+        // this.toggleShowCalendarModule = this.toggleShowCalendarModule.bind
     }
 
 
@@ -49,7 +49,7 @@ class CalendarSingle extends Component {
         })
     }
 
-
+    truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
 
 
 
@@ -69,18 +69,23 @@ class CalendarSingle extends Component {
 
 
 
-                {this.props.posts.map((item, index) => {
+                {/* {this.props.posts.map((item, index) => {
                     if (item.data().day === this.props.day) {
                         return (
                             <button onClick={this.toggleShowCalendarModule}>{item.data().title}<strong>{index}</strong></button>
                         )
                     }
+                })} */}
+
+                {this.props.posts.map((item, index) => {
+                    if (item.data().day === this.props.day) {
+                        return (
+                            <div>
+                                <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} />
+                            </div>
+                        )
+                    }
                 })}
-
-
-
-
-                <HiddenCalendarSingle posts={this.props.posts} day={this.props.day} toggle={this.toggleShowCalendarModule} showCalendarModule={this.state.showCalendarModule} />
 
             </div>
         )

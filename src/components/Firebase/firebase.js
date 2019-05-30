@@ -22,6 +22,8 @@ class Firebase {
         this.storage = app.storage();
     }
 
+    getPostId = id => this.db.collection('clients').doc(id).collection('posts');
+
     client = clientId => this.db.ref(`clients/${clientId}`);
 
     getSocialPosts = (id) => this.db.collection('clients').doc(id).collection('posts').get();
@@ -39,7 +41,7 @@ class Firebase {
         year: year
     });
 
-    addPost = (id, title, copy, hashtags, time, day, month, year, links) => this.db.collection('clients').doc(id).collection('posts').add({
+    addPost = (id, title, copy, hashtags, time, day, month, year, links, postId) => this.db.collection('clients').doc(id).collection('posts').add({
         title: title,
         copy: copy,
         hashtags: hashtags,
@@ -49,7 +51,8 @@ class Firebase {
         day: day,
         month: month,
         year: year,
-        links:links
+        links: links,
+        postId
     });
 
     // storage = this;

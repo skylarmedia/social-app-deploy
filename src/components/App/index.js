@@ -46,35 +46,35 @@ import { withAuthentication } from '../Session';
 //     this.listener();
 //   }
 
-  // render() {
-  //   return (
-  //     <AuthUserContext.Provider value={this.state.authUser}>
+// render() {
+//   return (
+//     <AuthUserContext.Provider value={this.state.authUser}>
 
-  const App = () => (
-        <Router>
-          <div>
-            <Navigation />
+const App = () => (
+  <Router>
+    <div>
+      <Navigation />
 
-            <hr />
-            <Route path={ROUTES.ADD_POST} component={AddPost} />
-            <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-            <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-            <Route exact path={ROUTES.HOME} component={HomePage}/>
-            <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-            <Route path={ROUTES.ADD_NEW} component={AddNew} />
-            <Route path={ROUTES.CLIENTS} component={Clients} />
-            <Route path={ROUTES.DATES} component={Dates} />
-            <Route path={ROUTES.EDIT_POST} component={EditPost} />
-            <Route calenderHere={true} path={ROUTES.CALENDAR} component={Calendar} />
-            <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
+      <hr />
+      <Route path={ROUTES.ADD_POST} component={AddPost} />
+      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+      <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+      <Route exact path={ROUTES.HOME} component={HomePage} />
+      <Route path={ROUTES.ACCOUNT} component={AccountPage} />
+      <Route path={ROUTES.ADD_NEW} component={AddNew} />
+      <Route path={ROUTES.CLIENTS} component={Clients} />
+      <Route path={ROUTES.DATES} component={Dates} />
+      <Route path="/edit-post" component={EditPost} />
+      <Route calenderHere={true} path={ROUTES.CALENDAR} component={Calendar} />
+      <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
 
-            
-          </div>
-        </Router>
-  )
-  //     </AuthUserContext.Provider>
-  //   )
-  // }
+
+    </div>
+  </Router>
+)
+//     </AuthUserContext.Provider>
+//   )
+// }
 
 
 // }
