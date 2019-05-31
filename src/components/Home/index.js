@@ -7,10 +7,13 @@ import { compose } from 'recompose';
 import Firebase from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { throwStatement, thisExpression, tsExpressionWithTypeArguments } from '@babel/types';
+import { connect } from 'react-redux';
 
 
 
 class Home extends Component {
+
+
   constructor(props) {
     super(props)
     this.state = {
@@ -34,9 +37,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.props.firebase.getClients().then(snapshot => {
-      this.setState({
-        data: snapshot.docs
-      })
+      this.props.getAllClients(snapshot.docs)
     });
   }
 
@@ -78,24 +79,25 @@ class Home extends Component {
   };
 
 
+
+
+
   render() {
 
-    // const renderPosts = this.state.data.map((item) => (
-
-
-    // ));
 
     return (
       <div>
         <div id="client-list" className="row">{this.state.data.map(item => (
           <div data-id={item.id} className="client-wrapper col-sm-4">
             <button onClick={() => this.deletePost(item.id)}>X</button>
-            <Link to={`/dates/${item.id}?clientId=${item.id}`}>
+
+            {console.log(this.props, 'props inside the return')}
+            {/* <Link to={`/dates/${item.id}?clientId=${item.id}`}>
               <h2>{item.data().name}</h2>
             </Link>
             <Link to={`/dates/${item.id}?clientId=${item.id}`}>
               <img src={item.data().image} />
-            </Link>
+            </Link> */}
           </div>
         ))}</div>
         <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
@@ -112,9 +114,26 @@ class Home extends Component {
       </div>
     )
   }
-
 }
+
+
+
+const mapDispatchToProps = dispatch => ({
+  getAllClients: clients => dispatch({
+    type: 'GET_ALL_CLIENTS', clients
+  })
+})
+
+const mapStateToProps = state => (
+  console.log(state, 'state in map state to props'), {
+    data: state.setClientsReducer
+  })
+
 
 export default compose(
   withFirebase,
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  )
 )(Home);
