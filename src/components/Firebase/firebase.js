@@ -41,6 +41,15 @@ class Firebase {
         year: year
     });
 
+    editPostFirebase = (id, postId) => this.db.collection('clients').doc(id).collection('posts').doc(postId).get();
+
+    editPostSubmit = (id, postId, editedTitle, postCopy, postHashtags, editedTime) => this.db.collection('clients').doc(id).collection('posts').doc(postId).update({
+        title: editedTitle,
+        copy: postCopy,
+        hashtags: postHashtags,
+        time: editedTime
+    })
+
     addPost = (id, title, copy, hashtags, time, day, month, year, links, postId) => this.db.collection('clients').doc(id).collection('posts').add({
         title: title,
         copy: copy,

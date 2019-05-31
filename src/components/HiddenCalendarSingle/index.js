@@ -6,12 +6,21 @@ class HiddenCalendarSingle extends Component {
         super(props);
 
         this.state = {
-            isHiddenCalendar: false
+            isHiddenCalendar: false,
+            clientId: ''
         }
 
         this.toggleIsHidden = this.toggleIsHidden.bind(this);
+    }
 
+    componentWillMount() {
+        var url_string = window.location.href  //window.location.href
+        var url = new URL(url_string);
+        var c = url.searchParams.get("clientId");
 
+        this.setState({
+            clientId: c
+        })
     }
 
     toggleIsHidden = () => {
@@ -33,10 +42,11 @@ class HiddenCalendarSingle extends Component {
                 <Link to={{
                     pathname: '/edit-post/',
                     state: {
-                        clientId: friendlyUrlTitle
+                        postId: this.props.itemId,
+                        clientId: this.state.clientId
                     }
                 }}>Edit Post</Link>
-            </div>
+            </div >
         )
         return (
             <div>

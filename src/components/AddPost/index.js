@@ -253,6 +253,13 @@ class AddPost extends Component {
         })
     }
 
+    startUploadManually = () => {
+        const { files } = this.state;
+        files.forEach(file => {
+            this.fileUploader.startUpload(file)
+        });
+    }
+
 
     onSubmitForm = (e) => {
         e.preventDefault();
@@ -265,6 +272,7 @@ class AddPost extends Component {
         this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values, postId);
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
+        this.startUploadManually()
     }
 
 
@@ -318,6 +326,8 @@ class AddPost extends Component {
 
                     {/* <input type="file" name="image" onChange={this.handleFileChange} /> */}
                     {/* <button onClick={this.startUploadManually}>Upload all the things</button> */}
+
+                    <FileUploader storageRef={this.props.firebase.storage.ref('images')} />
                     <input type="submit" value="Submit" />
                     <TimePicker
                         onChange={this.onChangeTime}
@@ -325,6 +335,7 @@ class AddPost extends Component {
                     />
 
                     {/* /* <button onClick={this.submitFile}>Send File</button> */}
+
                 </form>
                 {this.state.showCategoryState ?
                     <ShowCategory />

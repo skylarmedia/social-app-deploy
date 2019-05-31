@@ -81,7 +81,7 @@ class CalendarSingle extends Component {
                     if (item.data().day === this.props.day) {
                         return (
                             <div>
-                                <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} />
+                                <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} itemId={item.id} />
                             </div>
                         )
                     }

@@ -41,10 +41,6 @@ class Home extends Component {
     });
   }
 
-  // componentDidUpdate() {
-  //   this.getPosts();
-  // }
-
   toggleAddNew() {
     this.setState({
       isHidden: !this.state.isHidden
@@ -87,19 +83,21 @@ class Home extends Component {
 
     return (
       <div>
-        <div id="client-list" className="row">{this.state.data.map(item => (
-          <div data-id={item.id} className="client-wrapper col-sm-4">
-            <button onClick={() => this.deletePost(item.id)}>X</button>
-
-            {console.log(this.props, 'props inside the return')}
-            {/* <Link to={`/dates/${item.id}?clientId=${item.id}`}>
-              <h2>{item.data().name}</h2>
-            </Link>
-            <Link to={`/dates/${item.id}?clientId=${item.id}`}>
-              <img src={item.data().image} />
-            </Link> */}
-          </div>
-        ))}</div>
+        <div id="client-list" className="row">
+          {this.props.data.data.length !== 0 && (
+            this.props.data.data.map(item => (
+              <div data-id={item.id} className="client-wrapper col-sm-4">
+                <button onClick={() => this.deletePost(item.id)}>X</button>
+                <Link to={`/dates/${item.id}?clientId=${item.id}`}>
+                  <h2>{item.data().name}</h2>
+                </Link>
+                <Link to={`/dates/${item.id}?clientId=${item.id}`}>
+                  <img src={item.data().image} />
+                </Link>
+              </div>
+            ))
+          )}
+        </div>
         <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
         {this.state.isHidden ?
           <div id="add-new-form-wrapper">
