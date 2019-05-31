@@ -3,6 +3,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from "redux";
 import { connect } from 'react-redux';
 import TimePicker from 'react-time-picker';
+import * as ROUTES from '../../constants/routes';
 
 class EditPost extends Component {
     constructor(props) {
@@ -55,6 +56,17 @@ class EditPost extends Component {
             this.state.postHashtags,
             this.state.postTime
         )
+
+        this.props.history.push(`${ROUTES.CALENDAR}/?month=${this.props.location.state.month}&year=2019&clientId=${this.props.location.state.clientId}`);
+    }
+
+    deletePost = () => {
+        if (window.confirm('Are you sure you wish to delete this item?')) {
+            this.props.firebase.deletePost(this.props.location.state.clientId, this.props.location.state.postId)
+            this.props.history.push(`${ROUTES.CALENDAR}/?month=${this.props.location.state.month}&year=2019&clientId=${this.props.location.state.clientId}`);
+        }
+        return false
+
     }
 
     render() {
@@ -73,7 +85,7 @@ class EditPost extends Component {
                     />
                     <input type="submit" value="Submit Edits" />
                 </form>
-                <button>Delete</button>
+                <button onClick={this.deletePost}>Delete</button>
             </div>
         )
     }

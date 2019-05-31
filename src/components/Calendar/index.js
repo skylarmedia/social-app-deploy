@@ -26,7 +26,6 @@ class Calendar extends React.Component {
     this.state = {
       showCalendarTable: true,
       showMonthTable: false,
-      // dateObject: moment(`${year}-${month}`),
       dateObject: moment(`${year}-${month}`),
       allmonths: moment.months(),
       showYearNav: false,

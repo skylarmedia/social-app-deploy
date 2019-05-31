@@ -43,7 +43,9 @@ class HiddenCalendarSingle extends Component {
                     pathname: '/edit-post/',
                     state: {
                         postId: this.props.itemId,
-                        clientId: this.state.clientId
+                        clientId: this.state.clientId,
+                        day: this.props.day,
+                        month: this.props.month
                     }
                 }}>Edit Post</Link>
             </div >

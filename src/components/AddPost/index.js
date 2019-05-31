@@ -6,6 +6,7 @@ import TimePicker from 'react-time-picker';
 import { SketchPicker } from 'react-color';
 import ShowCategory from '../ShowCategory';
 import * as ROUTES from '../../constants/routes';
+import { nullLiteral } from '@babel/types';
 
 class AddPost extends Component {
     constructor(props) {
@@ -28,37 +29,23 @@ class AddPost extends Component {
             calendarDay: 0,
             calendarMonth: 0,
             calendarYear: 2019,
-            postId: ''
+            postId: '',
+            file: []
         }
 
         this.handleTitle = this.handleTitle.bind(this);
         this.renderAddLinks = this.renderAddLinks.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
         this.fileChangeHandler = this.fileChangeHandler.bind(this);
-        this.customOnChangeHandler = this.customOnChangeHandler.bind(this);
+        // this.customOnChangeHandler = this.customOnChangeHandler.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
         this.showCategory = this.showCategory.bind(this);
         this.handleColorText = this.handleColorText.bind(this);
         this.onChangeTime = this.onChangeTime.bind(this);
+        this.addFile = this.addFile.bind(this);
+        this.uploadFiles = this.uploadFiles.bind(this);
     }
 
-    handleTitle(e) {
-        console.log(e.target.value, 'event target');
-        console.log(e, 'only event');
-    }
-
-    renderAddLinks() {
-        document.getElementById('link-container');
-        console.log('clicked add post');
-
-        this.setState(prevState => ({ inputs: [...prevState.inputs, ''] }))
-    }
-
-    // runGetSocialPosts(id){
-
-
-    //     console.log('snapshot');
-    // }
 
     componentDidMount() {
         console.log(this.props, 'addpost');
@@ -76,6 +63,16 @@ class AddPost extends Component {
             calendarMonth: month
         })
 
+    }
+
+    handleTitle(e) {
+        console.log(e.target.value, 'event target');
+    }
+
+    renderAddLinks() {
+        document.getElementById('link-container');
+
+        this.setState(prevState => ({ inputs: [...prevState.inputs, ''] }))
     }
 
     fileChangeHandler = (event) => {
@@ -110,6 +107,8 @@ class AddPost extends Component {
         )
     }
 
+
+
     handleChange(i, event) {
         let values = [...this.state.values];
         values[i] = event.target.value;
@@ -139,9 +138,9 @@ class AddPost extends Component {
         // console.log(file, 'success');
     }
 
-    onUploadStart = (file) => {
-        // console.log(file);
-    }
+    // onUploadStart = (file) => {
+    //     // console.log(file);
+    // }
 
     onChange = time => this.setState({ time });
 
@@ -151,14 +150,14 @@ class AddPost extends Component {
         this.props.firebase.getStorage.child('images');
     }
 
-    customOnChangeHandler = (event) => {
-        const { target: { files } } = event;
-        const filesToStore = [];
+    // customOnChangeHandler = (event) => {
+    //     const { target: { files } } = event;
+    //     const filesToStore = [];
 
-        files.forEach(file => filesToStore.push(file));
+    //     files.forEach(file => filesToStore.push(file));
 
-        this.setState({ files: filesToStore });
-    }
+    //     this.setState({ files: filesToStore });
+    // }
 
     showCategory = e => {
         e.preventDefault();
@@ -167,57 +166,6 @@ class AddPost extends Component {
             showCategoryState: !this.state.showCategoryState
         });
     }
-
-
-    /**
-    * Start download handler using the file uploader reference
-    */
-    // startUploadManually = () => {
-    //     const { files } = this.state;
-    //     files.forEach(file => {
-    //         this.fileUploader.startUpload(file)
-    //     });
-    // }
-
-    // handleUploadStart = (filename) => {
-
-    //     this.setState({
-    //         progress:0
-    //     });
-    //     this.setState({
-    //         image:filename,
-    //         progress:0,
-    //     });
-    // }
-
-    // handleUploadSuccess = filename => {
-
-
-    // }
-
-    //     customOnChangeHandler = (event) => {
-    //         const { target: { files } } = event;
-    //         const filesToStore = [];
-
-    //         files.forEach(file => filesToStore.push(file));
-
-    //         this.setState({ files: filesToStore });
-    //     }
-
-    //   console.log(files, 'files after upload');
-    //   console.log(event, 'event file upload');
-
-
-
-
-
-    // startUploadManually = () => {
-    //     // const { files } = this.state;
-    //     // console.log(this.state, 'after upload');
-    //     // files.forEach(file => {
-    //     //   this.fileUploader.startUpload(file)
-    //     // });
-    //   }
 
     handleTitle = (e) => {
         this.setState({
@@ -247,24 +195,17 @@ class AddPost extends Component {
         // console.log(this.props, 'props')/
     }
 
-    handleChangeComplete = e => {
-        this.setState({
-            pushColor: e.hex
-        })
-    }
+    // handleChangeComplete = e => {
+    //     this.setState({
+    //         pushColor: e.hex
+    //     })
+    // }
 
-    startUploadManually = () => {
-        const { files } = this.state;
-        files.forEach(file => {
-            this.fileUploader.startUpload(file)
-        });
-    }
 
 
     onSubmitForm = (e) => {
         e.preventDefault();
         const postId = this.state.title.replace(/\s+/g, '-') + '-' + this.state.calendarMonth + '-' + this.state.calendarDay;
-        // alert(postId);
 
         const formMonth = this.state.calendarMonth;
         const clientId = this.state.clientId;
@@ -272,7 +213,41 @@ class AddPost extends Component {
         this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values, postId);
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
-        this.startUploadManually()
+    }
+
+
+    // File upload methods
+
+    addFile = event => {
+        const file = Array.from(event.target.files);
+
+        if (file.length === 1) {
+            this.setState({
+                file: [...this.state.file], file
+            });
+        } else if (file.length > 1) {
+            const emptyFileArr = []
+            file.map(innerFile => {
+                emptyFileArr.push(innerFile)
+            })
+
+            this.setState({
+                file: emptyFileArr
+            });
+        }
+    }
+
+    uploadFiles = (e) => {
+        e.preventDefault();
+        const firestorageRef = this.props.firebase.uploadPostFiles;
+        console.log(firestorageRef, 'firestorage ref');
+
+        // this.state.file.forEach(file => {
+        //     firestorageRef.child(`images/${file.name}`)
+        //         .putFile(file).then(snapshot => {
+        //             console.log(snapshot, 'consolelog the snapshot')
+        //         })
+        // })
     }
 
 
@@ -302,39 +277,16 @@ class AddPost extends Component {
                     <br />
                     {this.createUI()}
                     <br /><br />
-                    {/* <input type="text" value={this.state.pushColorText} onChange={this.handleColorText} />Categories */}
-                    {/* <button onClick={this.showCategory}>Show Category</button><br/> */}
-                    {/* <SketchPicker onChangeComplete={ this.handleChangeComplete } color={ this.state.pushColor }/><br /> */}
                     <input type='button' value='Add More' onClick={this.addClick.bind(this)} />
-                    {
-                    /* <FileUploader
-                        accept="images/*"
-                        name="image"
-                        storageRef={this.props.firebase.storage.ref('images')}
-                        onUploadStart={this.handleUploadStart}
-                        onUploadSuccess={this.handleUploadSuccess}
-                    />
-
-
-                    {/* <FileUploader
-
-                        onChange={this.customOnChangeHandler} // ⇐ Call your handler
-                        ref={instance => { this.fileUploader = instance; }}  // ⇐ reference the component
-                    /> */}
-
-
-
-                    {/* <input type="file" name="image" onChange={this.handleFileChange} /> */}
-                    {/* <button onClick={this.startUploadManually}>Upload all the things</button> */}
-
-                    <FileUploader storageRef={this.props.firebase.storage.ref('images')} />
                     <input type="submit" value="Submit" />
                     <TimePicker
                         onChange={this.onChangeTime}
                         value={this.state.time}
                     />
 
-                    {/* /* <button onClick={this.submitFile}>Send File</button> */}
+                    <input type="file" multiple onChange={this.addFile} />
+                    <button onClick={this.uploadFiles}>Upload Files</button>
+
 
                 </form>
                 {this.state.showCategoryState ?

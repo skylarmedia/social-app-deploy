@@ -22,6 +22,10 @@ class Firebase {
         this.storage = app.storage();
     }
 
+    uploadPostFiles = () => this.storage.ref()
+
+    deletePost = (id, postId) => this.db.collection('clients').doc(id).collection('posts').doc(postId).delete()
+
     getPostId = id => this.db.collection('clients').doc(id).collection('posts');
 
     client = clientId => this.db.ref(`clients/${clientId}`);
@@ -40,6 +44,8 @@ class Firebase {
         month: month,
         year: year
     });
+
+    // Posts Function
 
     editPostFirebase = (id, postId) => this.db.collection('clients').doc(id).collection('posts').doc(postId).get();
 
@@ -64,9 +70,12 @@ class Firebase {
         postId
     });
 
-    // storage = this;
 
-    // getStorage = () => this.storage();
+
+
+    // End of posts functions
+
+
 
     deleteClient = (id) => this.db.collection('clients').doc(id).delete();
 
