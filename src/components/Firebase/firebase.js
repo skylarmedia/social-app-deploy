@@ -2,6 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
+import 'firebase/storage';
 
 const config = {
     apiKey: "AIzaSyB4seBRXpVJ3dZDfCddTWze8UCYEVZ8qkc",
@@ -22,7 +23,7 @@ class Firebase {
         this.storage = app.storage();
     }
 
-    uploadPostFiles = () => this.storage.ref()
+    uploadPostFiles = () => this.storage;
 
     deletePost = (id, postId) => this.db.collection('clients').doc(id).collection('posts').doc(postId).delete()
 

@@ -63,6 +63,8 @@ class AddPost extends Component {
             calendarMonth: month
         })
 
+        this.getPosts()
+
     }
 
     handleTitle(e) {
@@ -229,6 +231,8 @@ class AddPost extends Component {
             const emptyFileArr = []
             file.map(innerFile => {
                 emptyFileArr.push(innerFile)
+
+                console.log(file, 'this is when the file has been uploaded');
             })
 
             this.setState({
@@ -239,15 +243,17 @@ class AddPost extends Component {
 
     uploadFiles = (e) => {
         e.preventDefault();
-        const firestorageRef = this.props.firebase.uploadPostFiles;
+        const firestorageRef = this.props.firebase.storage;
         console.log(firestorageRef, 'firestorage ref');
 
-        // this.state.file.forEach(file => {
-        //     firestorageRef.child(`images/${file.name}`)
-        //         .putFile(file).then(snapshot => {
-        //             console.log(snapshot, 'consolelog the snapshot')
-        //         })
-        // })
+        this.state.file.forEach(file => {
+            firestorageRef.ref().child(`images/${file.name}`)
+                .put(file).then(snapshot => {
+                    console.log(snapshot, 'consolelog the snapshot')
+                })
+        })
+
+        alert('files have been uploaded');
     }
 
 

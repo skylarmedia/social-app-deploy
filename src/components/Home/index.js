@@ -8,6 +8,7 @@ import Firebase from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import { throwStatement, thisExpression, tsExpressionWithTypeArguments } from '@babel/types';
 import { connect } from 'react-redux';
+import { notStrictEqual } from 'assert';
 
 
 
@@ -21,12 +22,14 @@ class Home extends Component {
       isHidden: false,
       name: '',
       image: '',
-      data: []
+      data: [],
+      file: null
     }
 
     this.baseState = this.state
 
     this.toggleAddNew = this.toggleAddNew.bind(this);
+    this.handleLogoUpload = this.handleLogoUpload.bind(this);
   }
 
   getPosts() {
@@ -58,21 +61,43 @@ class Home extends Component {
     this.getPosts();
   }
 
-  addClient = e => {
+  addClient = (e) => {
     e.preventDefault();
+
+    console.log(this.state.file, ' file add client')
+
+    // //Add Client
 
     this.props.firebase.addClient().add({
       name: this.state.name,
       image: this.state.image
-    })
+    });
+
+    //Add Logo
+
+    const firestorageRef = this.props.firebase.storage;
+    console.log(firestorageRef, 'firestorage ref');
+
+
+    firestorageRef.ref().child(`${this.state.file.name}/${this.name}`)
+      .put(this.state.file);
+
+
     this.setState({
       name: '',
       image: '',
       data: this.state.data,
       isHidden: !this.state.isHidden
     });
-    // this.getPosts()
   };
+
+  handleLogoUpload = (event) => {
+    const file = Array.from(event.target.files);
+
+    this.setState({
+      file: file[0]
+    });
+  }
 
 
 
@@ -84,6 +109,8 @@ class Home extends Component {
     return (
       <div>
         <div id="client-list" className="row">
+
+
           {this.props.data.data.length !== 0 && (
             this.props.data.data.map(item => (
               <div data-id={item.id} className="client-wrapper col-sm-4">
@@ -97,6 +124,8 @@ class Home extends Component {
               </div>
             ))
           )}
+
+
         </div>
         <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
         {this.state.isHidden ?
@@ -104,7 +133,8 @@ class Home extends Component {
             <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
             <form onSubmit={this.addClient.bind(this)} id="add-new-form">
               <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name} />
-              <input type="text" name="image" placeholder="Image" onChange={this.updateInput} value={this.state.image} />
+              <input type="file" onChange={this.handleLogoUpload} />
+
               <button type="submit">Submit</button>
             </form>
           </div> :
