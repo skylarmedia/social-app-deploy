@@ -63,8 +63,6 @@ class AddPost extends Component {
             calendarMonth: month
         })
 
-        this.getPosts()
-
     }
 
     handleTitle(e) {
