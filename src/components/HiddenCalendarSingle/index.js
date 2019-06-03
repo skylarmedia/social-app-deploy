@@ -24,10 +24,20 @@ class HiddenCalendarSingle extends Component {
 
         this.setState({
             clientId: c
-        })
+        });
 
 
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(prevProps, 'prev props');
+    }
+
+    // getImages = () => {
+
+    //     console.log(this.props, 'props')
+
+    // }
 
 
 
@@ -36,6 +46,8 @@ class HiddenCalendarSingle extends Component {
             isHiddenCalendar: !this.state.isHiddenCalendar
         })
     }
+
+
 
 
 
@@ -70,6 +82,7 @@ class HiddenCalendarSingle extends Component {
                         month: this.props.month
                     }
                 }}>Edit Post</Link>
+
             </div >
         )
         return (

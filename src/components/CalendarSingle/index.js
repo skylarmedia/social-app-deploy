@@ -32,11 +32,27 @@ class CalendarSingle extends Component {
 
         console.log(this.props, 'props for firebase')
 
-        this.props.firebase.storage.ref().child(this.props.clientId + '/' + this.props.month + '-' + this.props.day).getDownloadURL().then((url) => {
-            console.log(url, 'url');
-        }).catch((error) => {
-            console.log(error, 'error')
-        })
+        // this.props.firebase.storage.ref().child(this.props.clientId + '/' + this.props.month + '-' + this.props.day).getDownloadURL().then((url) => {
+        //     console.log(url, 'url');
+        // }).catch((error) => {
+        //     console.log(error, 'error')
+        // })
+
+
+        // const firebaseStorage = ;
+        // const awaitStorage = await firebaseStorage;
+
+        // console.log(awaitStorage);
+
+        // const getImages = async () => {
+        //     this.props.firebase.storage.ref().child(decodeURI(this.props.clientId + '/' + this.props.month + '-' + this.props.day)).listAll().then(res => {
+        //         console
+        //     })
+        // }
+
+        // getImages();
+
+
     }
 
 

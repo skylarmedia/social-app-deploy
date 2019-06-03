@@ -29,7 +29,8 @@ class AddPost extends Component {
             calendarMonth: 0,
             calendarYear: 2019,
             postId: '',
-            file: []
+            file: [],
+            metaImageFiles: []
         }
 
         this.handleTitle = this.handleTitle.bind(this);
@@ -209,7 +210,7 @@ class AddPost extends Component {
         const formMonth = this.state.calendarMonth;
         const clientId = this.state.clientId;
 
-        this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values, postId);
+        this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values, postId, this.state.metaImageFiles);
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
     }
@@ -225,16 +226,16 @@ class AddPost extends Component {
                 file: [...this.state.file], file
             });
         }
-        // else if (file.length > 1) {
-        //     const emptyFileArr = []
-        //     file.map(innerFile => {
-        //         emptyFileArr.push(innerFile)
-        //     })
+        else if (file.length > 1) {
+            const emptyFileArr = []
+            file.map(innerFile => {
+                emptyFileArr.push(innerFile)
+            })
 
-        //     this.setState({
-        //         file: emptyFileArr
-        //     });
-        // }
+            this.setState({
+                file: emptyFileArr
+            });
+        }
     }
 
     uploadFiles = (e) => {
@@ -246,12 +247,10 @@ class AddPost extends Component {
                 .put(file).then(snapshot => {
                     console.log('snapshot')
                 })
+        });
 
-            // firestorageRef.ref().child(this.state.clientId + '/test' + this.state.calendarMonth + '-' + this.state.calendarDay + '/' + file.name)
-            //     .getDownloadURL().then(url => {
-            //         console.log(url, 'url');
-            //     })
-
+        this.setState({
+            metaImageFiles: this.state.metaImageFiles
         })
 
     }

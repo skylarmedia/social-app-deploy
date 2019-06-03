@@ -59,7 +59,7 @@ class Firebase {
         time: editedTime
     })
 
-    addPost = (id, title, copy, hashtags, time, day, month, year, links, postId) => this.db.collection('clients').doc(id).collection('posts').add({
+    addPost = (id, title, copy, hashtags, time, day, month, year, links, metaFileInfo) => this.db.collection('clients').doc(id).collection('posts').add({
         title: title,
         copy: copy,
         hashtags: hashtags,
@@ -70,7 +70,7 @@ class Firebase {
         month: month,
         year: year,
         links: links,
-        postId
+        meta_file_fields: metaFileInfo
     });
 
 
