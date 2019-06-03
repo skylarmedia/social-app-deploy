@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { withFirebase } from 'firebase';
+import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 
 class HiddenCalendarSingle extends Component {
@@ -26,24 +26,18 @@ class HiddenCalendarSingle extends Component {
             clientId: c
         })
 
-        // Fetch image path
-
-        // ``
-        // const imagePath = this.props.storagePath.ref();
-
-        // imagePath.child(`${this.state.clientId}/${this.props.month}/${this.props.day}`).getDownloadURL.then(url => {
-        //     console.log(url);
-        // })
-
-
 
     }
+
+
 
     toggleIsHidden = () => {
         this.setState({
             isHiddenCalendar: !this.state.isHiddenCalendar
         })
     }
+
+
 
     truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
 
@@ -58,11 +52,14 @@ class HiddenCalendarSingle extends Component {
 
     render() {
         const friendlyUrlTitle = this.props.title.replace(/\s+/g, '-') + '-' + this.props.month + '-' + this.props.day
+        const spacedHashtags = this.props.hashtags.replace(/ /g, " #");
         const hiddenPost = () => (
             <div>
+                <p>{this.props.title}</p>
                 <p>{this.truncate(this.props.copy)}</p>
-                \
                 <p>{this.props.time}</p>
+                <p>#{spacedHashtags}</p>
+
                 <Link to={{
                     pathname: '/edit-post/',
                     state: {
@@ -87,4 +84,6 @@ class HiddenCalendarSingle extends Component {
 
 }
 
-export default withFirebase(HiddenCalendarSingle)
+export default compose(
+    withFirebase(HiddenCalendarSingle)
+)

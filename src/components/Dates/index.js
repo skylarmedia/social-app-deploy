@@ -108,7 +108,7 @@ class Dates extends Component {
         this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
         this.setState({
             showAddDate: !this.state.showAddDate,
-            date: []
+            dates: []
         });
 
 

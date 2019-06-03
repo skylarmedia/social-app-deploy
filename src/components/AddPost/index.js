@@ -240,14 +240,20 @@ class AddPost extends Component {
     uploadFiles = (e) => {
         e.preventDefault();
         const firestorageRef = this.props.firebase.storage;
-        console.log(firestorageRef, 'firestorage ref');
 
         this.state.file.forEach(file => {
             firestorageRef.ref().child(`${this.state.clientId}/${this.state.calendarMonth}-${this.state.calendarDay}/${file.name}`)
                 .put(file).then(snapshot => {
                     console.log(snapshot, 'consolelog the snapshot')
                 })
+
+            firestorageRef.ref().child(this.state.clientId + '/' + this.state.calendarMonth + '-' + this.state.calendarDay + '/' + file.name)
+                .getDownloadURL().then(url => {
+                    console.log(url, 'url');
+                })
+
         })
+
     }
 
 

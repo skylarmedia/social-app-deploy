@@ -11,7 +11,7 @@ class AddNewForm extends Component {
 
     render() {
         return (
-            <div>TEST</div>
+            <div>Add New Form </div>
         )
     }
 }

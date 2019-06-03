@@ -29,7 +29,14 @@ class CalendarSingle extends Component {
 
 
     componentDidMount() {
-        console.log(this.props.posts)
+
+        console.log(this.props, 'props for firebase')
+
+        this.props.firebase.storage.ref().child(`${this.props.clientId}/${this.props.month}-${this.props.day}`).getDownloadURL().then((url) => {
+            console.log(url, 'url');
+        }).catch((error) => {
+            console.log(error, 'error')
+        })
     }
 
 

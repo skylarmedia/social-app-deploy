@@ -25,6 +25,8 @@ class Firebase {
 
     uploadPostFiles = () => this.storage;
 
+    getPostImages = () => this.storage.ref();
+
     deletePost = (id, postId) => this.db.collection('clients').doc(id).collection('posts').doc(postId).delete()
 
     getPostId = id => this.db.collection('clients').doc(id).collection('posts');

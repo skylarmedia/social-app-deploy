@@ -287,7 +287,7 @@ class Calendar extends React.Component {
       // let selectedClass = (d == this.state.selectedDay ? " selected-day " : "")
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
-          <CalendarSingle day={d} posts={this.state.posts} month={month} />
+          <CalendarSingle day={d} posts={this.state.posts} month={month} clientId={this.state.clientId} />
           <Link to={`/add-post/?month=${month}&day=${d}&year=2019&clientId=${this.getClientId()}`}>+</Link>
         </td>
 
