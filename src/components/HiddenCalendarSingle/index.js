@@ -52,14 +52,15 @@ class HiddenCalendarSingle extends Component {
 
     render() {
         const friendlyUrlTitle = this.props.title.replace(/\s+/g, '-') + '-' + this.props.month + '-' + this.props.day
-        const spacedHashtags = this.props.hashtags.replace(/ /g, " #");
+        // const spacedHashtags = this.props.hashtags.replace(/ /g, " #");
         const hiddenPost = () => (
             <div>
                 <p>{this.props.title}</p>
                 <p>{this.truncate(this.props.copy)}</p>
                 <p>{this.props.time}</p>
-                <p>#{spacedHashtags}</p>
-
+                {this.props.hashtags &&
+                    <p>{this.props.hashtags}</p>
+                }
                 <Link to={{
                     pathname: '/edit-post/',
                     state: {

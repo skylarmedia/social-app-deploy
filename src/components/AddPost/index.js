@@ -224,17 +224,17 @@ class AddPost extends Component {
             this.setState({
                 file: [...this.state.file], file
             });
-        } else if (file.length > 1) {
-            const emptyFileArr = []
-            file.map(innerFile => {
-                emptyFileArr.push(innerFile)
-
-            })
-
-            this.setState({
-                file: emptyFileArr
-            });
         }
+        // else if (file.length > 1) {
+        //     const emptyFileArr = []
+        //     file.map(innerFile => {
+        //         emptyFileArr.push(innerFile)
+        //     })
+
+        //     this.setState({
+        //         file: emptyFileArr
+        //     });
+        // }
     }
 
     uploadFiles = (e) => {
@@ -244,13 +244,13 @@ class AddPost extends Component {
         this.state.file.forEach(file => {
             firestorageRef.ref().child(`${this.state.clientId}/${this.state.calendarMonth}-${this.state.calendarDay}/${file.name}`)
                 .put(file).then(snapshot => {
-                    console.log(snapshot, 'consolelog the snapshot')
+                    console.log('snapshot')
                 })
 
-            firestorageRef.ref().child(this.state.clientId + '/' + this.state.calendarMonth + '-' + this.state.calendarDay + '/' + file.name)
-                .getDownloadURL().then(url => {
-                    console.log(url, 'url');
-                })
+            // firestorageRef.ref().child(this.state.clientId + '/test' + this.state.calendarMonth + '-' + this.state.calendarDay + '/' + file.name)
+            //     .getDownloadURL().then(url => {
+            //         console.log(url, 'url');
+            //     })
 
         })
 
