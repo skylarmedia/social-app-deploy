@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withFirebase } from 'firebase';
+import { compose } from 'recompose';
 
 class HiddenCalendarSingle extends Component {
     constructor(props) {
@@ -7,10 +9,12 @@ class HiddenCalendarSingle extends Component {
 
         this.state = {
             isHiddenCalendar: false,
-            clientId: ''
+            clientId: '',
+            image: ''
         }
 
         this.toggleIsHidden = this.toggleIsHidden.bind(this);
+        this._handleDoubleClickItem = this._handleDoubleClickItem.bind(this);
     }
 
     componentWillMount() {
@@ -21,6 +25,18 @@ class HiddenCalendarSingle extends Component {
         this.setState({
             clientId: c
         })
+
+        // Fetch image path
+
+        // ``
+        // const imagePath = this.props.storagePath.ref();
+
+        // imagePath.child(`${this.state.clientId}/${this.props.month}/${this.props.day}`).getDownloadURL.then(url => {
+        //     console.log(url);
+        // })
+
+
+
     }
 
     toggleIsHidden = () => {
@@ -31,6 +47,13 @@ class HiddenCalendarSingle extends Component {
 
     truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
 
+    _handleDoubleClickItem = (e) => {
+        e.preventDefault();
+
+        alert('double clicked');
+    }
+
+
 
 
     render() {
@@ -38,6 +61,7 @@ class HiddenCalendarSingle extends Component {
         const hiddenPost = () => (
             <div>
                 <p>{this.truncate(this.props.copy)}</p>
+                \
                 <p>{this.props.time}</p>
                 <Link to={{
                     pathname: '/edit-post/',
@@ -52,16 +76,15 @@ class HiddenCalendarSingle extends Component {
         )
         return (
             <div>
-                <button onClick={this.toggleIsHidden}>{this.props.title}</button>
+                <button onClick={this.toggleIsHidden} onDoubleClick={this._handleDoubleClickItem}>{this.props.title}</button>
                 {this.state.isHiddenCalendar &&
                     hiddenPost()
                 }
-
             </div>
         )
     }
+
+
 }
 
-
-
-export default HiddenCalendarSingle;
+export default withFirebase(HiddenCalendarSingle)

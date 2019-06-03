@@ -15,20 +15,20 @@ class Dates extends Component {
             user: null,
             showAddDate: false,
             date: [],
-            month:1,
-            year:2019,
+            month: 1,
+            year: 2019,
             chosenMonth: '',
-            chosenYear:'',
+            chosenYear: '',
             showCalendar: false,
             clientId: '',
             passDates: (month, year) => {
                 this.setState({
-                    chosenMonth:month,
-                    chosenYear:year,
+                    chosenMonth: month,
+                    chosenYear: year,
                     showCalendar: true
                 })
-             }
-            
+            }
+
         }
 
         this.submitForm = this.submitForm.bind(this);
@@ -38,11 +38,11 @@ class Dates extends Component {
         this.firstRender();
     }
 
-    componentDidMount(){
+    componentDidMount() {
         var url_string = window.location.href  //window.location.href
         var url = new URL(url_string);
         var c = url.searchParams.get("clientId");
-        
+
         this.setState({
             clientId: c
         }, () => {
@@ -74,7 +74,7 @@ class Dates extends Component {
                 dateArr.push(obj);
 
                 this.setState({
-                    date:dateArr
+                    date: dateArr
                 });
                 console.log(this.state, 'state after render');
                 console.log(dateArr, 'date array');
@@ -107,7 +107,29 @@ class Dates extends Component {
         // // console.log(currentDates);
         this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
         this.setState({
-            showAddDate:!this.state.showAddDate
+            showAddDate: !this.state.showAddDate,
+            date: []
+        });
+
+
+        this.props.firebase.getDates(this.props.match.params.id).then(snapshot => {
+            console.log(snapshot.docs)
+            const list = snapshot.docs;
+            list.map(item => {
+                console.log(item.data(), 'item');
+                const obj = {};
+                const dateArr = this.state.date;
+                obj["month"] = item.data().month;
+                obj["year"] = item.data().year;
+
+                dateArr.push(obj);
+
+                this.setState({
+                    date: dateArr
+                });
+                console.log(this.state, 'state after render');
+                console.log(dateArr, 'date array');
+            })
         })
     }
 
@@ -139,11 +161,11 @@ class Dates extends Component {
         console.log('hello')
     }
 
-    passDates(){
+    passDates() {
         console.log('clicked');
         console.log(this.props)
     }
-    
+
 
 
     render() {
@@ -151,7 +173,7 @@ class Dates extends Component {
         const renderDates = this.state.date.map(item => (
             <Link to={`/calendar?month=${item.month}&year=${item.year}&clientId=${this.state.clientId}`}>
                 {this.convert(item.month)} {item.year}
-                <br/>
+                <br />
             </Link>
         ));
         console.log(this.state, 'state in render');
@@ -188,9 +210,9 @@ class Dates extends Component {
                     :
                     ''
                 }
-                {this.state.showCalender ? 
-                <Calendar impData={this.state}/>
-                : ''
+                {this.state.showCalender ?
+                    <Calendar impData={this.state} />
+                    : ''
                 }
                 }
                 <button onClick={this.toggleAddDate.bind(this)}>Add New</button>

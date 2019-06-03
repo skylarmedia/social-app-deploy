@@ -149,23 +149,6 @@
   .tail-datetime-calendar .calendar-date table tbody tr > *.today:after {
     border-color: #3296c8;
   }
-  .tail-datetime-calendar .calendar-date table tbody tr > *:hover {
-    color: #ee463a;
-  }
-  .tail-datetime-calendar .calendar-date table tbody tr > *:hover:after {
-    border-color: #ee463a;
-  }
-  .tail-datetime-calendar .calendar-date table tbody tr > *.empty,
-  .tail-datetime-calendar .calendar-date table tbody tr > *.disable {
-    color: #8899aa;
-    cursor: not-allowed;
-    background-color: #efefef;
-  }
-  .tail-datetime-calendar .calendar-date table tbody tr > *.empty:hover:after,
-  .tail-datetime-calendar .calendar-date table tbody tr > *.disable:hover:after {
-    content: "";
-    display: none;
-  }
   .tail-datetime-calendar .calendar-date table tbody tr > *.current span {
     color: #fff;
   }

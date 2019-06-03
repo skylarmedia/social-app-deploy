@@ -6,7 +6,6 @@ import TimePicker from 'react-time-picker';
 import { SketchPicker } from 'react-color';
 import ShowCategory from '../ShowCategory';
 import * as ROUTES from '../../constants/routes';
-import { nullLiteral } from '@babel/types';
 
 class AddPost extends Component {
     constructor(props) {
@@ -230,7 +229,6 @@ class AddPost extends Component {
             file.map(innerFile => {
                 emptyFileArr.push(innerFile)
 
-                console.log(file, 'this is when the file has been uploaded');
             })
 
             this.setState({
@@ -245,13 +243,11 @@ class AddPost extends Component {
         console.log(firestorageRef, 'firestorage ref');
 
         this.state.file.forEach(file => {
-            firestorageRef.ref().child(`images/${file.name}`)
+            firestorageRef.ref().child(`${this.state.clientId}/${this.state.calendarMonth}-${this.state.calendarDay}/${file.name}`)
                 .put(file).then(snapshot => {
                     console.log(snapshot, 'consolelog the snapshot')
                 })
         })
-
-        alert('files have been uploaded');
     }
 
 

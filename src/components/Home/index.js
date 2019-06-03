@@ -9,6 +9,7 @@ import * as ROUTES from '../../constants/routes';
 import { throwStatement, thisExpression, tsExpressionWithTypeArguments } from '@babel/types';
 import { connect } from 'react-redux';
 import { notStrictEqual } from 'assert';
+import FileUploader from "react-firebase-file-uploader";
 
 
 
@@ -23,7 +24,7 @@ class Home extends Component {
       name: '',
       image: '',
       data: [],
-      file: null
+      file: null,
     }
 
     this.baseState = this.state
@@ -58,7 +59,10 @@ class Home extends Component {
 
   deletePost = (id) => {
     this.props.firebase.deleteClient(id);
-    this.getPosts();
+
+    this.props.firebase.getClients().then(snapshot => {
+      this.props.getAllClients(snapshot.docs)
+    });
   }
 
   addClient = (e) => {
@@ -79,15 +83,15 @@ class Home extends Component {
     console.log(firestorageRef, 'firestorage ref');
 
 
-    firestorageRef.ref().child(`${this.state.file.name}/${this.name}`)
-      .put(this.state.file);
-
-
     this.setState({
       name: '',
       image: '',
       data: this.state.data,
       isHidden: !this.state.isHidden
+    });
+
+    this.props.firebase.getClients().then(snapshot => {
+      this.props.getAllClients(snapshot.docs)
     });
   };
 
@@ -98,6 +102,7 @@ class Home extends Component {
       file: file[0]
     });
   }
+
 
 
 
@@ -133,7 +138,7 @@ class Home extends Component {
             <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
             <form onSubmit={this.addClient.bind(this)} id="add-new-form">
               <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name} />
-              <input type="file" onChange={this.handleLogoUpload} />
+              <input type="file" onChange={this.addFile} />
 
               <button type="submit">Submit</button>
             </form>
