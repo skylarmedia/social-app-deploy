@@ -25,6 +25,10 @@ class Home extends Component {
       image: '',
       data: [],
       file: null,
+      username: '',
+      email: '',
+      passwordOne: '',
+      error: null,
     }
 
     this.baseState = this.state
@@ -41,7 +45,7 @@ class Home extends Component {
 
   componentDidMount() {
     this.props.firebase.getClients().then(snapshot => {
-      this.props.getAllClients(snapshot.docs)
+      console.log(snapshot.docs, 'snapshot of clients')
     });
   }
 
@@ -68,14 +72,14 @@ class Home extends Component {
   addClient = (e) => {
     e.preventDefault();
 
-    console.log(this.state.file, ' file add client')
+    // console.log(this.state.file, ' file add client')
 
     // //Add Client
 
-    this.props.firebase.addClient().add({
-      name: this.state.name,
-      image: this.state.image
-    });
+    // this.props.firebase.addClient().add({
+    //   name: this.state.name,
+    //   image: this.state.image
+    // });
 
     //Add Logo
 
@@ -103,6 +107,22 @@ class Home extends Component {
     });
   }
 
+  onChange = event => {
+    this.setState({ [event.target.name]: event.target.value });
+  };
+
+  onSubmit = event => {
+    // const { username, email, passwordOne } = this.state;
+    event.preventDefault();
+
+    this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username);
+    // // .catch(error => {
+    // //   this.setState({ error });
+    // // });
+
+
+  };
+
 
 
 
@@ -110,12 +130,16 @@ class Home extends Component {
 
   render() {
 
+    const isInvalid =
+      this.state.passwordOne === '' ||
+      this.state.email === '' ||
+      this.state.username === '';
+
+
 
     return (
       <div>
         <div id="client-list" className="row">
-
-
           {this.props.data.data.length !== 0 && (
             this.props.data.data.map(item => (
               <div data-id={item.id} className="client-wrapper col-sm-4">
@@ -136,11 +160,33 @@ class Home extends Component {
         {this.state.isHidden ?
           <div id="add-new-form-wrapper">
             <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
-            <form onSubmit={this.addClient.bind(this)} id="add-new-form">
-              <input type="text" name="name" placeholder="Name" onChange={this.updateInput} value={this.state.name} />
-              <input type="file" onChange={this.addFile} />
+            <form onSubmit={this.onSubmit} id="add-new-form">
+              <input
+                name="username"
+                value={this.state.username}
+                onChange={this.onChange}
+                type="text"
+                placeholder="Full Name"
+              />
+              <input
+                name="email"
+                value={this.state.email}
+                onChange={this.onChange}
+                type="text"
+                placeholder="Email Address"
+              />
+              <input
+                name="passwordOne"
+                value={this.state.passwordOne}
+                onChange={this.onChange}
+                type="password"
+                placeholder="Password"
+              />
+              <button disabled={isInvalid} type="submit">
+                Sign Up
+      </button>
 
-              <button type="submit">Submit</button>
+              {this.state.error && <p>{this.state.error.message}</p>}
             </form>
           </div> :
           ''}

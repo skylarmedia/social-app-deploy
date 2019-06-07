@@ -17,7 +17,6 @@ const config = {
 class Firebase {
     constructor() {
         app.initializeApp(config);
-
         this.auth = app.auth();
         this.db = app.firestore();
         this.storage = app.storage();
@@ -35,7 +34,7 @@ class Firebase {
 
     getSocialPosts = (id) => this.db.collection('clients').doc(id).collection('posts').get();
 
-    getClients = () => this.db.collection('clients').get();
+    getClients = () => this.db.collection('users').get();
 
     getPostId = (id) => this.db.collection('clients').doc(id).collection('posts').get();
 
@@ -47,6 +46,12 @@ class Firebase {
         month: month,
         year: year
     });
+
+    addUser = (email, password, name) => this.auth.createUserWithEmailAndPassword(email, password).then(cred => {
+        return this.db.collection('users').doc(cred.user.uid).set({
+            name: name
+        })
+    })
 
     // Posts Function
 
