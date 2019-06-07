@@ -105,6 +105,10 @@ class Dates extends Component {
 
         // currentDates.push(emptyObj);
         // // console.log(currentDates);
+
+
+
+
         this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
         this.setState({
             showAddDate: !this.state.showAddDate,

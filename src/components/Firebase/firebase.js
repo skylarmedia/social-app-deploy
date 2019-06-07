@@ -2,7 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
-import 'firebase/storage';
+// import * as admin from "firebase-admin";
 
 const config = {
     apiKey: "AIzaSyB4seBRXpVJ3dZDfCddTWze8UCYEVZ8qkc",
@@ -42,7 +42,7 @@ class Firebase {
 
     getDates = (id) => this.db.collection('clients').doc(id).collection('dates').get()
 
-    addDate = (id, month, year) => this.db.collection('clients').doc(id).collection('dates').add({
+    addDate = (id, month, year) => this.db.collection('users').doc(id).collection('dates').add({
         month: month,
         year: year
     });
@@ -78,6 +78,10 @@ class Firebase {
         meta_file_fields: metaFileInfo
     });
 
+    getSigninId = () => {
+        alert(this.auth.currentUser.uid);
+    }
+
 
 
 
@@ -108,6 +112,23 @@ class Firebase {
             name: name
         })
     }
+
+    // getSigninToken = () => {
+    //     this.auth.currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
+    //         console.log(idToken, 'id token');
+
+
+    //         admin.auth().verifyIdToken(idToken)
+    //             .then(function (decodedToken) {
+    //                 var uid = decodedToken.uid;
+    //                 console.log(uid, 'uid');
+    //             }).catch(function (error) {
+    //                 // Handle error
+    //             });
+    //     }).catch(function (error) {
+    //         //Handle error
+    //     });
+    // }
 
 
 

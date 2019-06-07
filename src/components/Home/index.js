@@ -23,7 +23,7 @@ class Home extends Component {
       isHidden: false,
       name: '',
       image: '',
-      data: [],
+      users: [],
       file: null,
       username: '',
       email: '',
@@ -46,7 +46,13 @@ class Home extends Component {
   componentDidMount() {
     this.props.firebase.getClients().then(snapshot => {
       console.log(snapshot.docs, 'snapshot of clients')
+
+      this.setState({
+        users: snapshot.docs
+      })
     });
+
+    console.log(this.state.users, 'user data');
   }
 
   toggleAddNew() {
@@ -140,7 +146,7 @@ class Home extends Component {
     return (
       <div>
         <div id="client-list" className="row">
-          {this.props.data.data.length !== 0 && (
+          {/* {this.props.data.data.length !== 0 && (
             this.props.data.data.map(item => (
               <div data-id={item.id} className="client-wrapper col-sm-4">
                 <button onClick={() => this.deletePost(item.id)}>X</button>
@@ -152,7 +158,20 @@ class Home extends Component {
                 </Link>
               </div>
             ))
-          )}
+          )} */}
+
+          {
+            this.state.users && (
+              this.state.users.map(user => (
+                <div data-id={user.data().id} className="client-wrapper col-sm-4">
+                  <button onClick={() => this.deletePost(user.data().id)}>X</button>
+                  <Link to={`/dates/${user.id}?clientId=${user.id}`}>
+                    {user.data().name}
+                  </Link>
+                </div>
+              ))
+            )
+          }
 
 
         </div>
