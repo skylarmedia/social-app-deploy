@@ -10,6 +10,7 @@ import { throwStatement, thisExpression, tsExpressionWithTypeArguments } from '@
 import { connect } from 'react-redux';
 import { notStrictEqual } from 'assert';
 import FileUploader from "react-firebase-file-uploader";
+import 'firebase/storage';
 
 
 
@@ -29,13 +30,16 @@ class Home extends Component {
       email: '',
       passwordOne: '',
       error: null,
+      firestorageRef: this.props.firebase.storage
     }
 
     this.baseState = this.state
 
     this.toggleAddNew = this.toggleAddNew.bind(this);
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
+    this.addFile = this.addFile.bind(this);
   }
+
 
   getPosts() {
 
@@ -51,8 +55,6 @@ class Home extends Component {
         users: snapshot.docs
       })
     });
-
-    console.log(this.state.users, 'user data');
   }
 
   toggleAddNew() {
@@ -89,8 +91,8 @@ class Home extends Component {
 
     //Add Logo
 
-    const firestorageRef = this.props.firebase.storage;
-    console.log(firestorageRef, 'firestorage ref');
+    // const firestorageRef = this.props.firebase.storage;
+    // console.log(firestorageRef, 'firestorage ref');
 
 
     this.setState({
@@ -113,6 +115,18 @@ class Home extends Component {
     });
   }
 
+  addFile = event => {
+
+    console.log(event.target.files[0], 'target');
+    this.setState({
+      file: event.target.files[0]
+    })
+    // const storageRef = this.props.firebase.storage().ref();
+    // const logoRef = storageRef(`logos/${this.state.client}`);
+    // console.log(this.state.file, 'file uploaded');
+  }
+
+
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
   };
@@ -121,11 +135,12 @@ class Home extends Component {
     // const { username, email, passwordOne } = this.state;
     event.preventDefault();
 
-    this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username);
-    // // .catch(error => {
-    // //   this.setState({ error });
-    // // });
+    this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
+      .put(this.state.file).then(snapshot => {
+        console.log(snapshot, 'snapshot')
+      });
 
+    this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username);
 
   };
 
@@ -135,6 +150,20 @@ class Home extends Component {
 
 
   render() {
+    // {console.log()}
+
+    // <div>ID {this.props.firebase.getPostImages(`${user.data().name}/logo`).i}</div>
+
+    const renderPosts = this.state.users.map(user => (
+      <div data-id={user.data().id} className="client-wrapper col-sm-4">
+        {console.log(Object.keys(this.props.firebase.getPostImages(`${user.data().name}/logo`), 'render posts'))}
+        {console.log(this.props.firebase.getPostImages(`${user.data().name}/logo`))}
+        < button onClick={() => this.deleteUser(user.data().id)}>X</button>
+        <Link to={`/dates/${user.id}?clientId=${user.id}`}>
+          {user.data().name}
+        </Link>
+      </div >
+    ))
 
     const isInvalid =
       this.state.passwordOne === '' ||
@@ -146,34 +175,7 @@ class Home extends Component {
     return (
       <div>
         <div id="client-list" className="row">
-          {/* {this.props.data.data.length !== 0 && (
-            this.props.data.data.map(item => (
-              <div data-id={item.id} className="client-wrapper col-sm-4">
-                <button onClick={() => this.deletePost(item.id)}>X</button>
-                <Link to={`/dates/${item.id}?clientId=${item.id}`}>
-                  <h2>{item.data().name}</h2>
-                </Link>
-                <Link to={`/dates/${item.id}?clientId=${item.id}`}>
-                  <img src={item.data().image} />
-                </Link>
-              </div>
-            ))
-          )} */}
-
-          {
-            this.state.users && (
-              this.state.users.map(user => (
-                <div data-id={user.data().id} className="client-wrapper col-sm-4">
-                  <button onClick={() => this.deletePost(user.data().id)}>X</button>
-                  <Link to={`/dates/${user.id}?clientId=${user.id}`}>
-                    {user.data().name}
-                  </Link>
-                </div>
-              ))
-            )
-          }
-
-
+          {renderPosts}
         </div>
         <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
         {this.state.isHidden ?
@@ -201,9 +203,10 @@ class Home extends Component {
                 type="password"
                 placeholder="Password"
               />
+              <input type="file" onChange={this.addFile} />
               <button disabled={isInvalid} type="submit">
                 Sign Up
-      </button>
+            </button>
 
               {this.state.error && <p>{this.state.error.message}</p>}
             </form>

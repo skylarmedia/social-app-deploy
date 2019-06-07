@@ -22,9 +22,16 @@ class Firebase {
         this.storage = app.storage();
     }
 
-    uploadPostFiles = () => this.storage;
+    // uploadPostFiles = () => this.storage;
 
-    getPostImages = () => this.storage.ref();
+    getPostImages = () => this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
+
+    addLogoUrl = (user, logoUrl) => this.db.collection('users').doc(user).add({
+        logoUrl: logoUrl
+    }, err => {
+        console.log(err, 'err')
+    })
+
 
     deletePost = (id, postId) => this.db.collection('clients').doc(id).collection('posts').doc(postId).delete()
 
@@ -51,6 +58,13 @@ class Firebase {
         return this.db.collection('users').doc(cred.user.uid).set({
             name: name
         })
+    }).then(user => {
+        if (user) {
+            console.log(user, 'user object')
+            user.updateProfile({
+                displayName: 'test'
+            })
+        }
     })
 
     // Posts Function
@@ -78,6 +92,7 @@ class Firebase {
         meta_file_fields: metaFileInfo
     });
 
+
     getSigninId = () => {
         alert(this.auth.currentUser.uid);
     }
@@ -89,7 +104,7 @@ class Firebase {
 
 
 
-    deleteClient = (id) => this.db.collection('clients').doc(id).delete();
+    // deleteClient = (id) => this.db.collection('clients').doc(id).delete();
 
     //   addDates = () => this.db.collections('clients')
 

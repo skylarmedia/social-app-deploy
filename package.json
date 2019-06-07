@@ -30,7 +30,6 @@
     "server": "node-env-run server --exec nodemon | pino-colada",
     "precommit": "NODE_ENV=production lint-staged"
   },
-  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": "react-app"
   },
