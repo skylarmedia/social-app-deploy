@@ -39,24 +39,26 @@ class Firebase {
 
     client = clientId => this.db.ref(`clients/${clientId}`);
 
-    getSocialPosts = (id) => this.db.collection('clients').doc(id).collection('posts').get();
+    getSocialPosts = (id) => this.db.collection('users').doc(id).collection('posts').get();
 
-    getClients = () => this.db.collection('users').get();
+    getClients = () => this.db.collection('users').where('status', '==', 1).get();
 
     getPostId = (id) => this.db.collection('clients').doc(id).collection('posts').get();
 
     addClient = () => this.db.collection('clients');
 
-    getDates = (id) => this.db.collection('clients').doc(id).collection('dates').get()
+    getDates = (id) => this.db.collection('users').doc(id).collection('dates').get()
 
     addDate = (id, month, year) => this.db.collection('users').doc(id).collection('dates').add({
         month: month,
         year: year
     });
 
-    addUser = (email, password, name) => this.auth.createUserWithEmailAndPassword(email, password).then(cred => {
+    addUser = (email, password, name, logo) => this.auth.createUserWithEmailAndPassword(email, password).then(cred => {
         return this.db.collection('users').doc(cred.user.uid).set({
-            name: name
+            name: name,
+            logo: logo,
+            status: 1
         })
     }).then(user => {
         if (user) {
@@ -69,16 +71,17 @@ class Firebase {
 
     // Posts Function
 
-    editPostFirebase = (id, postId) => this.db.collection('clients').doc(id).collection('posts').doc(postId).get();
+    editPostFirebase = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).get();
 
-    editPostSubmit = (id, postId, editedTitle, postCopy, postHashtags, editedTime) => this.db.collection('clients').doc(id).collection('posts').doc(postId).update({
+    editPostSubmit = (id, postId, editedTitle, postCopy, postHashtags, editedTime, links) => this.db.collection('users').doc(id).collection('posts').doc(postId).update({
         title: editedTitle,
         copy: postCopy,
         hashtags: postHashtags,
-        time: editedTime
+        time: editedTime,
+        links: links
     })
 
-    addPost = (id, title, copy, hashtags, time, day, month, year, links, metaFileInfo) => this.db.collection('clients').doc(id).collection('posts').add({
+    addPost = (id, title, copy, hashtags, time, day, month, year, links, metaFileInfo) => this.db.collection('users').doc(id).collection('posts').add({
         title: title,
         copy: copy,
         hashtags: hashtags,
@@ -88,8 +91,8 @@ class Firebase {
         day: day,
         month: month,
         year: year,
-        links: links,
-        meta_file_fields: metaFileInfo
+        links: links
+        // meta_file_fields: metaFileInfo,
     });
 
 
@@ -104,7 +107,9 @@ class Firebase {
 
 
 
-    // deleteClient = (id) => this.db.collection('clients').doc(id).delete();
+    deleteClient = (id) => this.db.collection('users').doc(id).update({
+        status: 0
+    })
 
     //   addDates = () => this.db.collections('clients')
 

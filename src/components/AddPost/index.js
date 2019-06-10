@@ -76,19 +76,16 @@ class AddPost extends Component {
     }
 
     fileChangeHandler = (event) => {
-        // console.log(event, 'file upload');
         const { target: { files } } = event;
         const filesToStore = this.state.filesArr
 
         this.setState({ files: filesToStore });
-        // console.log(this.state, 'state after upload');
     }
 
     handleChangeText(i, event) {
         let colors = [...this.state.colors];
         colors[i] = event.target.value;
         this.setState({ colors });
-        // console.log(this.state, 'state change text');
     }
 
     handleColorText = e => {
@@ -106,8 +103,6 @@ class AddPost extends Component {
             </div>
         )
     }
-
-
 
     handleChange(i, event) {
         let values = [...this.state.values];
@@ -135,12 +130,8 @@ class AddPost extends Component {
     }
 
     handleSuccess = (file) => {
-        // console.log(file, 'success');
-    }
 
-    // onUploadStart = (file) => {
-    //     // console.log(file);
-    // }
+    }
 
     onChange = time => this.setState({ time });
 
@@ -149,15 +140,6 @@ class AddPost extends Component {
         // console.log('send file');
         this.props.firebase.getStorage.child('images');
     }
-
-    // customOnChangeHandler = (event) => {
-    //     const { target: { files } } = event;
-    //     const filesToStore = [];
-
-    //     files.forEach(file => filesToStore.push(file));
-
-    //     this.setState({ files: filesToStore });
-    // }
 
     showCategory = e => {
         e.preventDefault();
@@ -195,22 +177,17 @@ class AddPost extends Component {
         // console.log(this.props, 'props')/
     }
 
-    // handleChangeComplete = e => {
-    //     this.setState({
-    //         pushColor: e.hex
-    //     })
-    // }
-
-
-
     onSubmitForm = (e) => {
         e.preventDefault();
+
+
+
         const postId = this.state.title.replace(/\s+/g, '-') + '-' + this.state.calendarMonth + '-' + this.state.calendarDay;
 
         const formMonth = this.state.calendarMonth;
         const clientId = this.state.clientId;
 
-        this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values, postId, this.state.metaImageFiles);
+        this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values, postId);
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
     }
@@ -243,15 +220,17 @@ class AddPost extends Component {
         const firestorageRef = this.props.firebase.storage;
 
         this.state.file.forEach(file => {
+            const imageRefs = [];
             firestorageRef.ref().child(`${this.state.clientId}/${this.state.calendarMonth}-${this.state.calendarDay}/${file.name}`)
-                .put(file).then(snapshot => {
-                    console.log('snapshot')
+                .put(file).then(image => {
+                    var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(this.state.clientId)}/${encodeURIComponent(image.metadata.name)}?alt=media`
+                    console.log(imageUrl);
                 })
         });
 
-        this.setState({
-            metaImageFiles: this.state.metaImageFiles
-        })
+        // this.setState({
+        //     metaImageFiles: this.state.metaImageFiles
+        // })
 
     }
 
@@ -259,10 +238,7 @@ class AddPost extends Component {
 
 
     render() {
-
-        const postId = () => (
-            Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-        )
+        console.log(this.state, 'add file');
         return (
             <div>
                 <form onSubmit={this.onSubmitForm}>

@@ -14,7 +14,8 @@ class EditPost extends Component {
             postTitle: '',
             postCopy: '',
             postHashtags: '',
-            postTime: ''
+            postTime: '',
+            values: []
         }
 
         this.handlePostTitle = this.handlePostTitle.bind(this);
@@ -28,10 +29,34 @@ class EditPost extends Component {
                 postTitle: item.data().title,
                 postCopy: item.data().copy,
                 postHashtags: item.data().hashtags,
-                postTime: item.data().time
+                postTime: item.data().time,
+                values: item.data().links
             })
         });
     }
+
+    handleChange(i, event) {
+        let values = [...this.state.values];
+        values[i] = event.target.value;
+        this.setState({ values });
+    }
+
+    createUI() {
+        return this.state.values.map((el, i) =>
+            <div key={i}>
+                <input type="text" value={el || ''} onChange={this.handleChange.bind(this, i)} />
+                <input type='button' value='remove' onClick={this.removeClick.bind(this, i)} />
+            </div>
+        )
+    }
+
+
+    removeClick(i) {
+        let values = [...this.state.values];
+        values.splice(i, 1);
+        this.setState({ values });
+    }
+
 
     handlePostTitle = (e) => {
         this.setState({
@@ -54,7 +79,8 @@ class EditPost extends Component {
             this.state.postTitle,
             this.state.postCopy,
             this.state.postHashtags,
-            this.state.postTime
+            this.state.postTime,
+            this.state.values
         )
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${this.props.location.state.month}&year=2019&clientId=${this.props.location.state.clientId}`);
@@ -66,11 +92,10 @@ class EditPost extends Component {
             this.props.history.push(`${ROUTES.CALENDAR}/?month=${this.props.location.state.month}&year=2019&clientId=${this.props.location.state.clientId}`);
         }
         return false
-
     }
 
     render() {
-        console.log(this.state, 'state of edit post')
+        console.log(this.state, 'post linsk');
         return (
             <div>Edit Posts
                 {this.props.location.state.postId}
@@ -83,6 +108,10 @@ class EditPost extends Component {
                         onChange={this.onChangeTime}
                         value={this.state.postTime}
                     />
+                    {this.state.values && (
+                        this.createUI()
+                    )
+                    }
                     <input type="submit" value="Submit Edits" />
                 </form>
                 <button onClick={this.deletePost}>Delete</button>

@@ -45,12 +45,11 @@ class Home extends Component {
 
   }
 
+
   // Component lifecycle methods
 
   componentDidMount() {
     this.props.firebase.getClients().then(snapshot => {
-      console.log(snapshot.docs, 'snapshot of clients')
-
       this.setState({
         users: snapshot.docs
       })
@@ -69,30 +68,21 @@ class Home extends Component {
     });
   }
 
-  deletePost = (id) => {
+
+
+  deleteUser = (id) => {
     this.props.firebase.deleteClient(id);
 
     this.props.firebase.getClients().then(snapshot => {
-      this.props.getAllClients(snapshot.docs)
+      this.setState({
+        users: snapshot.docs
+      })
     });
   }
 
   addClient = (e) => {
     e.preventDefault();
 
-    // console.log(this.state.file, ' file add client')
-
-    // //Add Client
-
-    // this.props.firebase.addClient().add({
-    //   name: this.state.name,
-    //   image: this.state.image
-    // });
-
-    //Add Logo
-
-    // const firestorageRef = this.props.firebase.storage;
-    // console.log(firestorageRef, 'firestorage ref');
 
 
     this.setState({
@@ -106,6 +96,14 @@ class Home extends Component {
       this.props.getAllClients(snapshot.docs)
     });
   };
+
+  retrieveUsers = () => {
+    this.props.firebase.getClients().then(snapshot => {
+      this.setState({
+        users: snapshot.docs
+      })
+    });
+  }
 
   handleLogoUpload = (event) => {
     const file = Array.from(event.target.files);
@@ -121,11 +119,7 @@ class Home extends Component {
     this.setState({
       file: event.target.files[0]
     })
-    // const storageRef = this.props.firebase.storage().ref();
-    // const logoRef = storageRef(`logos/${this.state.client}`);
-    // console.log(this.state.file, 'file uploaded');
   }
-
 
   onChange = event => {
     this.setState({ [event.target.name]: event.target.value });
@@ -137,11 +131,19 @@ class Home extends Component {
 
     this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
       .put(this.state.file).then(snapshot => {
-        console.log(snapshot, 'snapshot')
+        console.log(snapshot, 'snapshot console');
+        const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
+        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
+        this.setState({
+          isHidden: !this.state.isHidden
+        })
       });
 
-    this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username);
-
+    this.props.firebase.getClients().then(snapshot => {
+      this.setState({
+        users: snapshot.docs
+      })
+    });
   };
 
 
@@ -149,16 +151,16 @@ class Home extends Component {
 
 
 
-  render() {
-    // {console.log()}
 
-    // <div>ID {this.props.firebase.getPostImages(`${user.data().name}/logo`).i}</div>
+
+  render() {
+
+
 
     const renderPosts = this.state.users.map(user => (
       <div data-id={user.data().id} className="client-wrapper col-sm-4">
-        {console.log(Object.keys(this.props.firebase.getPostImages(`${user.data().name}/logo`), 'render posts'))}
-        {console.log(this.props.firebase.getPostImages(`${user.data().name}/logo`))}
-        < button onClick={() => this.deleteUser(user.data().id)}>X</button>
+        <img src={user.data().logo} />
+        <button onClick={() => this.deleteUser(user.id)}>X</button>
         <Link to={`/dates/${user.id}?clientId=${user.id}`}>
           {user.data().name}
         </Link>
