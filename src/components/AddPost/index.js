@@ -6,6 +6,7 @@ import TimePicker from 'react-time-picker';
 import { SketchPicker } from 'react-color';
 import ShowCategory from '../ShowCategory';
 import * as ROUTES from '../../constants/routes';
+import { bigIntLiteral } from '@babel/types';
 
 class AddPost extends Component {
     constructor(props) {
@@ -30,7 +31,7 @@ class AddPost extends Component {
             calendarYear: 2019,
             postId: '',
             file: [],
-            metaImageFiles: []
+            metaImageFiles: ["No Files"]
         }
 
         this.handleTitle = this.handleTitle.bind(this);
@@ -43,7 +44,7 @@ class AddPost extends Component {
         this.handleColorText = this.handleColorText.bind(this);
         this.onChangeTime = this.onChangeTime.bind(this);
         this.addFile = this.addFile.bind(this);
-        // this.uploadFiles = this.uploadFiles.bind(this);
+        this.uploadFiles = this.uploadFiles.bind(this);
     }
 
 
@@ -193,12 +194,10 @@ class AddPost extends Component {
             this.state.calendarDay,
             this.state.calendarMonth,
             this.state.values,
-            this.state.metaImageFiles);
+            this.state.metaImageFiles
+        );
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
-
-
-
 
     }
 
@@ -232,8 +231,22 @@ class AddPost extends Component {
         const imageRefs = [];
         this.state.file.forEach(file => {
             console.log(file, 'file upload')
+            var type;
 
-            var encodedURL = encodeURIComponent(this.state.clientId) + encodeURIComponent('/') + this.state.calendarMonth + encodeURIComponent('-') + this.state.calendarDay + encodeURIComponent('/') + file.name + '?alt=media';
+            switch (file.type) {
+                case 'video/mp4':
+                    type = 'video';
+                    break;
+                case 'image/png':
+                    type = 'image';
+                    break;
+                case 'image/jpeg':
+                    type = 'image';
+                    break;
+                default:
+                    type = '';
+            }
+            var encodedURL = encodeURIComponent(this.state.clientId) + encodeURIComponent('/') + this.state.calendarMonth + encodeURIComponent('-') + this.state.calendarDay + encodeURIComponent('/') + file.name + '?alt=media&type=' + type;
             var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodedURL}`
             imageRefs.push(imageUrl);
             console.log(imageRefs);
@@ -241,15 +254,15 @@ class AddPost extends Component {
 
             firestorageRef.ref().child(`${this.state.clientId}/${this.state.calendarMonth}-${this.state.calendarDay}/${file.name}`)
                 .put(file)
-            // .then(() => {
-            //     this.setState({
-            //         metaImageFiles: imageRefs
-            //     })
-            // })
         });
         this.setState({
             metaImageFiles: imageRefs
         })
+    }
+
+    showState = (e) => {
+        e.preventDefault();
+        console.log(this.state);
     }
 
 
@@ -290,6 +303,8 @@ class AddPost extends Component {
                 {this.state.showCategoryState ?
                     <ShowCategory />
                     : ''}
+
+                <button onClick={this.showState.bind(this)}>Show State</button>
             </div>
         )
     }

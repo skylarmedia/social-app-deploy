@@ -28,7 +28,8 @@
     "eject": "react-scripts eject",
     "dev": "run-p server start",
     "server": "node-env-run server --exec nodemon | pino-colada",
-    "precommit": "NODE_ENV=production lint-staged"
+    "precommit": "NODE_ENV=production lint-staged",
+    "lint": "eslint src"
   },
   "eslintConfig": {
     "extends": "react-app"

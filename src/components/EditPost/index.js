@@ -5,6 +5,19 @@ import { connect } from 'react-redux';
 import TimePicker from 'react-time-picker';
 import * as ROUTES from '../../constants/routes';
 
+function getType(url) {
+    var checkUrl = new URL(url)
+
+    var query_string = checkUrl.search;
+
+    var search_params = new URLSearchParams(query_string);
+
+    var type = search_params.get('type');
+
+    return type
+}
+
+
 class EditPost extends Component {
     constructor(props) {
         super(props);
@@ -16,7 +29,8 @@ class EditPost extends Component {
             postHashtags: '',
             postTime: '',
             values: [],
-            firestorageRef: this.props.firebase.storage
+            firestorageRef: this.props.firebase.storage,
+            metaImageFiles: []
         }
 
         this.handlePostTitle = this.handlePostTitle.bind(this);
@@ -33,9 +47,12 @@ class EditPost extends Component {
                 postCopy: item.data().copy,
                 postHashtags: item.data().hashtags,
                 postTime: item.data().time,
-                values: item.data().links
+                values: item.data().links,
+                metaImageFiles: item.data().metaImageFiles
             })
         });
+
+        console.log(this.state, 'state after mount')
     }
 
     componentDidMount() {
@@ -58,7 +75,6 @@ class EditPost extends Component {
             </div>
         )
     }
-
 
     removeClick(i) {
         let values = [...this.state.values];
@@ -95,6 +111,7 @@ class EditPost extends Component {
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${this.props.location.state.month}&year=2019&clientId=${this.props.location.state.clientId}`);
     }
 
+
     deletePost = () => {
         if (window.confirm('Are you sure you wish to delete this item?')) {
             this.props.firebase.deletePost(this.props.location.state.clientId, this.props.location.state.postId)
@@ -104,10 +121,26 @@ class EditPost extends Component {
     }
 
     render() {
-        console.log(this.state, 'post linsk');
+        const media = this.state.metaImageFiles.map((item) => {
+            if (getType(item) == 'video') {
+                return (
+                    <video height="200" width="200" controls>
+                        <source src={item} />
+                    </video>
+                )
+            } else {
+                return (
+                    <img src={item} />
+                )
+
+            }
+        }
+
+
+        )
         return (
-            <div>Edit Posts
-                {this.props.location.state.postId}
+            <div> Edit Posts
+{this.props.location.state.postId}
                 <form onSubmit={this.editPostSubmit}>
                     Title<input name="title" value={this.state.postTitle} onChange={this.handlePostTitle} /><br />
 
@@ -124,7 +157,8 @@ class EditPost extends Component {
                     <input type="submit" value="Submit Edits" />
                 </form>
                 <button onClick={this.deletePost}>Delete</button>
-            </div>
+                {media}
+            </div >
         )
     }
 }

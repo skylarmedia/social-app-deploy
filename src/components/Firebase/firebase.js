@@ -36,7 +36,7 @@ class Firebase {
     })
 
 
-    deletePost = (id, postId) => this.db.collection('clients').doc(id).collection('posts').doc(postId).delete()
+    deletePost = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).delete()
 
     getPostId = id => this.db.collection('clients').doc(id).collection('posts');
 
@@ -84,16 +84,15 @@ class Firebase {
         links: links
     })
 
-    addPost = (id, title, copy, hashtags, time, day, month, year, links, metaFileInfo) => this.db.collection('users').doc(id).collection('posts').add({
+    addPost = (id, title, copy, hashtags, time, day, month, links, metaImageFiles) => this.db.collection('users').doc(id).collection('posts').add({
         title: title,
         copy: copy,
         hashtags: hashtags,
         time: time,
         day: day,
         month: month,
-        year: year,
         links: links,
-        metaFileInfo: metaFileInfo,
+        metaImageFiles: metaImageFiles
     });
 
 
