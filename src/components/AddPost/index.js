@@ -43,7 +43,7 @@ class AddPost extends Component {
         this.handleColorText = this.handleColorText.bind(this);
         this.onChangeTime = this.onChangeTime.bind(this);
         this.addFile = this.addFile.bind(this);
-        this.uploadFiles = this.uploadFiles.bind(this);
+        // this.uploadFiles = this.uploadFiles.bind(this);
     }
 
 
@@ -62,7 +62,6 @@ class AddPost extends Component {
             calendarDay: day,
             calendarMonth: month
         })
-
     }
 
     handleTitle(e) {
@@ -121,7 +120,7 @@ class AddPost extends Component {
     }
 
     handleUpload = (e) => {
-        console.log(e, 'file upload');
+
     }
 
     handleSubmit(event) {
@@ -153,7 +152,6 @@ class AddPost extends Component {
         this.setState({
             title: e.target.value
         });
-        // console.log(this.state.title);
     }
 
     handleCopy = (e) => {
@@ -170,26 +168,38 @@ class AddPost extends Component {
 
 
     onChangeTime = e => {
-        // console.log(e, 'time')
         this.setState({
             time: e
         })
-        // console.log(this.props, 'props')/
     }
 
     onSubmitForm = (e) => {
         e.preventDefault();
 
+        console.log(this.state.metaImageFiles, 'state after event');
 
 
-        const postId = this.state.title.replace(/\s+/g, '-') + '-' + this.state.calendarMonth + '-' + this.state.calendarDay;
+
+
 
         const formMonth = this.state.calendarMonth;
         const clientId = this.state.clientId;
-
-        this.props.firebase.addPost(this.state.clientId, this.state.title, this.state.copy, this.state.hashtags, this.state.time, this.state.calendarDay, this.state.calendarMonth, this.state.calendarYear, this.state.values, postId);
+        this.props.firebase.addPost(
+            this.state.clientId,
+            this.state.title,
+            this.state.copy,
+            this.state.hashtags,
+            this.state.time,
+            this.state.calendarDay,
+            this.state.calendarMonth,
+            this.state.values,
+            this.state.metaImageFiles);
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
+
+
+
+
     }
 
 
@@ -218,27 +228,34 @@ class AddPost extends Component {
     uploadFiles = (e) => {
         e.preventDefault();
         const firestorageRef = this.props.firebase.storage;
-
+        alert(this.state.file.length)
+        const imageRefs = [];
         this.state.file.forEach(file => {
-            const imageRefs = [];
+            console.log(file, 'file upload')
+
+            var encodedURL = encodeURIComponent(this.state.clientId) + encodeURIComponent('/') + this.state.calendarMonth + encodeURIComponent('-') + this.state.calendarDay + encodeURIComponent('/') + file.name + '?alt=media';
+            var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodedURL}`
+            imageRefs.push(imageUrl);
+            console.log(imageRefs);
+
+
             firestorageRef.ref().child(`${this.state.clientId}/${this.state.calendarMonth}-${this.state.calendarDay}/${file.name}`)
-                .put(file).then(image => {
-                    var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(this.state.clientId)}/${encodeURIComponent(image.metadata.name)}?alt=media`
-                    console.log(imageUrl);
-                })
+                .put(file)
+            // .then(() => {
+            //     this.setState({
+            //         metaImageFiles: imageRefs
+            //     })
+            // })
         });
-
-        // this.setState({
-        //     metaImageFiles: this.state.metaImageFiles
-        // })
-
+        this.setState({
+            metaImageFiles: imageRefs
+        })
     }
 
 
 
 
     render() {
-        console.log(this.state, 'add file');
         return (
             <div>
                 <form onSubmit={this.onSubmitForm}>

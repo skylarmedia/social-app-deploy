@@ -24,6 +24,9 @@ class Firebase {
 
     // uploadPostFiles = () => this.storage;
 
+
+    storage = this.storage
+
     getPostImages = () => this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
 
     addLogoUrl = (user, logoUrl) => this.db.collection('users').doc(user).add({
@@ -85,14 +88,12 @@ class Firebase {
         title: title,
         copy: copy,
         hashtags: hashtags,
-        // links: links,
         time: time,
-
         day: day,
         month: month,
         year: year,
-        links: links
-        // meta_file_fields: metaFileInfo,
+        links: links,
+        metaFileInfo: metaFileInfo,
     });
 
 

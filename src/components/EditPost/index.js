@@ -15,7 +15,8 @@ class EditPost extends Component {
             postCopy: '',
             postHashtags: '',
             postTime: '',
-            values: []
+            values: [],
+            firestorageRef: this.props.firebase.storage
         }
 
         this.handlePostTitle = this.handlePostTitle.bind(this);
@@ -24,6 +25,8 @@ class EditPost extends Component {
 
 
     componentWillMount() {
+
+
         this.props.firebase.editPostFirebase(this.props.location.state.clientId, this.props.location.state.postId).then(item => {
             this.setState({
                 postTitle: item.data().title,
@@ -34,6 +37,12 @@ class EditPost extends Component {
             })
         });
     }
+
+    componentDidMount() {
+
+
+    }
+
 
     handleChange(i, event) {
         let values = [...this.state.values];
