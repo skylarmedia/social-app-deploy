@@ -30,7 +30,8 @@ class Home extends Component {
       email: '',
       passwordOne: '',
       error: null,
-      firestorageRef: this.props.firebase.storage
+      firestorageRef: this.props.firebase.storage,
+      adminEmail: ''
     }
 
     this.baseState = this.state
@@ -38,6 +39,8 @@ class Home extends Component {
     this.toggleAddNew = this.toggleAddNew.bind(this);
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.addFile = this.addFile.bind(this);
+    // this.setAdminEmail = this.setAdminEmail.bind(this);
+    // this.submitAdmin = this.submitAdmin.bind(this);
   }
 
 
@@ -147,8 +150,23 @@ class Home extends Component {
   };
 
 
+  // // Admin functions
 
+  // setAdminEmail = (e) => {
+  //   e.preventDefault();
 
+  //   this.setState({
+  //     adminEmail: e.target.value
+  //   })
+  // }
+
+  // submitAdmin = (e) => {
+  //   e.preventDefault();
+  //   const addAdminRole = this.props.firebase.functions.httpCallable('addAdminRole');
+  //   addAdminRole({ email: this.state.adminmail }).then(res => {
+  //     console.log(res)
+  //   })
+  // }
 
 
 

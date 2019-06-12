@@ -2,6 +2,8 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
+import 'firebase/functions';
+// import addAdminRole from '../functions';
 // import * as admin from "firebase-admin";
 
 const config = {
@@ -20,9 +22,14 @@ class Firebase {
         this.auth = app.auth();
         this.db = app.firestore();
         this.storage = app.storage();
+        this.functions = app.functions();
     }
 
     // uploadPostFiles = () => this.storage;
+
+    // Admin Functions
+
+
 
 
     storage = this.storage
@@ -33,7 +40,10 @@ class Firebase {
         logoUrl: logoUrl
     }, err => {
         console.log(err, 'err')
-    })
+    });
+
+
+    makeAdmin
 
 
     deletePost = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).delete()
@@ -132,26 +142,6 @@ class Firebase {
             name: name
         })
     }
-
-    // getSigninToken = () => {
-    //     this.auth.currentUser.getIdToken(/* forceRefresh */ true).then(function (idToken) {
-    //         console.log(idToken, 'id token');
-
-
-    //         admin.auth().verifyIdToken(idToken)
-    //             .then(function (decodedToken) {
-    //                 var uid = decodedToken.uid;
-    //                 console.log(uid, 'uid');
-    //             }).catch(function (error) {
-    //                 // Handle error
-    //             });
-    //     }).catch(function (error) {
-    //         //Handle error
-    //     });
-    // }
-
-
-
 
 
 
