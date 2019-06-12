@@ -22,6 +22,7 @@ import CalendarSingle from '../CalendarSingle';
 import AddPost from '../AddPost';
 import EditPost from '../EditPost';
 import Server from '../ServerFile';
+import ClientCalendar from '../ClientCalendar';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -69,6 +70,7 @@ const App = () => (
       <Route calenderHere={true} path={ROUTES.CALENDAR} component={Calendar} />
       <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
       <Route exact path="/server" component={Server} />
+      <Route path="/client-calendar" component={ClientCalendar} />
 
 
     </div>

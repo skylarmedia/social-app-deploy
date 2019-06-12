@@ -18,6 +18,7 @@ const INITIAL_STATE = {
   email: '',
   password: '',
   error: null,
+  loading: false
 };
 
 class SignInFormBase extends Component {
@@ -28,14 +29,30 @@ class SignInFormBase extends Component {
   }
 
   onSubmit = event => {
+    this.setState({
+      loading: !this.state.loading
+    })
     const { email, password } = this.state;
 
     this.props.firebase
-      .doSignInWithEmailAndPassword(email, password)
-      .then(() => {
-        // this.setState({ ...INITIAL_STATE });
-        // this.props.history.push(ROUTES.HOME);
-        this.props.firebase.getSigninId();
+      .doSignInWithEmailAndPassword(email, password).then(value => {
+        if (value.data().admin == 1) {
+          alert('admin');
+          this.props.history.push({
+            pathname: `/home`,
+            state: {
+              userId: value.data().userId
+            }
+          })
+        } else {
+          this.props.history.push({
+            pathname: `/client-calendar`,
+            state: {
+              userId: value.data().userId
+            }
+          })
+
+        }
       })
       .catch(error => {
         this.setState({ error });
@@ -56,27 +73,34 @@ class SignInFormBase extends Component {
     const isInvalid = password === '' || email === '';
 
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="email"
-          value={email}
-          onChange={this.onChange}
-          type="text"
-          placeholder="Email Address"
-        />
-        <input
-          name="password"
-          value={password}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Sign In
-        </button>
+      <div>
+        <form onSubmit={this.onSubmit}>
+          <input
+            name="email"
+            value={email}
+            onChange={this.onChange}
+            type="text"
+            placeholder="Email Address"
+          />
+          <input
+            name="password"
+            value={password}
+            onChange={this.onChange}
+            type="password"
+            placeholder="Password"
+          />
+          <button disabled={isInvalid} type="submit">
+            Sign In
+          </button>
 
-        {error && <p>{error.message}</p>}
-      </form>
+          {error && <p>{error.message}</p>}
+        </form>
+        {
+          this.state.loading && (
+            <h1>Loading</h1>
+          )
+        }
+      </div>
     );
   }
 }

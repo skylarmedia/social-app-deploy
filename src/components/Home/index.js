@@ -39,8 +39,6 @@ class Home extends Component {
     this.toggleAddNew = this.toggleAddNew.bind(this);
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.addFile = this.addFile.bind(this);
-    // this.setAdminEmail = this.setAdminEmail.bind(this);
-    // this.submitAdmin = this.submitAdmin.bind(this);
   }
 
 
@@ -71,8 +69,6 @@ class Home extends Component {
     });
   }
 
-
-
   deleteUser = (id) => {
     this.props.firebase.deleteClient(id);
 
@@ -85,8 +81,6 @@ class Home extends Component {
 
   addClient = (e) => {
     e.preventDefault();
-
-
 
     this.setState({
       name: '',
@@ -129,7 +123,6 @@ class Home extends Component {
   };
 
   onSubmit = event => {
-    // const { username, email, passwordOne } = this.state;
     event.preventDefault();
 
     this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)

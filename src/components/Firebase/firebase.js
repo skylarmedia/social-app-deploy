@@ -42,9 +42,7 @@ class Firebase {
         console.log(err, 'err')
     });
 
-
-    makeAdmin
-
+    getUniqueClientPosts = (id, currentMonth) => this.db.collection('users').doc(id).collection('posts').where('month', '==', currentMonth).get();
 
     deletePost = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).delete()
 
@@ -71,7 +69,10 @@ class Firebase {
         return this.db.collection('users').doc(cred.user.uid).set({
             name: name,
             logo: logo,
-            status: 1
+            status: 1,
+            userId: cred.user.uid,
+            admin: 0
+
         })
     }).then(user => {
         if (user) {
@@ -127,7 +128,9 @@ class Firebase {
         this.auth.createUserWithEmailAndPassword(email, password);
 
     doSignInWithEmailAndPassword = (email, password) =>
-        this.auth.signInWithEmailAndPassword(email, password);
+        this.auth.signInWithEmailAndPassword(email, password).then(res => {
+            return this.db.collection('users').doc(res.user.uid).get()
+        })
 
     doSignOut = () => this.auth.signOut();
 
