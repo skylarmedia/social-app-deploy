@@ -6,15 +6,18 @@ import TimePicker from 'react-time-picker';
 import * as ROUTES from '../../constants/routes';
 
 function getType(url) {
-    var checkUrl = new URL(url)
+    if (url !== 'No Files') {
+        var checkUrl = new URL(url)
 
-    var query_string = checkUrl.search;
+        var query_string = checkUrl.search;
 
-    var search_params = new URLSearchParams(query_string);
+        var search_params = new URLSearchParams(query_string);
 
-    var type = search_params.get('type');
+        var type = search_params.get('type');
 
-    return type
+        return type
+    }
+
 }
 
 
@@ -130,12 +133,11 @@ class EditPost extends Component {
                 )
             } else {
                 return (
-                    <img src={item} />
+                    <img src={item} onError="this.style.display='none'" />
                 )
 
             }
         }
-
 
         )
         return (

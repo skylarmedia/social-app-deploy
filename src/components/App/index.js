@@ -23,6 +23,7 @@ import AddPost from '../AddPost';
 import EditPost from '../EditPost';
 import Server from '../ServerFile';
 import ClientCalendar from '../ClientCalendar';
+import ClientViewPost from '../ClientViewPost';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -71,8 +72,7 @@ const App = () => (
       <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
       <Route exact path="/server" component={Server} />
       <Route path="/client-calendar" component={ClientCalendar} />
-
-
+      <Route path="/view-post/:id" component={ClientViewPost} />
     </div>
   </Router>
 )

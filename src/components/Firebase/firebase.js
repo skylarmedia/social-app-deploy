@@ -25,14 +25,13 @@ class Firebase {
         this.functions = app.functions();
     }
 
-    // uploadPostFiles = () => this.storage;
-
     // Admin Functions
 
-
-
-
     storage = this.storage
+
+    getCurrentUser = () => {
+        alert(this.auth.currentUser.uid);
+    }
 
     getPostImages = () => this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
 
@@ -76,7 +75,6 @@ class Firebase {
         })
     }).then(user => {
         if (user) {
-            console.log(user, 'user object')
             user.updateProfile({
                 displayName: 'test'
             })
@@ -93,9 +91,9 @@ class Firebase {
         hashtags: postHashtags,
         time: editedTime,
         links: links
-    })
+    });
 
-    addPost = (id, title, copy, hashtags, time, day, month, links, metaImageFiles) => this.db.collection('users').doc(id).collection('posts').add({
+    addPost = (id, title, copy, hashtags, time, day, month, links, metaImageFiles, friendlyUrl) => this.db.collection('users').doc(id).collection('posts').add({
         title: title,
         copy: copy,
         hashtags: hashtags,
@@ -103,7 +101,8 @@ class Firebase {
         day: day,
         month: month,
         links: links,
-        metaImageFiles: metaImageFiles
+        metaImageFiles: metaImageFiles,
+        friendlyUrl: friendlyUrl
     });
 
 
@@ -117,12 +116,9 @@ class Firebase {
     // End of posts functions
 
 
-
     deleteClient = (id) => this.db.collection('users').doc(id).update({
         status: 0
-    })
-
-    //   addDates = () => this.db.collections('clients')
+    });
 
     doCreateUserWithEmailAndPassword = (email, password) =>
         this.auth.createUserWithEmailAndPassword(email, password);

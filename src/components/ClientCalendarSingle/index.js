@@ -46,11 +46,14 @@ class ClientCalendarSingle extends Component {
             return item.data().day == this.props.day
         });
 
-        const filteredList = filtered.map(item =>
-            <Link to={`/view-post/`}> {item.data().title} < br /></Link >
+        const filteredList = filtered.map(item => {
+            let friendlyUrl = item.data().title.toLowerCase().replace(/ /g, '-')
+            return (
+                <Link to={`/view-post/${friendlyUrl}`}>{item.data().title} < br /></Link >
+            )
+        }
+
         )
-
-
 
         return (
             <div>

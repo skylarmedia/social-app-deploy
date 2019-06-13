@@ -24,7 +24,6 @@ class ClientCalendar extends React.Component {
     };
 
     componentWillMount() {
-
         console.log(typeof (this.state.currentMonth), 'type of current Month');
         this.props.firebase.getUniqueClientPosts(this.props.location.state.userId, this.state.currentMonth).then(snapshot => {
             this.setState({

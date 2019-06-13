@@ -38,7 +38,6 @@ class AddPost extends Component {
         this.renderAddLinks = this.renderAddLinks.bind(this);
         this.handleUpload = this.handleUpload.bind(this);
         this.fileChangeHandler = this.fileChangeHandler.bind(this);
-        // this.customOnChangeHandler = this.customOnChangeHandler.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
         this.showCategory = this.showCategory.bind(this);
         this.handleColorText = this.handleColorText.bind(this);
@@ -63,10 +62,6 @@ class AddPost extends Component {
             calendarDay: day,
             calendarMonth: month
         })
-    }
-
-    handleTitle(e) {
-        console.log(e.target.value, 'event target');
     }
 
     renderAddLinks() {
@@ -137,7 +132,6 @@ class AddPost extends Component {
 
     submitFile(e) {
         e.preventDefault();
-        // console.log('send file');
         this.props.firebase.getStorage.child('images');
     }
 
@@ -177,12 +171,7 @@ class AddPost extends Component {
     onSubmitForm = (e) => {
         e.preventDefault();
 
-        console.log(this.state.metaImageFiles, 'state after event');
-
-
-
-
-
+        const friendlyUrl = this.state.title.toLowerCase().replace(/ /g, '-')
         const formMonth = this.state.calendarMonth;
         const clientId = this.state.clientId;
         this.props.firebase.addPost(
@@ -194,7 +183,8 @@ class AddPost extends Component {
             this.state.calendarDay,
             this.state.calendarMonth,
             this.state.values,
-            this.state.metaImageFiles
+            this.state.metaImageFiles,
+            friendlyUrl
         );
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
@@ -273,7 +263,7 @@ class AddPost extends Component {
             <div>
                 <form onSubmit={this.onSubmitForm}>
                     <label>Title
-                        <input name="title" value={this.state.value} onChange={this.handleTitle} />
+                        <input name="title" value={this.state.value} onChange={this.handleTitle} required />
                     </label>
                     <br />
                     <br />
@@ -294,7 +284,6 @@ class AddPost extends Component {
                         onChange={this.onChangeTime}
                         value={this.state.time}
                     />
-
                     <input type="file" multiple onChange={this.addFile} />
                     <button onClick={this.uploadFiles}>Upload Files</button>
 
