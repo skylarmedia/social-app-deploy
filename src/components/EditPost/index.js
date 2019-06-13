@@ -5,20 +5,20 @@ import { connect } from 'react-redux';
 import TimePicker from 'react-time-picker';
 import * as ROUTES from '../../constants/routes';
 
-function getType(url) {
-    if (url !== 'No Files') {
-        var checkUrl = new URL(url)
+// function getType(url) {
+//     if (url !== 'No Files') {
+//         var checkUrl = new URL(url)
 
-        var query_string = checkUrl.search;
+//         var query_string = checkUrl.search;
 
-        var search_params = new URLSearchParams(query_string);
+//         var search_params = new URLSearchParams(query_string);
 
-        var type = search_params.get('type');
+//         var type = search_params.get('type');
 
-        return type
-    }
+//         return type
+//     }
 
-}
+// }
 
 
 class EditPost extends Component {
@@ -69,6 +69,22 @@ class EditPost extends Component {
         values[i] = event.target.value;
         this.setState({ values });
     }
+
+    getType = (url) => {
+        if (url !== 'No Files') {
+            var checkUrl = new URL(url)
+
+            var query_string = checkUrl.search;
+
+            var search_params = new URLSearchParams(query_string);
+
+            var type = search_params.get('type');
+
+            return type
+        }
+
+    }
+
 
     createUI() {
         return this.state.values.map((el, i) =>
@@ -125,7 +141,7 @@ class EditPost extends Component {
 
     render() {
         const media = this.state.metaImageFiles.map((item) => {
-            if (getType(item) == 'video') {
+            if (this.getType(item) == 'video') {
                 return (
                     <video height="200" width="200" controls>
                         <source src={item} />
@@ -135,7 +151,6 @@ class EditPost extends Component {
                 return (
                     <img src={item} onError="this.style.display='none'" />
                 )
-
             }
         }
 

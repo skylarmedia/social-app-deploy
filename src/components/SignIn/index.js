@@ -45,6 +45,7 @@ class SignInFormBase extends Component {
             }
           })
         } else {
+          localStorage.setItem('userId', value.data().userId)
           this.props.history.push({
             pathname: `/client-calendar`,
             state: {

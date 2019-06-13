@@ -33,6 +33,10 @@ class Firebase {
         alert(this.auth.currentUser.uid);
     }
 
+    getSinglePost = (userId, month, day , title) => this.db.collection('users').doc(userId)
+    .collection('posts').where('month', '==', month)
+    .where('day', '==', day).where('friendlyUrl', '==', title).get();
+
     getPostImages = () => this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
 
     addLogoUrl = (user, logoUrl) => this.db.collection('users').doc(user).add({
@@ -136,8 +140,6 @@ class Firebase {
             name: name
         })
     }
-
-
 
 }
 

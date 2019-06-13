@@ -72,7 +72,7 @@ const App = () => (
       <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
       <Route exact path="/server" component={Server} />
       <Route path="/client-calendar" component={ClientCalendar} />
-      <Route path="/view-post/:id" component={ClientViewPost} />
+      <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
     </div>
   </Router>
 )

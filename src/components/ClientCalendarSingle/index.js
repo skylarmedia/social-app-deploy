@@ -16,40 +16,24 @@ class ClientCalendarSingle extends Component {
         }
     }
 
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     if (nextProps.posts !== prevState.posts) {
-    //         return {
-    //             selected: nextProps.posts
-    //         }
-    //     } else {
-    //         console.log('did not receive posts')
-    //     }
-    // }
-
-
-    // componentDidUpdate(prevProps, prevState) {
-    //     if (this.props.posts !== prevState.posts) {
-    //         this.setState({
-    //             posts: this.props.posts
-    //         })
-    //     }
-    // }
-
-
+    getMonthFromString = (mon) => {
+        return new Date(Date.parse(mon +" 1, 2012")).getMonth()+1
+     }
 
     render() {
-        // const filtered = this.state.posts.filter(item => {
-        //     return item.data().day == this.props.day
-        // });
+
+        let linkMonth = this.getMonthFromString(this.props.month);
+        // console.log(this.props.month, 'props in calendar single')
+        console.log(linkMonth, 'link month')
 
         const filtered = this.props.posts.filter(item => {
             return item.data().day == this.props.day
         });
 
         const filteredList = filtered.map(item => {
-            let friendlyUrl = item.data().title.toLowerCase().replace(/ /g, '-')
+            let friendlyUrl = item.data().title.toLowerCase().replace(/ /g, '-');
             return (
-                <Link to={`/view-post/${friendlyUrl}`}>{item.data().title} < br /></Link >
+                <Link to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`}>{item.data().title} < br /></Link >
             )
         }
 

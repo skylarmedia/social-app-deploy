@@ -240,9 +240,10 @@ class ClientCalendar extends React.Component {
         for (let d = 1; d <= this.daysInMonth(); d++) {
             console.log(this.state.currentPosts, 'current posts')
             let currentDay = d == this.currentDay() ? "today" : "";
+            let m = this.month();
             daysInMonth.push(
                 <td key={d} className={`calendar-day ${currentDay}`}>
-                    <ClientCalendarSingle day={d} posts={this.state.currentPosts} />
+                    <ClientCalendarSingle day={d} month={m} posts={this.state.currentPosts} />
                 </td>
             );
         }
