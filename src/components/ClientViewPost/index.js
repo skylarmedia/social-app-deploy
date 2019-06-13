@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { compose } from "redux";
 import MediaWrapper from '../MediaWrapper';
+import Hashtags from '../Hashtags';
 
 class ClientViewPost extends Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class ClientViewPost extends Component {
             post: [],
             media: []
         }
+        this.renderHashtags = this.renderHashtags.bind(this)
     }
 
     componentWillMount() {
@@ -33,64 +35,33 @@ class ClientViewPost extends Component {
     }
 
 
-    // checkType = (url) => {
-    //     if (url !== 'No Files') {
-    //         var checkUrl = new URL(url)
-
-    //         var query_string = checkUrl.search;
-
-    //         var search_params = new URLSearchParams(query_string);
-
-    //         var type = search_params.get('type');
-
-    //         return type
-    //     }
-    // }
-
-    // renderMedia = (items) => {
-    //     items.map(item => {
-    //         if (this.checkType(item) == 'video') {
-    //             return (
-    //                 <p>This is a video</p>
-    //             )
-    //         }
-    //     })
-    // }
-
     render() {
-        console.log(this.state.media)
-        // console.log(this.state.post, 'post state ');
 
-        // const singlePost = this.state.post.map(item =>
-        //     <div className="post-wrapper">
-        //         {item.data().title}
-        //         <div className="post-media-text-wrapper">
-        //             <div className="media-wrapper">
-        //                 {this.renderMedia(item.data().metaImageFiles)}
-        //             </div>
-        //             <div className="text-wrapper">
-        //                 Copy:{item.data().copy}<br /><br />
-        //                 Hashtags:{hashtagSplit(item.data().hashtags)}
-        //             </div>
-        //         </div>
-        //     </div>
-        // )
+        const renderHashtags = ({ hashtags }) => {
+            const hashes = hashtags.split(' ')
+            hashes.map(hash => (
+                <div>TEST</div>
+            ))
+        }
 
-        // const hashtagSplit = (hashtags) => {
-        //     const hashArr = hashtags.split(' ');
-
-        //     hashArr.map(hashtag =>
-        //         <p>
-        //             {hashtag}
-        //         </p>
-        //     )
-        // }
-
-
-        // console.log(this.state.post, 'post after render');
         return (
             <div>
-                <MediaWrapper media={this.state.media} />
+                <p>{this.state.title}</p>
+                <div class="media-text-wrapper" className="row">
+                    <div className="col-sm-6">
+                        <MediaWrapper media={this.state.media} />
+                    </div>
+                    <div className="col-sm-6">
+                        <div className="col-sm-12">
+                            <p>Copy</p>
+                            <p>{this.state.copy}</p>
+                        </div>
+                        <div className="col-sm-12">
+                            {renderHashTags(this.state.hashtags)}
+                        </div>
+                    </div>
+
+                </div>
             </div>
         )
     }
