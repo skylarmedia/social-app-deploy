@@ -11,9 +11,7 @@ class ClientViewPost extends Component {
         }
     }
 
-    componentWillMount() {
-        console.log(this.props.firebase.getSigninId, 'current User')
-    }
+
 
     render() {
         return (

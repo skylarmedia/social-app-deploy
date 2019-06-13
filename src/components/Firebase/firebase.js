@@ -106,11 +106,6 @@ class Firebase {
     });
 
 
-    getSigninId = () => {
-        alert(this.auth.currentUser.uid);
-    }
-
-
 
 
     // End of posts functions
