@@ -11,9 +11,16 @@ class ClientViewPost extends Component {
         this.state = {
             userId: localStorage.userId,
             post: [],
-            media: []
+            media: [],
+            hashtags: [],
+            links: [],
+            approved: false,
+            postId: '',
+            showPopUp: false
         }
-        this.renderHashtags = this.renderHashtags.bind(this)
+
+        this.handleCheckbox = this.handleCheckbox.bind(this);
+        this.approveFormSubmit = this.approveFormSubmit.bind(this);
     }
 
     componentWillMount() {
@@ -24,30 +31,70 @@ class ClientViewPost extends Component {
                     media: item.data().metaImageFiles,
                     title: item.data().title,
                     copy: item.data().copy,
-                    hashtags: item.data().hashtags
+                    hashtags: item.data().hashtags.split(' '),
+                    links: item.data().links,
+                    postId: item.id,
+                    approved: item.data().approved
                 })
             })
         })
     }
 
-    componentDidMount() {
+    handleCheckbox = (event) => {
+        const target = event.target;
+        const value = target.type === 'checkbox' ? target.checked : target.value;
 
+        this.setState({
+            approved: value
+        });
+    }
+
+    approveFormSubmit = e => {
+        e.preventDefault();
+
+        this.props.firebase.approvePost(this.state.userId, this.state.postId, this.state.approved)
+    }
+
+    showPopUp = e => {
+        e.preventDefault();
+
+        this.setState({
+            showPopUp: !this.state.showPopUp
+        })
     }
 
 
     render() {
+        console.log(this.state.approved, 'approved');
+        const approveStyles = {
+            margin: 200,
+            width: 300,
+            height: 300
+        }
 
-        const renderHashtags = ({ hashtags }) => {
-            const hashes = hashtags.split(' ')
-            hashes.map(hash => (
-                <div>TEST</div>
-            ))
+        const popUpStyles = {
+            width: 500,
+            height: 500,
+            background: 'red',
+            position: 'fixed',
+            zIndex: 1
         }
 
         return (
             <div>
+
+                {this.state.showPopUp ? <div style={popUpStyles}>
+                    You have changed the approval of this post
+                <button onClick={this.showPopUp}>Close</button>
+                </div> :
+
+                    ''
+                }
+
+
+
                 <p>{this.state.title}</p>
-                <div class="media-text-wrapper" className="row">
+                <div className="media-text-wrapper row">
                     <div className="col-sm-6">
                         <MediaWrapper media={this.state.media} />
                     </div>
@@ -57,9 +104,34 @@ class ClientViewPost extends Component {
                             <p>{this.state.copy}</p>
                         </div>
                         <div className="col-sm-12">
-                            {renderHashTags(this.state.hashtags)}
+                            {
+                                this.state.hashtags.map(hash => (
+                                    <div>#{hash}</div>
+                                ))
+                            }
+
+                            <br />
+
+                            {
+                                this.state.links.map(link => (
+                                    <div>{link}</div>
+                                ))
+                            }
                         </div>
-                    </div>
+                    </div><br /><br /><br />
+                    <form onSubmit={this.approveFormSubmit} id="approve-form" style={approveStyles}>
+                        <label>
+                            {
+                                this.state.approved ? <p>You have approved this post</p> : <p>You have not approved this post</p>
+                            }
+                            <input name="approve" type="checkbox" id="approve-checkbox" onChange={this.handleCheckbox} checked={this.state.approved} />
+                        </label>
+                        <button onClick={this.approveFormSubmit}>Submit</button>
+                    </form>
+                </div>
+                {/* End of media-text-wrapper */}
+
+                <div>
 
                 </div>
             </div>

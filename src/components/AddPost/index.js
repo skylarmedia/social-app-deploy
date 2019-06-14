@@ -184,7 +184,8 @@ class AddPost extends Component {
             this.state.calendarMonth,
             this.state.values,
             this.state.metaImageFiles,
-            friendlyUrl
+            friendlyUrl,
+            false
         );
 
         this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);

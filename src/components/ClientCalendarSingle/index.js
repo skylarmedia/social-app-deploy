@@ -17,8 +17,8 @@ class ClientCalendarSingle extends Component {
     }
 
     getMonthFromString = (mon) => {
-        return new Date(Date.parse(mon +" 1, 2012")).getMonth()+1
-     }
+        return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1
+    }
 
     render() {
 
@@ -32,8 +32,14 @@ class ClientCalendarSingle extends Component {
 
         const filteredList = filtered.map(item => {
             let friendlyUrl = item.data().title.toLowerCase().replace(/ /g, '-');
+            let itemId = item.id;
             return (
-                <Link to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`}>{item.data().title} < br /></Link >
+                <div>
+                    <Link to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`}>{item.data().title} < br /></Link >
+                    {
+                        item.data().approved ? "checked" : 'Not checked'
+                    }
+                </div>
             )
         }
 

@@ -33,9 +33,16 @@ class Firebase {
         alert(this.auth.currentUser.uid);
     }
 
-    getSinglePost = (userId, month, day , title) => this.db.collection('users').doc(userId)
-    .collection('posts').where('month', '==', month)
-    .where('day', '==', day).where('friendlyUrl', '==', title).get();
+    // Post Approval
+
+    approvePost = (userId, postId, approve) => this.db.collection('users').doc(userId)
+        .collection('posts').doc(postId).update({
+            approved: approve
+        })
+
+    getSinglePost = (userId, month, day, title) => this.db.collection('users').doc(userId)
+        .collection('posts').where('month', '==', month)
+        .where('day', '==', day).where('friendlyUrl', '==', title).get();
 
     getPostImages = () => this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
 
@@ -97,7 +104,7 @@ class Firebase {
         links: links
     });
 
-    addPost = (id, title, copy, hashtags, time, day, month, links, metaImageFiles, friendlyUrl) => this.db.collection('users').doc(id).collection('posts').add({
+    addPost = (id, title, copy, hashtags, time, day, month, links, metaImageFiles, friendlyUrl, approved) => this.db.collection('users').doc(id).collection('posts').add({
         title: title,
         copy: copy,
         hashtags: hashtags,
@@ -106,7 +113,8 @@ class Firebase {
         month: month,
         links: links,
         metaImageFiles: metaImageFiles,
-        friendlyUrl: friendlyUrl
+        friendlyUrl: friendlyUrl,
+        approved: approved
     });
 
 
