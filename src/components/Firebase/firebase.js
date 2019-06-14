@@ -3,6 +3,7 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/storage';
 import 'firebase/functions';
+import { runInThisContext } from 'vm';
 // import addAdminRole from '../functions';
 // import * as admin from "firebase-admin";
 
@@ -51,6 +52,23 @@ class Firebase {
     }, err => {
         console.log(err, 'err')
     });
+
+    getMessages = (id, month, day) => this.db.collection('chats').doc(id).collection('messages').where('month', '==', month).where('day', '==', day).get()
+
+    postMessage = (id, month, day, title, message) => this.db.collection('chats').doc(id).collection('messages').add({
+        month: month,
+        day: day,
+        title: title,
+        message: message,
+        user: 'Admin',
+        logo: 'https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg'
+    });
+
+    listenChatChanges = (id) => this.db.collection('chats').doc(id)
+
+    // listenChatChanges = (id) => this.db.collection('chats').ref(`${id}/messages`).on('value', snapshot => {
+    //     alert('changed');
+    // })
 
     getUniqueClientPosts = (id, currentMonth) => this.db.collection('users').doc(id).collection('posts').where('month', '==', currentMonth).get();
 

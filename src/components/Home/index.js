@@ -35,7 +35,6 @@ class Home extends Component {
     }
 
     this.baseState = this.state
-
     this.toggleAddNew = this.toggleAddNew.bind(this);
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.addFile = this.addFile.bind(this);

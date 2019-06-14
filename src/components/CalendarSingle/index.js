@@ -18,41 +18,9 @@ class CalendarSingle extends Component {
     }
 
 
-    // static getDerivedStateFromProps(nextProps, prevState) {
-    //     if (prevState.props !== nextProps.posts) {
-    //         nextProps.posts.map(item => {
-    //             console.log(item.data(), 'item in single calendar');
-    //         })
-    //     }
-    // }
-
-
-
     componentDidMount() {
 
         console.log(this.props, 'props for firebase')
-
-        // this.props.firebase.storage.ref().child(this.props.clientId + '/' + this.props.month + '-' + this.props.day).getDownloadURL().then((url) => {
-        //     console.log(url, 'url');
-        // }).catch((error) => {
-        //     console.log(error, 'error')
-        // })
-
-
-        // const firebaseStorage = ;
-        // const awaitStorage = await firebaseStorage;
-
-        // console.log(awaitStorage);
-
-        // const getImages = async () => {
-        //     this.props.firebase.storage.ref().child(decodeURI(this.props.clientId + '/' + this.props.month + '-' + this.props.day)).listAll().then(res => {
-        //         console
-        //     })
-        // }
-
-        // getImages();
-
-
     }
 
 
@@ -79,8 +47,6 @@ class CalendarSingle extends Component {
 
     render() {
 
-
-
         // const hiddenPost = this.props.posts
 
 
@@ -94,7 +60,7 @@ class CalendarSingle extends Component {
                     if (item.data().day === this.props.day) {
                         return (
                             <div>
-                                <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} itemId={item.id} />
+                                <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} itemId={item.id} push={this.props.history} />
                             </div>
                         )
                     }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { withFirebase } from '../Firebase';
+import { compose } from 'recompose';
 
 class AdminChatBox extends Component {
     constructor(props) {
@@ -22,7 +24,13 @@ class AdminChatBox extends Component {
     submitMessage = e => {
         e.preventDefault();
 
-        this.props.getMessage(this.state.message)
+        let id = this.props.id
+        let month = parseInt(this.props.month)
+        let day = parseInt(this.props.day)
+        let title = this.props.title
+        let message = this.state.message
+
+        this.props.firebase.postMessage(id, month, day, title, message)
     }
 
 
@@ -31,10 +39,12 @@ class AdminChatBox extends Component {
         return (
             <form onSubmit={this.submitMessage}>
                 <textarea onChange={this.setMessage} value={this.state.message} />
-                <button onClick={this.submitMessage}>Submitr</button>
+                <button onClick={this.submitMessage}>Submit</button>
             </form>
         )
     }
 }
 
-export default AdminChatBox;
+export default compose(
+    withFirebase(AdminChatBox)
+);

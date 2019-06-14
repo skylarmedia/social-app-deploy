@@ -53,7 +53,8 @@ class HiddenCalendarSingle extends Component {
     }
 
     doDoubleClickAction() {
-        window.location.href = `/admin-view-post/${this.props.month}/${this.props.month}/${this.state.clientId}`
+        let friendlyUrl = this.props.title.replace(/ /g, '-').toLowerCase();
+        this.props.push.push(`/admin-view-post/${this.props.month}/${this.props.day}/${friendlyUrl}/${this.state.clientId}`);
     }
 
     handleDoubleClick() {
@@ -66,8 +67,6 @@ class HiddenCalendarSingle extends Component {
 
     handleDoubleClickItem = (e) => {
         e.preventDefault();
-        alert('ran  ')
-
     }
 
 
