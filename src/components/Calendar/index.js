@@ -36,7 +36,7 @@ class Calendar extends React.Component {
       posts: []
     };
 
-
+    this.onDoubleClick = this.handleDoubleClickItem.bind(this)
 
   }
 
@@ -66,7 +66,9 @@ class Calendar extends React.Component {
 
 
 
-
+  handleDoubleClickItem(event) {
+    alert('I got double-clicked!');
+  }
 
 
   daysInMonth = () => {

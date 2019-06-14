@@ -24,7 +24,8 @@ import EditPost from '../EditPost';
 import Server from '../ServerFile';
 import ClientCalendar from '../ClientCalendar';
 import ClientViewPost from '../ClientViewPost';
-
+import HiddenCalendarSingle from '../HiddenCalendarSingle'
+import AdminViewPost from '../AdminViewPost';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 
@@ -73,6 +74,7 @@ const App = () => (
       <Route exact path="/server" component={Server} />
       <Route path="/client-calendar" component={ClientCalendar} />
       <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
+      <Route path="/admin-view-post/:month/:day/:id" component={AdminViewPost} />
     </div>
   </Router>
 )

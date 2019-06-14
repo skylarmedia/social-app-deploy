@@ -221,7 +221,6 @@ class AddPost extends Component {
         alert(this.state.file.length)
         const imageRefs = [];
         this.state.file.forEach(file => {
-            console.log(file, 'file upload')
             var type;
 
             switch (file.type) {
@@ -240,7 +239,6 @@ class AddPost extends Component {
             var encodedURL = encodeURIComponent(this.state.clientId) + encodeURIComponent('/') + this.state.calendarMonth + encodeURIComponent('-') + this.state.calendarDay + encodeURIComponent('/') + file.name + '?alt=media&type=' + type;
             var imageUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodedURL}`
             imageRefs.push(imageUrl);
-            console.log(imageRefs);
 
 
             firestorageRef.ref().child(`${this.state.clientId}/${this.state.calendarMonth}-${this.state.calendarDay}/${file.name}`)
@@ -287,8 +285,6 @@ class AddPost extends Component {
                     />
                     <input type="file" multiple onChange={this.addFile} />
                     <button onClick={this.uploadFiles}>Upload Files</button>
-
-
                 </form>
                 {this.state.showCategoryState ?
                     <ShowCategory />

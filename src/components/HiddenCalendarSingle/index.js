@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
+import * as ROUTES from '../../constants/routes';
+
+let timer = 0;
+let delay = 200;
+let prevent = false;
 
 class HiddenCalendarSingle extends Component {
     constructor(props) {
@@ -14,7 +19,7 @@ class HiddenCalendarSingle extends Component {
         }
 
         this.toggleIsHidden = this.toggleIsHidden.bind(this);
-        this._handleDoubleClickItem = this._handleDoubleClickItem.bind(this);
+        this.handleDoubleClickItem = this.handleDoubleClickItem.bind(this);
     }
 
     componentWillMount() {
@@ -25,38 +30,44 @@ class HiddenCalendarSingle extends Component {
         this.setState({
             clientId: c
         });
-
-
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         console.log(prevProps, 'prev props');
     }
 
-    // getImages = () => {
-
-    //     console.log(this.props, 'props')
-
-    // }
-
-
-
     toggleIsHidden = () => {
+        let me = this;
+        timer = setTimeout(function () {
+            if (!prevent) {
+                me.doClickAction();
+            }
+            prevent = false;
+        }, delay);
+    }
+
+    doClickAction() {
         this.setState({
             isHiddenCalendar: !this.state.isHiddenCalendar
         })
     }
 
+    doDoubleClickAction() {
+        window.location.href = `/admin-view-post/${this.props.month}/${this.props.month}/${this.state.clientId}`
+    }
 
-
-
+    handleDoubleClick() {
+        clearTimeout(timer);
+        prevent = true;
+        this.doDoubleClickAction();
+    }
 
     truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
 
-    _handleDoubleClickItem = (e) => {
+    handleDoubleClickItem = (e) => {
         e.preventDefault();
+        alert('ran  ')
 
-        alert('double clicked');
     }
 
 
@@ -64,7 +75,6 @@ class HiddenCalendarSingle extends Component {
 
     render() {
         const friendlyUrlTitle = this.props.title.replace(/\s+/g, '-') + '-' + this.props.month + '-' + this.props.day
-        // const spacedHashtags = this.props.hashtags.replace(/ /g, " #");
         const hiddenPost = () => (
             <div>
                 <p>{this.props.title}</p>
@@ -87,7 +97,7 @@ class HiddenCalendarSingle extends Component {
         )
         return (
             <div>
-                <button onClick={this.toggleIsHidden} onDoubleClick={this._handleDoubleClickItem}>{this.props.title}</button>
+                <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)}>{this.props.title}</button>
                 {this.state.isHiddenCalendar &&
                     hiddenPost()
                 }
