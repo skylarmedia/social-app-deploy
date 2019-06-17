@@ -30,7 +30,7 @@ class AdminChatBox extends Component {
         let title = this.props.title
         let message = this.state.message
 
-        this.props.firebase.postMessage(id, month, day, title, message)
+        this.props.firebase.postMessage(id, month, day, title, message);
     }
 
 
