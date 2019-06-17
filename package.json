@@ -1,4 +1,5 @@
 {
+  "homepage": "http://skylarmedia.github.io/social-app",
   "name": "skylar-social",
   "version": "0.1.0",
   "private": true,
@@ -32,7 +33,9 @@
     "dev": "run-p server start",
     "server": "node-env-run server --exec nodemon | pino-colada",
     "precommit": "NODE_ENV=production lint-staged",
-    "lint": "eslint src"
+    "lint": "eslint src",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
