@@ -82,7 +82,12 @@ class HiddenCalendarSingle extends Component {
                 {this.props.hashtags &&
                     <p>{this.props.hashtags}</p>
                 }
-                <Link to={{
+                {this.props.itemId}
+
+                <Link to={`/edit-post/${this.props.month}/${this.props.day}/${this.props.itemId}/${this.props.clientId}`}>Edit Post</Link>
+
+
+                {/* <Link to={{
                     pathname: '/edit-post/',
                     state: {
                         postId: this.props.itemId,
@@ -90,7 +95,7 @@ class HiddenCalendarSingle extends Component {
                         day: this.props.day,
                         month: this.props.month
                     }
-                }}>Edit Post</Link>
+                }}>Edit Post</Link> */}
 
             </div >
         )

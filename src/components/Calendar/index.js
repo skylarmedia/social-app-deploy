@@ -43,16 +43,6 @@ class Calendar extends React.Component {
   weekdayshort = moment.weekdaysShort();
 
   componentWillMount() {
-    // var url_string = window.location.href  //window.location.href
-    // var url = new URL(url_string);
-    // var c = url.searchParams.get("clientId");
-
-    // this.setState({
-    //   clientId: c,
-    //   currentMonth: month,
-    //   currentYear: year
-    // });
-
 
     if (this.props.match.params.clientId) {
       this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
@@ -165,6 +155,8 @@ class Calendar extends React.Component {
     this.setState({
       dateObject: this.state.dateObject.subtract(1, curr)
     });
+
+    this.props.history.push(`/calendar/2019/${parseInt(this.props.match.params.month) - 1}/${this.props.match.params.clientId}`);
   };
   onNext = () => {
     let curr = "";
@@ -174,7 +166,13 @@ class Calendar extends React.Component {
       curr = "month";
     }
     // <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
-    this.props.history.push(`/calendar/${this.props.match.params.year}/${this.props.match.params + 1}/${this.props.match.params.clientId}`);
+    this.props.history.push(`/calendar/2019/${parseInt(this.props.match.params.month) + 1}/${this.props.match.params.clientId}`);
+    this.props.firebase.getSocialPosts(this.props.match.params.clientId, this.props.match.params.month).then(snapshot => {
+      this.setState({
+        posts: snapshot.docs
+      });
+    })
+    alert('moved')
     this.setState({
       dateObject: this.state.dateObject.add(1, curr)
     });

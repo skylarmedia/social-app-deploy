@@ -171,24 +171,26 @@ class AddPost extends Component {
     onSubmitForm = (e) => {
         e.preventDefault();
 
+        console.log(this.props.match.params.clientId)
+
         const friendlyUrl = this.state.title.toLowerCase().replace(/ /g, '-')
         const formMonth = this.state.calendarMonth;
-        const clientId = this.state.clientId;
+        const clientId = this.props.match.params.clientId
         this.props.firebase.addPost(
-            this.state.clientId,
+            clientId,
             this.state.title,
             this.state.copy,
             this.state.hashtags,
             this.state.time,
-            this.state.calendarDay,
-            this.state.calendarMonth,
+            parseInt(this.props.match.params.day),
+            parseInt(this.props.match.params.month),
             this.state.values,
             this.state.metaImageFiles,
             friendlyUrl,
             false
         );
 
-        this.props.history.push(`${ROUTES.CALENDAR}/?month=${formMonth}&year=2019&clientId=${clientId}`);
+        this.props.history.push(`/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`);
 
     }
 

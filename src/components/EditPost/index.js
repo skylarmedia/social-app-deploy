@@ -42,9 +42,7 @@ class EditPost extends Component {
 
 
     componentWillMount() {
-
-
-        this.props.firebase.editPostFirebase(this.props.location.state.clientId, this.props.location.state.postId).then(item => {
+        this.props.firebase.editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId).then(item => {
             this.setState({
                 postTitle: item.data().title,
                 postCopy: item.data().copy,
@@ -118,8 +116,8 @@ class EditPost extends Component {
         event.preventDefault();
 
         this.props.firebase.editPostSubmit(
-            this.props.location.state.clientId,
-            this.props.location.state.postId,
+            this.props.match.params.clientId,
+            this.props.match.params.postId,
             this.state.postTitle,
             this.state.postCopy,
             this.state.postHashtags,
@@ -127,14 +125,14 @@ class EditPost extends Component {
             this.state.values
         )
 
-        this.props.history.push(`${ROUTES.CALENDAR}/?month=${this.props.location.state.month}&year=2019&clientId=${this.props.location.state.clientId}`);
+        this.props.history.push(`/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`);
     }
 
 
     deletePost = () => {
         if (window.confirm('Are you sure you wish to delete this item?')) {
-            this.props.firebase.deletePost(this.props.location.state.clientId, this.props.location.state.postId)
-            this.props.history.push(`${ROUTES.CALENDAR}/?month=${this.props.location.state.month}&year=2019&clientId=${this.props.location.state.clientId}`);
+            this.props.firebase.deletePost(this.props.match.params.clientId, this.props.match.params.postId)
+            this.props.history.push(`/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`);
         }
         return false
     }
@@ -157,7 +155,6 @@ class EditPost extends Component {
         )
         return (
             <div> Edit Posts
-{this.props.location.state.postId}
                 <form onSubmit={this.editPostSubmit}>
                     Title<input name="title" value={this.state.postTitle} onChange={this.handlePostTitle} /><br />
 

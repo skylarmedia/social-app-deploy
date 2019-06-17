@@ -43,7 +43,7 @@ class Firebase {
 
     getSinglePost = (userId, month, day, title) => this.db.collection('users').doc(userId)
         .collection('posts').where('month', '==', month)
-        .where('day', '==', day).where('friendlyUrl', '==', title).get();
+        .where('day', '==', day).get();
 
     getPostImages = () => this.storage.refFromURL('gs://skylar-social-17190.appspot.com/test123/logo');
 
@@ -78,7 +78,7 @@ class Firebase {
 
     client = clientId => this.db.ref(`clients/${clientId}`);
 
-    getSocialPosts = (id) => this.db.collection('users').doc(id).collection('posts').get();
+    getSocialPosts = (id, month) => this.db.collection('users').doc(id).collection('posts').get();
 
     getClients = () => this.db.collection('users').where('status', '==', 1).get();
 

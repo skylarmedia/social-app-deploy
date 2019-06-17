@@ -20,7 +20,6 @@ class CalendarSingle extends Component {
 
     componentDidMount() {
 
-        console.log(this.props, 'props for firebase')
     }
 
 
@@ -55,15 +54,22 @@ class CalendarSingle extends Component {
         return (
             <div className="calendar-popup-wrapper">
                 {this.props.day}<br />
-
                 {this.props.posts.map((item, index) => {
-                    if (item.data().day === this.props.day) {
-                        return (
-                            <div>
-                                <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} itemId={item.id} push={this.props.history} clientId={this.props.clientId} />
-                            </div>
-                        )
+                    if (item.data().month == this.props.month) {
+                        if (item.data().day === this.props.day) {
+                            return (
+                                <div>
+                                    {
+                                        item.data().approved && (
+                                            <p>Approved</p>
+                                        )
+                                    }
+                                    <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} itemId={item.id} push={this.props.history} clientId={this.props.clientId} />
+                                </div>
+                            )
+                        }
                     }
+
                 })}
 
             </div>
