@@ -24,7 +24,7 @@ class ClientCalendar extends React.Component {
     };
 
     componentWillMount() {
-        this.props.firebase.getUniqueClientPosts(this.props.location.state.userId, this.state.currentMonth).then(snapshot => {
+        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), this.state.currentMonth).then(snapshot => {
             this.setState({
                 currentPosts: snapshot.docs
             })
@@ -123,9 +123,16 @@ class ClientCalendar extends React.Component {
         } else {
             curr = "month";
         }
-        this.setState({
-            dateObject: this.state.dateObject.subtract(1, curr)
-        });
+
+
+        this.props.history.push(`/client-calendar/2019/${parseInt(this.props.match.params.month) - 1}`);
+        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), parseInt(this.props.match.params.month) + 1).then(snapshot => {
+            this.setState({
+                currentPosts: snapshot.docs,
+                dateObject: this.state.dateObject.subtract(1, curr)
+            })
+        })
+
     };
     onNext = () => {
         let curr = "";
@@ -134,12 +141,15 @@ class ClientCalendar extends React.Component {
         } else {
             curr = "month";
         }
-        this.setState({
-            dateObject: this.state.dateObject.add(1, curr)
-        });
+        this.props.history.push(`/client-calendar/2019/${parseInt(this.props.match.params.month) + 1}`);
+        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), parseInt(this.props.match.params.month) + 1).then(snapshot => {
+            this.setState({
+                currentPosts: snapshot.docs,
+                dateObject: this.state.dateObject.add(1, curr)
+            })
+        })
     };
     setYear = year => {
-        // alert(year)
         let dateObject = Object.assign({}, this.state.dateObject);
         dateObject = moment(dateObject).set("year", year);
         this.setState({

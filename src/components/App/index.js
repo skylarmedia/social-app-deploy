@@ -72,7 +72,7 @@ const App = () => (
       <Route calenderHere={true} path={ROUTES.CALENDAR} component={Calendar} />
       <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
       <Route exact path="/server" component={Server} />
-      <Route path="/client-calendar" component={ClientCalendar} />
+      <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
       <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
       <Route path="/admin-view-post/:month/:day/:title/:client" component={AdminViewPost} />
       <Route path="/calendar/:year/:month/:clientId" component={Calendar} />

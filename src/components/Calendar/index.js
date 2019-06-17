@@ -172,7 +172,6 @@ class Calendar extends React.Component {
         posts: snapshot.docs
       });
     })
-    alert('moved')
     this.setState({
       dateObject: this.state.dateObject.add(1, curr)
     });

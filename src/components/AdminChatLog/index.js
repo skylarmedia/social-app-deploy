@@ -26,15 +26,6 @@ class AdminChatLog extends Component {
         console.log(typeof (this.props.day), 'day');
         console.log(this.props.month, 'month');
         console.log(this.state.messages, 'messages');
-        const emptyPosts = [];
-        // this.props.firebase.listenChatChanges(this.props.id).collection('messages').where('month', '==', parseInt(this.props.month)).where('day', '==', parseInt(this.props.day)).onSnapshot(snapshot => {
-        //     emptyPosts.push(snapshot);
-
-        //     snapshot.docChanges().forEach(change => {
-        //         console.log(change, 'change')
-        //     })
-        // })
-
     }
 
     componentWillUnmount() {

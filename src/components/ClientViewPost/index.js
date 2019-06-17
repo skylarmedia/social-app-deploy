@@ -3,6 +3,8 @@ import { withFirebase } from '../Firebase';
 import { compose } from "redux";
 import MediaWrapper from '../MediaWrapper';
 import Hashtags from '../Hashtags';
+import ClientChatBox from '../ClientChatBox';
+import ClientChatLog from '../ClientChatLog';
 
 class ClientViewPost extends Component {
     constructor(props) {
@@ -81,18 +83,14 @@ class ClientViewPost extends Component {
         }
 
         return (
-            <div>
+            <React.Fragment>
 
                 {this.state.showPopUp ? <div style={popUpStyles}>
                     You have changed the approval of this post
                 <button onClick={this.showPopUp}>Close</button>
                 </div> :
-
                     ''
                 }
-
-
-
                 <p>{this.state.title}</p>
                 <div className="media-text-wrapper row">
                     <div className="col-sm-6">
@@ -109,7 +107,6 @@ class ClientViewPost extends Component {
                                     <div>#{hash}</div>
                                 ))
                             }
-
                             <br />
 
                             {
@@ -131,10 +128,12 @@ class ClientViewPost extends Component {
                 </div>
                 {/* End of media-text-wrapper */}
 
-                <div>
+                <div id="chat-wrapper">
+                    <ClientChatBox />
 
+                    <ClientChatLog />
                 </div>
-            </div>
+            </React.Fragment>
         )
     }
 }
