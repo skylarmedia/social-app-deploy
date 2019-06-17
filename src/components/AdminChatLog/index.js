@@ -13,28 +13,36 @@ class AdminChatLog extends Component {
     }
 
     componentWillMount() {
-        console.log(typeof (this.props.month))
+        console.log(this.props, 'props in mounted compoennt')
         this.props.firebase.getMessages(this.props.id, parseInt(this.props.month), parseInt(this.props.day)).then(snapshot => {
+            snapshot.docs.map(item => {
+                console.log(item.data())
+            })
             this.setState({
                 messages: snapshot.docs
-            })
-
-            console.log(this.state.messages)
-            this.props.firebase.listenChatChanges(this.props.id).collection('messages').onSnapshot(snapshot => {
-                snapshot.docChanges().forEach(change => {
-                    if (change.type == 'added') {
-                        this.setState({
-                            messages: [...this.state.messages, change.doc]
-                        })
-                        console.log(this.state.messages, 'messages')
-                    }
-                })
             })
         })
     }
 
     componentDidMount() {
+        console.log(typeof (this.props.day), 'day');
+        console.log(this.props.month, 'month')
+        this.props.firebase.listenChatChanges(this.props.id).collection('messages').where('month', '==', parseInt(this.props.month)).where('day', '==', parseInt(this.props.day)).onSnapshot(snapshot => {
+            snapshot.docChanges().forEach(change => {
+                if (change.type == 'added') {
+                    console.log(change.doc, 'doc');
+                    this.setState({
+                        messages: [...this.state.messages, change.doc]
+                    })
+                }
+            })
+        })
+    }
 
+    componentWillUnmount() {
+        this.setState({
+            messsage: []
+        })
     }
 
 

@@ -175,7 +175,8 @@ class Dates extends Component {
     render() {
 
         const renderDates = this.state.date.map(item => (
-            <Link to={`/calendar?month=${item.month}&year=${item.year}&clientId=${this.state.clientId}`}>
+            // <Link to={`/calendar?month=${item.month}&year=${item.year}&clientId=${this.state.clientId}`}>
+            <Link to={`/calendar/${item.year}/${item.month}/${this.state.clientId}`}>
                 {this.convert(item.month)} {item.year}
                 <br />
             </Link>

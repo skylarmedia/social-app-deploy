@@ -26,7 +26,7 @@ class Calendar extends React.Component {
     this.state = {
       showCalendarTable: true,
       showMonthTable: false,
-      dateObject: moment(`${year}-${month}`),
+      dateObject: moment(`${this.props.match.params.year}-${this.props.match.params.month}`),
       allmonths: moment.months(),
       showYearNav: false,
       selectedDay: null,
@@ -43,20 +43,19 @@ class Calendar extends React.Component {
   weekdayshort = moment.weekdaysShort();
 
   componentWillMount() {
-    var url_string = window.location.href  //window.location.href
-    var url = new URL(url_string);
-    var c = url.searchParams.get("clientId");
+    // var url_string = window.location.href  //window.location.href
+    // var url = new URL(url_string);
+    // var c = url.searchParams.get("clientId");
 
-    this.setState({
-      clientId: c,
-      currentMonth: month,
-      currentYear: year
-    });
-  }
+    // this.setState({
+    //   clientId: c,
+    //   currentMonth: month,
+    //   currentYear: year
+    // });
 
-  componentDidMount() {
-    if (this.state.clientId) {
-      this.props.firebase.getSocialPosts(this.state.clientId).then(snapshot => {
+
+    if (this.props.match.params.clientId) {
+      this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
         this.setState({
           posts: snapshot.docs
         });
@@ -174,6 +173,8 @@ class Calendar extends React.Component {
     } else {
       curr = "month";
     }
+    // <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
+    this.props.history.push(`/calendar/${this.props.match.params.year}/${this.props.match.params + 1}/${this.props.match.params.clientId}`);
     this.setState({
       dateObject: this.state.dateObject.add(1, curr)
     });
@@ -289,8 +290,8 @@ class Calendar extends React.Component {
       // let selectedClass = (d == this.state.selectedDay ? " selected-day " : "")
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
-          <CalendarSingle day={d} posts={this.state.posts} month={month} clientId={this.state.clientId} history={this.props.history} />
-          <Link to={`/add-post/?month=${month}&day=${d}&year=2019&clientId=${this.getClientId()}`}>+</Link>
+          <CalendarSingle day={d} posts={this.state.posts} month={this.props.match.params.month} clientId={this.props.match.params.clientId} history={this.props.history} />
+          <Link to={`/add-post/2019/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`}>+</Link>
         </td>
 
       );

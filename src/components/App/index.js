@@ -60,7 +60,7 @@ const App = () => (
       <Navigation />
 
       <hr />
-      <Route path={ROUTES.ADD_POST} component={AddPost} />
+      <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route path={ROUTES.SIGN_IN} component={SignInPage} />
       <Route exact path={ROUTES.HOME} component={HomePage} />
@@ -75,6 +75,7 @@ const App = () => (
       <Route path="/client-calendar" component={ClientCalendar} />
       <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
       <Route path="/admin-view-post/:month/:day/:title/:client" component={AdminViewPost} />
+      <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
     </div>
   </Router>
 )

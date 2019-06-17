@@ -54,7 +54,7 @@ class HiddenCalendarSingle extends Component {
 
     doDoubleClickAction() {
         let friendlyUrl = this.props.title.replace(/ /g, '-').toLowerCase();
-        this.props.push.push(`/admin-view-post/${this.props.month}/${this.props.day}/${friendlyUrl}/${this.state.clientId}`);
+        this.props.push.push(`/admin-view-post/${this.props.month}/${this.props.day}/${friendlyUrl}/${this.props.clientId}`);
     }
 
     handleDoubleClick() {
