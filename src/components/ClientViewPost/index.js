@@ -130,7 +130,6 @@ class ClientViewPost extends Component {
 
                 <div id="chat-wrapper">
                     <ClientChatBox />
-
                     <ClientChatLog />
                 </div>
             </React.Fragment>
