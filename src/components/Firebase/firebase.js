@@ -53,11 +53,14 @@ class Firebase {
         console.log(err, 'err')
     });
 
+
     getMessages = (id, month, day) => this.db.collection('chats').doc(id).collection('messages').where('month', '==', month).where('day', '==', day).get();
 
-    // sendCategories = (user) => this.db.collection('users').doc(user).collection('categories').set({
+    sendCategories = (user, categories) => this.db.collection('users').doc(user).collection('categories').add({
+        categories: categories
+    });
 
-    // })
+    getUserCategories = (user) => this.db.collection('users').doc(user).collection('categories').get();
 
     postMessage = (id, month, day, title, message) => this.db.collection('chats').doc(id).collection('messages').add({
         month: month,

@@ -6,6 +6,7 @@ import CalendarSingle from '../CalendarSingle';
 import { withFirebase } from '../Firebase';
 import { compose } from "redux";
 import SelectCategory from '../SelectCategory'
+import CategoryList from '../CategoryList';
 
 const parts = window.location.search.substr(1).split("&");
 
@@ -35,7 +36,8 @@ class Calendar extends React.Component {
       currentMonth: 0,
       currentYear: 0,
       posts: [],
-      showCat: false
+      showCat: false,
+      categories: []
     };
 
     this.onDoubleClick = this.handleDoubleClickItem.bind(this)
@@ -53,6 +55,12 @@ class Calendar extends React.Component {
           posts: snapshot.docs
         });
       })
+
+      this.props.firebase.getUserCategories(this.props.match.params.clientId).then(snapshot => {
+        this.setState({
+          categories: snapshot.docs
+        })
+      })
     }
   }
 
@@ -61,7 +69,6 @@ class Calendar extends React.Component {
   handleDoubleClickItem(event) {
     alert('I got double-clicked!');
   }
-
 
   daysInMonth = () => {
     return this.state.dateObject.daysInMonth();
@@ -281,11 +288,21 @@ class Calendar extends React.Component {
     })
   }
 
+  sendCategories = arr => {
+    this.props.firebase.sendCategories(this.props.match.params.userId, arr).then(() => {
+      alert('sent')
+    })
+  }
+
 
   render() {
 
 
-
+    let catList = this.state.categories.map(item => {
+      return item.data().categories.map(innerItem => (
+        <div>{innerItem.name}TEST</div>
+      ))
+    })
 
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
@@ -333,10 +350,10 @@ class Calendar extends React.Component {
         <button onClick={this.showCategories}>Add Categories</button>
         {
           this.state.showCat && (
-            <SelectCategory className="selected-categoryComponent" />
+            <SelectCategory className="selected-categoryComponent" userId={this.props.match.params.clientId} getCategories={this.sendCategories} />
           )
         }
-
+        <CategoryList colors={this.state.categories} />
         <div className="tail-datetime-calendar">
 
           <div className="calendar-navi">

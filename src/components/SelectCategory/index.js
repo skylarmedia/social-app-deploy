@@ -3,7 +3,7 @@ import { SketchPicker } from 'react-color';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import './index.css';
-// import CategoryList from '../CategoryList';
+
 
 class SelectCategory extends Component {
     constructor(props) {
@@ -18,7 +18,7 @@ class SelectCategory extends Component {
         }
 
         this.removeCategory = this.removeCategory.bind(this);
-        this.sendCategories = this.sendCategories.bind(this);
+        this.passCategories = this.passCategories.bind(this)
     }
 
     submitCategories = (e) => {
@@ -51,11 +51,12 @@ class SelectCategory extends Component {
         this.setState({ categories });
     }
 
-    sendCategories = e => {
+    passCategories = (e) => {
         e.preventDefault();
-
-        // this.props
+        this.props.getCategories(this.state.categories)
     }
+
+
 
     render() {
         let categoryList = this.state.categories.map((item, i) => {
@@ -76,11 +77,11 @@ class SelectCategory extends Component {
                 <ul id="selected-categories">
                     {categoryList}
                 </ul>
-                <form onSubmit={this.submitCategories}>
+                <form onSubmit={this.passCategories}>
                     <SketchPicker color={this.state.color} onChangeComplete={this.handleChangeComplete.bind(this)} />
                     <input type="text" onChange={this.selectCategory.bind(this)} />
                     <button onClick={this.submitCategories}>Add Categories</button>
-                    <button onClick={this.sendCategories}>Submit</button>
+                    <button onClick={this.passCategories}>Submit</button>
                 </form>
             </React.Fragment>
         )
