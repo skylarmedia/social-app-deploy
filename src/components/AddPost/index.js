@@ -124,10 +124,6 @@ class AddPost extends Component {
         event.preventDefault();
     }
 
-    handleSuccess = (file) => {
-
-    }
-
     onChange = time => this.setState({ time });
 
     submitFile(e) {
@@ -256,9 +252,6 @@ class AddPost extends Component {
         console.log(this.state);
     }
 
-
-
-
     render() {
         return (
             <React.Fragment>
@@ -293,14 +286,6 @@ class AddPost extends Component {
                     : ''}
 
                 <button onClick={this.showState.bind(this)}>Show State</button>
-                <br />
-                <br />
-
-
-                {/* Colour Picker  */}
-                <div>
-                    <SketchPicker />
-                </div>
             </React.Fragment>
         )
     }

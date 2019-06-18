@@ -55,6 +55,10 @@ class Firebase {
 
     getMessages = (id, month, day) => this.db.collection('chats').doc(id).collection('messages').where('month', '==', month).where('day', '==', day).get();
 
+    // sendCategories = (user) => this.db.collection('users').doc(user).collection('categories').set({
+
+    // })
+
     postMessage = (id, month, day, title, message) => this.db.collection('chats').doc(id).collection('messages').add({
         month: month,
         day: day,

@@ -5,7 +5,7 @@ import "./calendar.css";
 import CalendarSingle from '../CalendarSingle';
 import { withFirebase } from '../Firebase';
 import { compose } from "redux";
-import ShowCategory from '../ShowCategory'
+import SelectCategory from '../SelectCategory'
 
 const parts = window.location.search.substr(1).split("&");
 
@@ -34,10 +34,12 @@ class Calendar extends React.Component {
       clientId: '',
       currentMonth: 0,
       currentYear: 0,
-      posts: []
+      posts: [],
+      showCat: false
     };
 
     this.onDoubleClick = this.handleDoubleClickItem.bind(this)
+    this.showCategories = this.showCategories.bind(this);
 
   }
 
@@ -271,8 +273,19 @@ class Calendar extends React.Component {
     return c
   }
 
+  showCategories = e => {
+    e.preventDefault();
+
+    this.setState({
+      showCat: !this.state.showCat
+    })
+  }
+
 
   render() {
+
+
+
 
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
@@ -317,7 +330,13 @@ class Calendar extends React.Component {
 
     return (
       <div>
-        <ShowCategory />
+        <button onClick={this.showCategories}>Add Categories</button>
+        {
+          this.state.showCat && (
+            <SelectCategory className="selected-categoryComponent" />
+          )
+        }
+
         <div className="tail-datetime-calendar">
 
           <div className="calendar-navi">
