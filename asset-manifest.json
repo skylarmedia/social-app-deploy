@@ -1,17 +1,17 @@
 {
   "files": {
-    "main.css": "/skylar-social-app/static/css/main.9f117e42.chunk.css",
-    "main.js": "/skylar-social-app/static/js/main.f04b86cf.chunk.js",
-    "main.js.map": "/skylar-social-app/static/js/main.f04b86cf.chunk.js.map",
-    "runtime~main.js": "/skylar-social-app/static/js/runtime~main.d0bec6ca.js",
-    "runtime~main.js.map": "/skylar-social-app/static/js/runtime~main.d0bec6ca.js.map",
-    "static/css/2.42ef8565.chunk.css": "/skylar-social-app/static/css/2.42ef8565.chunk.css",
-    "static/js/2.3bffa5bc.chunk.js": "/skylar-social-app/static/js/2.3bffa5bc.chunk.js",
-    "static/js/2.3bffa5bc.chunk.js.map": "/skylar-social-app/static/js/2.3bffa5bc.chunk.js.map",
-    "index.html": "/skylar-social-app/index.html",
-    "precache-manifest.2030834bb0ec71f4dace4eee47eeb227.js": "/skylar-social-app/precache-manifest.2030834bb0ec71f4dace4eee47eeb227.js",
-    "service-worker.js": "/skylar-social-app/service-worker.js",
-    "static/css/2.42ef8565.chunk.css.map": "/skylar-social-app/static/css/2.42ef8565.chunk.css.map",
-    "static/css/main.9f117e42.chunk.css.map": "/skylar-social-app/static/css/main.9f117e42.chunk.css.map"
+    "main.css": "/skylar-deploy/static/css/main.9f117e42.chunk.css",
+    "main.js": "/skylar-deploy/static/js/main.fc97c77b.chunk.js",
+    "main.js.map": "/skylar-deploy/static/js/main.fc97c77b.chunk.js.map",
+    "runtime~main.js": "/skylar-deploy/static/js/runtime~main.dcb2bc25.js",
+    "runtime~main.js.map": "/skylar-deploy/static/js/runtime~main.dcb2bc25.js.map",
+    "static/css/2.42ef8565.chunk.css": "/skylar-deploy/static/css/2.42ef8565.chunk.css",
+    "static/js/2.6358a66b.chunk.js": "/skylar-deploy/static/js/2.6358a66b.chunk.js",
+    "static/js/2.6358a66b.chunk.js.map": "/skylar-deploy/static/js/2.6358a66b.chunk.js.map",
+    "index.html": "/skylar-deploy/index.html",
+    "precache-manifest.87f34ed08110194ed0a6eef296a7717e.js": "/skylar-deploy/precache-manifest.87f34ed08110194ed0a6eef296a7717e.js",
+    "service-worker.js": "/skylar-deploy/service-worker.js",
+    "static/css/2.42ef8565.chunk.css.map": "/skylar-deploy/static/css/2.42ef8565.chunk.css.map",
+    "static/css/main.9f117e42.chunk.css.map": "/skylar-deploy/static/css/main.9f117e42.chunk.css.map"
   }
 }
