@@ -9,11 +9,9 @@ import { withFirebase } from '../Firebase';
 import { AuthUserContext } from '../Session';
 
 import Navigation from '../Navigation';
-import AddNew from '../AddNew';
 import SignUpPage from '../SignUp';
 import SignInPage from '../SignIn';
 import HomePage from '../Home';
-import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import Clients from '../Clients';
 import Dates from '../Dates';
@@ -64,8 +62,6 @@ const App = () => (
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route path={ROUTES.SIGN_IN} component={SignInPage} />
       <Route exact path={ROUTES.HOME} component={HomePage} />
-      <Route path={ROUTES.ACCOUNT} component={AccountPage} />
-      <Route path={ROUTES.ADD_NEW} component={AddNew} />
       <Route path={ROUTES.CLIENTS} component={Clients} />
       <Route path={ROUTES.DATES} component={Dates} />
       <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />

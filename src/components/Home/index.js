@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { FirebaseContext } from '../Firebase';
 import { Link } from 'react-router-dom';
-import AddNew from '../AddNew';
 import { compose } from 'recompose';
 import Firebase from '../Firebase';
 import * as ROUTES from '../../constants/routes';
