@@ -4,7 +4,6 @@ import { compose } from "redux";
 import FileUploader from 'react-firebase-file-uploader';
 import TimePicker from 'react-time-picker';
 import { SketchPicker } from 'react-color';
-import ShowCategory from '../ShowCategory';
 import * as ROUTES from '../../constants/routes';
 import { bigIntLiteral } from '@babel/types';
 
@@ -281,10 +280,6 @@ class AddPost extends Component {
                     <input type="file" multiple onChange={this.addFile} />
                     <button onClick={this.uploadFiles}>Upload Files</button>
                 </form>
-                {this.state.showCategoryState ?
-                    <ShowCategory />
-                    : ''}
-
                 <button onClick={this.showState.bind(this)}>Show State</button>
             </React.Fragment>
         )
