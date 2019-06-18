@@ -5,6 +5,7 @@ import "./calendar.css";
 import CalendarSingle from '../CalendarSingle';
 import { withFirebase } from '../Firebase';
 import { compose } from "redux";
+import ShowCategory from '../ShowCategory'
 
 const parts = window.location.search.substr(1).split("&");
 
@@ -273,7 +274,6 @@ class Calendar extends React.Component {
 
   render() {
 
-
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
     });
@@ -316,57 +316,61 @@ class Calendar extends React.Component {
     });
 
     return (
-      <div className="tail-datetime-calendar">
-        <div className="calendar-navi">
-          <span
-            onClick={e => {
-              this.onPrev();
-            }}
-            class="calendar-button button-prev"
-          />
-          {!this.state.showMonthTable && !this.state.showYearEditor && (
+      <div>
+        <ShowCategory />
+        <div className="tail-datetime-calendar">
+
+          <div className="calendar-navi">
             <span
               onClick={e => {
-                this.showMonth();
+                this.onPrev();
               }}
-              class="calendar-label"
-            >
-              {this.month()},
+              class="calendar-button button-prev"
+            />
+            {!this.state.showMonthTable && !this.state.showYearEditor && (
+              <span
+                onClick={e => {
+                  this.showMonth();
+                }}
+                class="calendar-label"
+              >
+                {this.month()},
             </span>
-          )}
-          <span
-            className="calendar-label"
-            onClick={e => {
-              this.showYearEditor();
-            }}
-          >
-            {this.year()}
-          </span>
+            )}
+            <span
+              className="calendar-label"
+              onClick={e => {
+                this.showYearEditor();
+              }}
+            >
+              {this.year()}
+            </span>
 
-          <span
-            onClick={e => {
-              this.onNext();
-            }}
-            className="calendar-button button-next"
-          />
-        </div>
-        <div className="calendar-date">
-          {this.state.showYearNav && <this.YearTable props={this.year()} />}
-          {this.state.showMonthTable && (
-            <this.MonthList data={moment.months()} />
-          )}
-        </div>
-
-        {this.state.showCalendarTable && (
-          <div className="calendar-date">
-            <table className="calendar-day">
-              <thead>
-                <tr>{weekdayshortname}</tr>
-              </thead>
-              <tbody>{daysinmonth}</tbody>
-            </table>
+            <span
+              onClick={e => {
+                this.onNext();
+              }}
+              className="calendar-button button-next"
+            />
           </div>
-        )}
+          <div className="calendar-date">
+            {this.state.showYearNav && <this.YearTable props={this.year()} />}
+            {this.state.showMonthTable && (
+              <this.MonthList data={moment.months()} />
+            )}
+          </div>
+
+          {this.state.showCalendarTable && (
+            <div className="calendar-date">
+              <table className="calendar-day">
+                <thead>
+                  <tr>{weekdayshortname}</tr>
+                </thead>
+                <tbody>{daysinmonth}</tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
     );
   }

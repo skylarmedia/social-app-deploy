@@ -26,6 +26,7 @@ import HiddenCalendarSingle from '../HiddenCalendarSingle'
 import AdminViewPost from '../AdminViewPost';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
+import CalendarCategoryContainer from '../CalendarCategoryContainer'
 
 // class App extends Component {
 //   constructor(props) {
@@ -65,13 +66,12 @@ const App = () => (
       <Route path={ROUTES.CLIENTS} component={Clients} />
       <Route path={ROUTES.DATES} component={Dates} />
       <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />
-      <Route calenderHere={true} path={ROUTES.CALENDAR} component={Calendar} />
       <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
       <Route exact path="/server" component={Server} />
       <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
       <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
       <Route path="/admin-view-post/:month/:day/:title/:client" component={AdminViewPost} />
-      <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
+      <Route path="/calendar/:year/:month/:clientId" component={CalendarCategoryContainer} />
     </div>
   </Router>
 )

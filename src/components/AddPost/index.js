@@ -261,7 +261,7 @@ class AddPost extends Component {
 
     render() {
         return (
-            <div>
+            <React.Fragment>
                 <form onSubmit={this.onSubmitForm}>
                     <label>Title
                         <input name="title" value={this.state.value} onChange={this.handleTitle} required />
@@ -293,7 +293,15 @@ class AddPost extends Component {
                     : ''}
 
                 <button onClick={this.showState.bind(this)}>Show State</button>
-            </div>
+                <br />
+                <br />
+
+
+                {/* Colour Picker  */}
+                <div>
+                    <SketchPicker />
+                </div>
+            </React.Fragment>
         )
     }
 }
