@@ -10,6 +10,7 @@ class AdminViewPost extends Component {
     }
 
     componentWillMount() {
+        console.log(this.props, ' props in admin view post')
         this.props.firebase.editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
     }
 

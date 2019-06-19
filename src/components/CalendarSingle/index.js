@@ -4,6 +4,7 @@ import { compose } from 'recompose';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import HiddenCalendarSingle from '../HiddenCalendarSingle';
+import './index.css'
 
 class CalendarSingle extends Component {
     constructor(props) {
@@ -57,7 +58,7 @@ class CalendarSingle extends Component {
                     if (item.data().month == this.props.month) {
                         if (item.data().day === this.props.day) {
                             return (
-                                <div>
+                                <div class="hidden-calendar-wrapper">
                                     {
                                         item.data().approved && (
                                             <p>Approved</p>

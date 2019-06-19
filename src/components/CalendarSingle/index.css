@@ -1,0 +1,3 @@
+.tail-datetime-calendar .calendar-date table tbody tr > *.today{
+    position:relative;
+}

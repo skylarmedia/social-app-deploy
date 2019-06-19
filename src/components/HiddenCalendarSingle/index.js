@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
+import './index.css'
 
 let timer = 0;
-let delay = 100;
+let delay = 200;
 let prevent = false;
 
 class HiddenCalendarSingle extends Component {
@@ -91,18 +92,6 @@ class HiddenCalendarSingle extends Component {
                 {this.props.itemId}
 
                 <Link to={`/edit-post/${this.props.month}/${this.props.day}/${this.props.itemId}/${this.props.clientId}`}>Edit Post</Link>
-
-
-                {/* <Link to={{
-                    pathname: '/edit-post/',
-                    state: {
-                        postId: this.props.itemId,
-                        clientId: this.state.clientId,
-                        day: this.props.day,
-                        month: this.props.month
-                    }
-                }}>Edit Post</Link> */}
-
             </div >
         )
 
@@ -112,9 +101,11 @@ class HiddenCalendarSingle extends Component {
         return (
             <React.Fragment>
                 <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)} style={buttonStyle}>{this.props.title}</button>
-                {this.state.isHiddenCalendar &&
-                    hiddenPost()
-                }
+                <div class="hidden-post">
+                    {this.state.isHiddenCalendar &&
+                        hiddenPost()
+                    }
+                </div>
             </React.Fragment>
         )
     }

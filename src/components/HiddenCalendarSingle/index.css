@@ -1,0 +1,9 @@
+.hidden-post{
+    position: absolute;
+    border: 1px solid grey;
+    z-index: 99999;
+    box-shadow: 4px 14px 12px -1px rgba(0,0,0,0.2);
+    right: -80px;
+    top: -75px;
+    background: #fff;
+}
