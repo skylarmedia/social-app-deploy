@@ -289,9 +289,8 @@ class Calendar extends React.Component {
   }
 
   sendCategories = arr => {
-    this.props.firebase.sendCategories(this.props.match.params.userId, arr).then(() => {
-      alert('sent')
-    })
+    console.log(arr, 'arr');
+    this.props.firebase.sendCategories(localStorage.getItem('userId'), arr);
   }
 
 

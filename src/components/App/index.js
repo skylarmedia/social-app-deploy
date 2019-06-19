@@ -62,6 +62,7 @@ const App = () => (
       <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+      <Route exact path="/" component={SignInPage} />
       <Route exact path={ROUTES.HOME} component={HomePage} />
       <Route path={ROUTES.CLIENTS} component={Clients} />
       <Route path={ROUTES.DATES} component={Dates} />

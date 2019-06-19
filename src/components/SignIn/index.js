@@ -2,17 +2,25 @@ import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
 import { connect } from 'react-redux';
-
+import './index.css'
+import MenuItem from '@material-ui/core/MenuItem';
+import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
+import clsx from 'clsx';
 import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignInPage = () => (
-  <div>
-    <h1>SignIn</h1>
-    <SignInForm />
-  </div>
+  <React.Fragment>
+    <div id="sign-in-wrapper" className="d-flex justify-content-center align-items-center flex-column">
+      <h1>SignIn</h1>
+      <SignInForm />
+    </div>
+  </React.Fragment>
 );
+
+
 
 const INITIAL_STATE = {
   email: '',
@@ -20,6 +28,25 @@ const INITIAL_STATE = {
   error: null,
   loading: false
 };
+
+const useStyles = makeStyles(theme => ({
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+    width: 200,
+  },
+  dense: {
+    marginTop: 19,
+  },
+  menu: {
+    width: 200,
+  },
+}));
+
 
 const currentClientMonth = new Date().getMonth()
 const currentClientYear = new Date().getFullYear();
@@ -81,12 +108,18 @@ class SignInFormBase extends Component {
 
     console.log(this.props, 'props for settings user')
     const { email, password, error } = this.state;
-
     const isInvalid = password === '' || email === '';
 
+    // const classes = useStyles();
     return (
-      <div>
-        <form onSubmit={this.onSubmit}>
+      <React.Fragment>
+        <form onSubmit={this.onSubmit} className="d-flex flex-column">
+          {/* <TextField
+            id="standard-name"
+            label="Name"
+            className={classes.textField}
+            margin="normal"
+          /> */}
           <input
             name="email"
             value={email}
@@ -112,7 +145,7 @@ class SignInFormBase extends Component {
             <h1>Loading</h1>
           )
         }
-      </div>
+      </React.Fragment>
     );
   }
 }

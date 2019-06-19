@@ -60,6 +60,8 @@ class Firebase {
         categories: categories
     });
 
+    getAll = user => this.db.collection('users').doc(user).get();
+
     getUserCategories = (user) => this.db.collection('users').doc(user).collection('categories').get();
 
     postMessage = (id, month, day, title, message) => this.db.collection('chats').doc(id).collection('messages').add({

@@ -5,9 +5,22 @@ const CategoryList = (props) => {
         <div>
             {
                 props.colors.map(item => {
-                    return item.data().categories.map(innerItem => (
-                        <div>{innerItem.name}TEST</div>
-                    ))
+
+                    return item.data().categories.map(innerItem => {
+                        let categoryStyle = {
+                            background: innerItem.color,
+                            width: 50,
+                            height: 50
+                        }
+                        return (
+                            <div>
+                                <div class="category-color" style={categoryStyle}></div>
+                                <p>{innerItem.name}</p>
+                            </div>
+                        )
+                    }
+
+                    )
                 })
             }
         </div>

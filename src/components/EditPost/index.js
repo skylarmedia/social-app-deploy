@@ -3,6 +3,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from "redux";
 import { connect } from 'react-redux';
 import TimePicker from 'react-time-picker';
+import EditCategoryForm from '../EditCategoryForm';
 import * as ROUTES from '../../constants/routes';
 
 // function getType(url) {
@@ -33,7 +34,8 @@ class EditPost extends Component {
             postTime: '',
             values: [],
             firestorageRef: this.props.firebase.storage,
-            metaImageFiles: []
+            metaImageFiles: [],
+            categories: []
         }
 
         this.handlePostTitle = this.handlePostTitle.bind(this);
@@ -52,13 +54,6 @@ class EditPost extends Component {
                 metaImageFiles: item.data().metaImageFiles
             })
         });
-
-        console.log(this.state, 'state after mount')
-    }
-
-    componentDidMount() {
-
-
     }
 
 
@@ -172,7 +167,8 @@ class EditPost extends Component {
                 </form>
                 <button onClick={this.deletePost}>Delete</button>
                 {media}
-            </div >
+                <EditCategoryForm clientId={this.props.match.params.clientId} />
+            </div>
         )
     }
 }

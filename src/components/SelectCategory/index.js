@@ -10,7 +10,7 @@ class SelectCategory extends Component {
         super(props)
 
         this.state = {
-            categories: [],
+            setCategories: [],
             name: '',
             categoryName: '',
             category: {},
@@ -27,10 +27,8 @@ class SelectCategory extends Component {
 
         categoryObj.color = this.state.color;
         categoryObj.name = this.state.name;
-
-        console.log(categoryObj, 'category Obj');
         this.setState({
-            categories: [...this.state.categories, categoryObj]
+            setCategories: [...this.state.setCategories, categoryObj]
         })
     }
 
@@ -46,20 +44,20 @@ class SelectCategory extends Component {
 
     removeCategory = (event) => {
         let index = event.target.getAttribute('data-index');
-        let categories = [...this.state.categories];
-        categories.splice(index, 1);
-        this.setState({ categories });
+        let setCategories = [...this.state.setCategories];
+        setCategories.splice(index, 1);
+        this.setState({ setCategories });
     }
 
     passCategories = (e) => {
         e.preventDefault();
-        this.props.getCategories(this.state.categories)
+        this.props.getCategories(this.state.setCategories)
     }
 
 
 
     render() {
-        let categoryList = this.state.categories.map((item, i) => {
+        let categoryList = this.state.setCategories.map((item, i) => {
             let categoryStyle = {
                 background: item.color
             }

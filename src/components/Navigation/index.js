@@ -8,14 +8,14 @@ import { AuthUserContext } from '../Session';
 const Navigation = ({ authUser }) => (
 
   <AuthUserContext.Consumer>
-      {authUser =>
-        authUser ? <NavigationAuth /> : <NavigationNonAuth />
-      }
+    {authUser =>
+      authUser ? <NavigationAuth /> : <NavigationNonAuth />
+    }
   </AuthUserContext.Consumer>
 );
 
 const NavigationAuth = () => (
-  <ul>
+  <ul id="nav-id">
     <li>
       <Link to={ROUTES.LANDING}>Landing</Link>
     </li>
