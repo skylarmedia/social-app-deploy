@@ -47,6 +47,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const classes = useStyles();
 
 const currentClientMonth = new Date().getMonth()
 const currentClientYear = new Date().getFullYear();
@@ -110,16 +111,15 @@ class SignInFormBase extends Component {
     const { email, password, error } = this.state;
     const isInvalid = password === '' || email === '';
 
-    // const classes = useStyles();
     return (
       <React.Fragment>
         <form onSubmit={this.onSubmit} className="d-flex flex-column">
-          {/* <TextField
+          <TextField
             id="standard-name"
             label="Name"
             className={classes.textField}
             margin="normal"
-          /> */}
+          />
           <input
             name="email"
             value={email}
