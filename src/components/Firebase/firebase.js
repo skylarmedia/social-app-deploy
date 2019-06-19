@@ -53,7 +53,6 @@ class Firebase {
         console.log(err, 'err')
     });
 
-
     getMessages = (id, month, day) => this.db.collection('chats').doc(id).collection('messages').where('month', '==', month).where('day', '==', day).get();
 
     sendCategories = (user, categories) => this.db.collection('users').doc(user).collection('categories').add({
@@ -73,11 +72,7 @@ class Firebase {
         logo: 'https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg'
     });
 
-    listenChatChanges = (id) => this.db.collection('chats').doc(id)
-
-    // listenChatChanges = (id) => this.db.collection('chats').ref(`${id}/messages`).on('value', snapshot => {
-    //     alert('changed');
-    // })
+    listenChatChanges = (id) => this.db.collection('chats').doc(id);
 
     getUniqueClientPosts = (id, currentMonth) => this.db.collection('users').doc(id).collection('posts').where('month', '==', currentMonth).get();
 
@@ -109,7 +104,6 @@ class Firebase {
             status: 1,
             userId: cred.user.uid,
             admin: 0
-
         })
     }).then(user => {
         if (user) {

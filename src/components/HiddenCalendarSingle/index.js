@@ -66,9 +66,9 @@ class HiddenCalendarSingle extends Component {
 
     truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
 
-    handleDoubleClickItem = (e) => {
-        e.preventDefault();
-    }
+    // handleDoubleClickItem = (e) => {
+    //     e.preventDefault();
+    // }
 
     handleColor = (string) => {
         if (string !== undefined) {
