@@ -35,11 +35,13 @@ class EditPost extends Component {
             values: [],
             firestorageRef: this.props.firebase.storage,
             metaImageFiles: [],
-            categories: []
+            categories: [],
+            selectedCategory: ''
         }
 
         this.handlePostTitle = this.handlePostTitle.bind(this);
         this.editPostSubmit = this.editPostSubmit.bind(this);
+        this.getSelectedCategory = this.getSelectedCategory.bind(this);
     }
 
 
@@ -51,7 +53,8 @@ class EditPost extends Component {
                 postHashtags: item.data().hashtags,
                 postTime: item.data().time,
                 values: item.data().links,
-                metaImageFiles: item.data().metaImageFiles
+                metaImageFiles: item.data().metaImageFiles,
+                selectedCategory: item.data().selectedCategory
             })
         });
     }
@@ -117,7 +120,8 @@ class EditPost extends Component {
             this.state.postCopy,
             this.state.postHashtags,
             this.state.postTime,
-            this.state.values
+            this.state.values,
+            this.state.selectedCategory
         )
 
         this.props.history.push(`/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`);
@@ -132,7 +136,17 @@ class EditPost extends Component {
         return false
     }
 
+    getSelectedCategory = (event) => {
+        this.setState({
+            selectedCategory: event.target.value
+        })
+    }
+
+
+
     render() {
+        console.log(this.state.selectedCategory, 'selected category');
+        console.log(this.props.category, 'props category');
         const media = this.state.metaImageFiles.map((item) => {
             if (this.getType(item) == 'video') {
                 return (
@@ -146,7 +160,6 @@ class EditPost extends Component {
                 )
             }
         }
-
         )
         return (
             <div> Edit Posts
@@ -167,7 +180,7 @@ class EditPost extends Component {
                 </form>
                 <button onClick={this.deletePost}>Delete</button>
                 {media}
-                <EditCategoryForm clientId={this.props.match.params.clientId} />
+                <EditCategoryForm clientId={this.props.match.params.clientId} getSelectedCategory={this.getSelectedCategory} category={this.state.selectedCategory} />
             </div>
         )
     }

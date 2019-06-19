@@ -9,6 +9,10 @@ class AdminViewPost extends Component {
         super(props);
     }
 
+    componentWillMount() {
+        this.props.firebase.editPostFirebase(this.props.match.params.clientId, this.props.match.params.postId)
+    }
+
     getMessage = (e) => {
 
     }

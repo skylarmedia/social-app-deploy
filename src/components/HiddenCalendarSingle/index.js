@@ -5,7 +5,7 @@ import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
 
 let timer = 0;
-let delay = 200;
+let delay = 100;
 let prevent = false;
 
 class HiddenCalendarSingle extends Component {
@@ -69,6 +69,12 @@ class HiddenCalendarSingle extends Component {
         e.preventDefault();
     }
 
+    handleColor = (string) => {
+        if (string !== undefined) {
+            return string.split('|||')[1]
+        }
+    }
+
 
 
 
@@ -99,13 +105,17 @@ class HiddenCalendarSingle extends Component {
 
             </div >
         )
+
+        const buttonStyle = {
+            background: this.handleColor(this.props.selectedCategory)
+        }
         return (
-            <div>
-                <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)}>{this.props.title}</button>
+            <React.Fragment>
+                <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)} style={buttonStyle}>{this.props.title}</button>
                 {this.state.isHiddenCalendar &&
                     hiddenPost()
                 }
-            </div>
+            </React.Fragment>
         )
     }
 

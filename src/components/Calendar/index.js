@@ -64,6 +64,9 @@ class Calendar extends React.Component {
     }
   }
 
+  componentWillUnmount() {
+  }
+
 
 
   handleDoubleClickItem(event) {
@@ -175,7 +178,7 @@ class Calendar extends React.Component {
     } else {
       curr = "month";
     }
-    // <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
+
     this.props.history.push(`/calendar/2019/${parseInt(this.props.match.params.month) + 1}/${this.props.match.params.clientId}`);
     this.props.firebase.getSocialPosts(this.props.match.params.clientId, this.props.match.params.month).then(snapshot => {
       this.setState({
@@ -289,8 +292,9 @@ class Calendar extends React.Component {
   }
 
   sendCategories = arr => {
-    console.log(arr, 'arr');
-    this.props.firebase.sendCategories(localStorage.getItem('userId'), arr);
+
+    console.log(arr, 'arr')
+    this.props.firebase.sendCategories(this.props.match.params.clientId, arr);
   }
 
 
@@ -313,7 +317,6 @@ class Calendar extends React.Component {
     let daysInMonth = [];
     for (let d = 1; d <= this.daysInMonth(); d++) {
       let currentDay = d == this.currentDay() ? "today" : "";
-      // let selectedClass = (d == this.state.selectedDay ? " selected-day " : "")
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
           <CalendarSingle day={d} posts={this.state.posts} month={this.props.match.params.month} clientId={this.props.match.params.clientId} history={this.props.history} />

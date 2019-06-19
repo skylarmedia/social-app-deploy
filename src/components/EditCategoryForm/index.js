@@ -9,6 +9,7 @@ class EditCategoryForm extends Component {
         this.state = {
             categories: []
         }
+
     }
 
     componentWillMount() {
@@ -16,33 +17,41 @@ class EditCategoryForm extends Component {
             this.setState({
                 categories: item.docs
             })
-        })
-
+        });
     }
 
+    handleText = (string) => {
+        if (string !== undefined) {
+            return string.split('|||')[0]
+        }
+    }
+
+
     render() {
-
         const options = this.state.categories.map(item => {
-
             return item.data().categories.map(innerItem => {
-                return (
+                if (this.handleText(this.props.category) == innerItem.name) {
+                    return (
+                        <option value={`${innerItem.name}|||${innerItem.color}`} selected>{innerItem.name}</option>
+                    )
+                } else {
+                    return (
+                        <option value={`${innerItem.name}|||${innerItem.color}`}>{innerItem.name}</option>
+                    )
+                }
 
-                    <option value={innerItem.name} selected>{innerItem.name}</option>
-
-                )
             })
         })
 
-        console.log(this.state.categories, 'categories')
         return (
             <React.Fragment>
                 <form>
-                    <select name="options" multiple>
+                    <select name="options" onChange={this.props.getSelectedCategory}>
                         {options}
                     </select>
                 </form>
 
-            </React.Fragment>
+            </React.Fragment >
         )
     }
 }

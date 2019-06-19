@@ -10,9 +10,12 @@ import { connect } from 'react-redux';
 import { notStrictEqual } from 'assert';
 import FileUploader from "react-firebase-file-uploader";
 import MenuItem from '@material-ui/core/MenuItem';
-import TextField from '@material-ui/core/TextField';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 import 'firebase/storage';
+import TextField from '@material-ui/core/TextField';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 
 
@@ -50,7 +53,7 @@ class Home extends Component {
 
   // Component lifecycle methods
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.firebase.getClients().then(snapshot => {
       this.setState({
         users: snapshot.docs
@@ -125,10 +128,8 @@ class Home extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-
     this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
       .put(this.state.file).then(snapshot => {
-        console.log(snapshot, 'snapshot console');
         const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
         this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
         this.setState({
@@ -144,35 +145,20 @@ class Home extends Component {
   };
 
 
-  // // Admin functions
-
-  // setAdminEmail = (e) => {
-  //   e.preventDefault();
-
-  //   this.setState({
-  //     adminEmail: e.target.value
-  //   })
-  // }
-
-  // submitAdmin = (e) => {
-  //   e.preventDefault();
-  //   const addAdminRole = this.props.firebase.functions.httpCallable('addAdminRole');
-  //   addAdminRole({ email: this.state.adminmail }).then(res => {
-  //     console.log(res)
-  //   })
-  // }
-
-
-
-
   render() {
 
-
+    const styleDelete = {
+      background: "transparent",
+      border: "none"
+    }
 
     const renderPosts = this.state.users.map(user => (
       <div data-id={user.data().id} className="client-wrapper col-sm-4">
         <img src={user.data().logo} />
-        <button onClick={() => this.deleteUser(user.id)}>X</button>
+        <button onClick={() => this.deleteUser(user.id)} style={styleDelete}>
+          <Fab disabled aria-label="Delete">
+            <DeleteIcon />
+          </Fab></button>
         <Link to={`/dates/${user.id}?clientId=${user.id}`}>
           {user.data().name}
         </Link>
@@ -191,35 +177,45 @@ class Home extends Component {
         <div id="client-list" className="row">
           {renderPosts}
         </div>
-        <button onClick={this.toggleAddNew.bind(this)}>Add New</button>
+        <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
+          <AddIcon />
+        </Fab>
         {this.state.isHidden ?
           <div id="add-new-form-wrapper">
             <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
             <form onSubmit={this.onSubmit} id="add-new-form">
-              <input
+              <TextField margin="normal"
+                variant="outlined"
                 name="username"
                 value={this.state.username}
                 onChange={this.onChange}
                 type="text"
-                placeholder="Full Name"
+                label="Name"
               />
-              <input
+              <TextField
+                margin="normal"
+                variant="outlined"
                 name="email"
                 value={this.state.email}
                 onChange={this.onChange}
                 type="text"
                 placeholder="Email Address"
+                label="Email"
               />
-              <input
+              <TextField
+                margin="normal"
+                variant="outlined"
                 name="passwordOne"
                 value={this.state.passwordOne}
                 onChange={this.onChange}
                 type="password"
                 placeholder="Password"
+                label="Password"
               />
+              <CloudUploadIcon />
               <input type="file" onChange={this.addFile} />
               <button disabled={isInvalid} type="submit">
-                Sign Up
+                Create User
             </button>
 
               {this.state.error && <p>{this.state.error.message}</p>}

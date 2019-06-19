@@ -35,7 +35,23 @@ class Dates extends Component {
     }
 
     componentWillMount() {
-        this.firstRender();
+        this.props.firebase.getDates(this.props.match.params.id).then(snapshot => {
+            const list = snapshot.docs;
+            list.map(item => {
+                console.log(item.data(), 'item');
+                const obj = {};
+                const dateArr = this.state.date;
+                obj["month"] = item.data().month;
+                obj["year"] = item.data().year;
+
+                dateArr.push(obj);
+                this.setState({
+                    date: dateArr
+                });
+                console.log(this.state, 'state after render');
+                console.log(dateArr, 'date array');
+            })
+        })
     }
 
     componentDidMount() {
@@ -59,82 +75,28 @@ class Dates extends Component {
         });
     }
 
-    firstRender() {
-
-        this.props.firebase.getDates(this.props.match.params.id).then(snapshot => {
-            console.log(snapshot.docs)
-            const list = snapshot.docs;
-            list.map(item => {
-                console.log(item.data(), 'item');
-                const obj = {};
-                const dateArr = this.state.date;
-                obj["month"] = item.data().month;
-                obj["year"] = item.data().year;
-
-                dateArr.push(obj);
-
-                this.setState({
-                    date: dateArr
-                });
-                console.log(this.state, 'state after render');
-                console.log(dateArr, 'date array');
-            })
-        })
-
-        // this.props.firebase.getClients().then(snapshot => {
-        //     const list = snapshot.docs
-        //     list.map(item => {
-        //         if (item.data().date !== undefined) {
-        //             this.setState({
-        //                 date: item.data().date
-        //             })
-        //         }
-        //     })
-        // })
-    }
 
     submitForm = e => {
         e.preventDefault();
-        // const currentDates = this.state.date;
-        // const monthSubmission = this.state.month;
-        // const yearSubmission = this.state.year;
-        // const emptyObj = {}
+        console.log(this.state.date, 'dates')
+        let tempDateObj = {};
+        tempDateObj.month = this.state.month
+        tempDateObj.year = this.state.year
 
-        // emptyObj["month"] = monthSubmission;
-        // emptyObj["year"] = yearSubmission;
-
-        // currentDates.push(emptyObj);
-        // // console.log(currentDates);
-
-
-
-
-        this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
-        this.setState({
-            showAddDate: !this.state.showAddDate,
-            dates: []
-        });
+        if (this.state.date.filter(e => e.month === tempDateObj.month).length > 0) {
+            alert('Sorry that month is already in use, please select again')
+        } else {
+            this.setState({
+                showAddDate: !this.state.showAddDate,
+                date: [...this.state.date, tempDateObj]
+            });
+            this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
+        }
 
 
-        this.props.firebase.getDates(this.props.match.params.id).then(snapshot => {
-            console.log(snapshot.docs)
-            const list = snapshot.docs;
-            list.map(item => {
-                console.log(item.data(), 'item');
-                const obj = {};
-                const dateArr = this.state.date;
-                obj["month"] = item.data().month;
-                obj["year"] = item.data().year;
 
-                dateArr.push(obj);
 
-                this.setState({
-                    date: dateArr
-                });
-                console.log(this.state, 'state after render');
-                console.log(dateArr, 'date array');
-            })
-        })
+
     }
 
     convert(num) {

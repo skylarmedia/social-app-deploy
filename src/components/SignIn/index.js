@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import Button from '@material-ui/core/Button';
 
 const SignInPage = () => (
   <React.Fragment>
@@ -29,25 +30,6 @@ const INITIAL_STATE = {
   loading: false
 };
 
-const useStyles = makeStyles(theme => ({
-  container: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  textField: {
-    marginLeft: theme.spacing(1),
-    marginRight: theme.spacing(1),
-    width: 200,
-  },
-  dense: {
-    marginTop: 19,
-  },
-  menu: {
-    width: 200,
-  },
-}));
-
-const classes = useStyles();
 
 const currentClientMonth = new Date().getMonth()
 const currentClientYear = new Date().getFullYear();
@@ -115,28 +97,25 @@ class SignInFormBase extends Component {
       <React.Fragment>
         <form onSubmit={this.onSubmit} className="d-flex flex-column">
           <TextField
-            id="standard-name"
-            label="Name"
-            className={classes.textField}
-            margin="normal"
-          />
-          <input
             name="email"
+            label="email"
             value={email}
             onChange={this.onChange}
             type="text"
             placeholder="Email Address"
+            margin="normal"
+            variant="outlined"
           />
-          <input
+          <TextField
             name="password"
             value={password}
+            label="password"
             onChange={this.onChange}
             type="password"
+            variant="outlined"
             placeholder="Password"
           />
-          <button disabled={isInvalid} type="submit">
-            Sign In
-          </button>
+          <Button disabled={isInvalid} type="submit" variant="contained" color="primary">Sign In</Button>
 
           {error && <p>{error.message}</p>}
         </form>
