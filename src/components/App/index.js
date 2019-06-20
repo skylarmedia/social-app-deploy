@@ -71,7 +71,7 @@ const App = () => (
       <Route exact path="/server" component={Server} />
       <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
       <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
-      <Route path="/admin-view-post/:month/:day/:title/:client" component={AdminViewPost} />
+      <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
       <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
     </div>
   </Router>

@@ -184,7 +184,8 @@ class Home extends Component {
           <div id="add-new-form-wrapper">
             <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
             <form onSubmit={this.onSubmit} id="add-new-form">
-              <TextField margin="normal"
+              <TextField
+                margin="normal"
                 variant="outlined"
                 name="username"
                 value={this.state.username}

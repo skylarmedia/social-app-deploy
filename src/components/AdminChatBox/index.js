@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
+import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import TextField from '@material-ui/core/TextField';
 
 class AdminChatBox extends Component {
     constructor(props) {
@@ -30,8 +32,12 @@ class AdminChatBox extends Component {
         let title = this.props.title
         let message = this.state.message
 
-        this.props.firebase.postMessage(id, month, day, title, message);
+        let date = new Date;
+        var messageMonth = date.getMonth();
+
+        this.props.getMessage(id, month, day, title, message)
     }
+
 
 
 
@@ -46,5 +52,5 @@ class AdminChatBox extends Component {
 }
 
 export default compose(
-    withFirebase(AdminChatBox)
-);
+    withFirebase
+)(AdminChatBox)

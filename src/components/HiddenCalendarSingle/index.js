@@ -20,7 +20,6 @@ class HiddenCalendarSingle extends Component {
         }
 
         this.toggleIsHidden = this.toggleIsHidden.bind(this);
-        this.handleDoubleClickItem = this.handleDoubleClickItem.bind(this);
     }
 
     componentWillMount() {
@@ -55,7 +54,7 @@ class HiddenCalendarSingle extends Component {
 
     doDoubleClickAction() {
         let friendlyUrl = this.props.title.replace(/ /g, '-').toLowerCase();
-        this.props.push.push(`/admin-view-post/${this.props.month}/${this.props.day}/${friendlyUrl}/${this.props.clientId}`);
+        this.props.push.push(`/admin-view-post/${this.props.month}/${this.props.day}/${friendlyUrl}/${this.props.clientId}/${this.props.itemId}`);
     }
 
     handleDoubleClick() {
@@ -65,10 +64,6 @@ class HiddenCalendarSingle extends Component {
     }
 
     truncate = (input) => input.length > 200 ? `${input.substring(0, 200)}...` : input;
-
-    // handleDoubleClickItem = (e) => {
-    //     e.preventDefault();
-    // }
 
     handleColor = (string) => {
         if (string !== undefined) {

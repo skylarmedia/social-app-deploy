@@ -24,6 +24,7 @@ class Firebase {
         this.db = app.firestore();
         this.storage = app.storage();
         this.functions = app.functions();
+
     }
 
     // Admin Functions
@@ -33,6 +34,8 @@ class Firebase {
     getCurrentUser = () => {
         alert(this.auth.currentUser.uid);
     }
+
+    listenChatChanges = (id) => this.db.collection('chats').doc(id).collection('messages');
 
     // Post Approval
 
@@ -59,6 +62,7 @@ class Firebase {
         categories: categories
     });
 
+
     getAll = user => this.db.collection('users').doc(user).get();
 
     getUserCategories = (user) => this.db.collection('users').doc(user).collection('categories').get();
@@ -72,7 +76,6 @@ class Firebase {
         logo: 'https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg'
     });
 
-    listenChatChanges = (id) => this.db.collection('chats').doc(id);
 
     getUniqueClientPosts = (id, currentMonth) => this.db.collection('users').doc(id).collection('posts').where('month', '==', currentMonth).get();
 
@@ -114,6 +117,9 @@ class Firebase {
     })
 
     // Posts Function
+
+    editPostFirebase = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).get();
+
 
     editPostFirebase = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).get();
 

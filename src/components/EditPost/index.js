@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import TimePicker from 'react-time-picker';
 import EditCategoryForm from '../EditCategoryForm';
 import * as ROUTES from '../../constants/routes';
+import TextField from '@material-ui/core/TextField';
 
 // function getType(url) {
 //     if (url !== 'No Files') {
@@ -42,6 +43,7 @@ class EditPost extends Component {
         this.handlePostTitle = this.handlePostTitle.bind(this);
         this.editPostSubmit = this.editPostSubmit.bind(this);
         this.getSelectedCategory = this.getSelectedCategory.bind(this);
+        this.handleHashtags = this.handleHashtags.bind(this);
     }
 
 
@@ -142,11 +144,17 @@ class EditPost extends Component {
         })
     }
 
+    handleHashtags = (event) => {
+        this.setState({
+            postHashtags: event.target.value
+        });
+
+        console.log(this.state.postHashtags);
+    }
+
 
 
     render() {
-        console.log(this.state.selectedCategory, 'selected category');
-        console.log(this.props.category, 'props category');
         const media = this.state.metaImageFiles.map((item) => {
             if (this.getType(item) == 'video') {
                 return (
@@ -164,10 +172,26 @@ class EditPost extends Component {
         return (
             <div> Edit Posts
                 <form onSubmit={this.editPostSubmit}>
-                    Title<input name="title" value={this.state.postTitle} onChange={this.handlePostTitle} /><br />
+                    <TextField
+                        margin="normal"
+                        variant="outlined"
+                        label="Title"
+                        name="title"
+                        value={this.state.postTitle}
+                        onChange={this.handlePostTitle} />
 
-                    Copy<textarea name="copy" onChange={this.handlePostCopy} value={this.state.postCopy} /><br />
-                    Hashtags<input name="hashtags" value={this.state.postHashtags} /><br />
+                    <TextField
+                        id="outlined-multiline-static"
+                        label="Copy"
+                        multiline
+                        rows="4"
+                        defaultValue="Default Value"
+                        margin="normal"
+                        variant="outlined"
+                        onChange={this.handlePostCopy} value={this.state.postCopy}
+                    />
+                    <br />
+                    Hashtags<input name="hashtags" value={this.state.postHashtags} onChange={this.handleHashtags} /><br />
                     <TimePicker
                         onChange={this.onChangeTime}
                         value={this.state.postTime}

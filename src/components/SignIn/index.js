@@ -11,6 +11,7 @@ import { SignUpLink } from '../SignUp';
 import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const SignInPage = () => (
   <React.Fragment>
@@ -121,7 +122,7 @@ class SignInFormBase extends Component {
         </form>
         {
           this.state.loading && (
-            <h1>Loading</h1>
+            <CircularProgress />
           )
         }
       </React.Fragment>
