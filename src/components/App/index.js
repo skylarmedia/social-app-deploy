@@ -61,6 +61,7 @@ const App = () => (
       <hr />
       <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
+      <Route path="/social-app-deploy/" component={SignInPage} />
       <Route path={ROUTES.SIGN_IN} component={SignInPage} />
       <Route exact path="/" component={SignInPage} />
       <Route exact path={ROUTES.HOME} component={HomePage} />
