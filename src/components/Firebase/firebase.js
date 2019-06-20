@@ -95,7 +95,7 @@ class Firebase {
 
     getDates = (id) => this.db.collection('users').doc(id).collection('dates').get()
 
-    addDate = (id, month, year) => this.db.collection('users').doc(id).collection('dates').add({
+    addDate = (id, month, year) => this.db.collection('users').where('urlName', '==', id).collection('dates').add({
         month: month,
         year: year
     });
@@ -106,14 +106,9 @@ class Firebase {
             logo: logo,
             status: 1,
             userId: cred.user.uid,
-            admin: 0
+            admin: 0,
+            urlName: name.toLowerCase().replace(/ /g, '-')
         })
-    }).then(user => {
-        if (user) {
-            user.updateProfile({
-                displayName: 'test'
-            })
-        }
     })
 
     // Posts Function
@@ -160,10 +155,10 @@ class Firebase {
 
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password).then(res => {
-            return this.db.collection('users').doc(res.user.uid).get()
+            return this.db.collection('users').doc(res.user.uid).get();
         })
 
-    doSignOut = () => this.auth.signOut();
+    doSignOut = () => this.auth.signOut().then(() => { })
 
     doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 

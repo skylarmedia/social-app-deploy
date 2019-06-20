@@ -16,6 +16,7 @@ import Fab from '@material-ui/core/Fab';
 import 'firebase/storage';
 import TextField from '@material-ui/core/TextField';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import { withAuthorization } from '../Session';
 
 
 
@@ -25,7 +26,7 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: false,
+      isLoading: false,
       isHidden: false,
       name: '',
       image: '',
@@ -55,8 +56,17 @@ class Home extends Component {
 
   componentWillMount() {
     this.props.firebase.getClients().then(snapshot => {
+      const opened = snapshot.docs;
+
+      const setArr = [...this.state.users]
+
+      opened.map(item => {
+        setArr.push(item.data())
+      })
+      console.log(setArr, 'set arr')
       this.setState({
-        users: snapshot.docs
+        users: setArr,
+        loading: !this.state.isLoading
       })
     });
   }
@@ -73,14 +83,16 @@ class Home extends Component {
     });
   }
 
-  deleteUser = (id) => {
+  deleteUser = (id, index) => {
     this.props.firebase.deleteClient(id);
 
-    this.props.firebase.getClients().then(snapshot => {
-      this.setState({
-        users: snapshot.docs
-      })
+    this.setState({
+      users: this.state.users.filter((_, i) => i !== index)
     });
+
+
+
+
   }
 
   addClient = (e) => {
@@ -131,39 +143,29 @@ class Home extends Component {
     this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
       .put(this.state.file).then(snapshot => {
         const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
-        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
+        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl).then(res => {
+          console.log(res, 'user response')
+        })
         this.setState({
           isHidden: !this.state.isHidden
         })
       });
 
-    this.props.firebase.getClients().then(snapshot => {
-      this.setState({
-        users: snapshot.docs
-      })
-    });
+    // this.props.firebase.getClients().then(snapshot => {
+    //   this.setState({
+    //     users: snapshot.docs
+    //   })
+    // });
   };
 
 
   render() {
-
     const styleDelete = {
       background: "transparent",
       border: "none"
     }
 
-    const renderPosts = this.state.users.map(user => (
-      <div data-id={user.data().id} className="client-wrapper col-sm-4">
-        <img src={user.data().logo} />
-        <button onClick={() => this.deleteUser(user.id)} style={styleDelete}>
-          <Fab disabled aria-label="Delete">
-            <DeleteIcon />
-          </Fab></button>
-        <Link to={`/dates/${user.id}?clientId=${user.id}`}>
-          {user.data().name}
-        </Link>
-      </div >
-    ))
+    // const renderPosts = 
 
     const isInvalid =
       this.state.passwordOne === '' ||
@@ -173,13 +175,35 @@ class Home extends Component {
 
 
     return (
+
       <div>
-        <div id="client-list" className="row">
-          {renderPosts}
+
+        <div>
+          <div id="client-list" className="row">
+            {
+              this.state.users.map((user, index) =>
+                (
+                  <div data-id={user.userId} className="client-wrapper col-sm-4" key={index}>
+                    <img src={user.logo} />
+                    <button onClick={() => this.deleteUser(user.userId, index)} style={styleDelete}>
+                      <Fab disabled aria-label="Delete">
+                        <DeleteIcon />
+                      </Fab>
+                    </button>
+                    <Link to={`/dates/${user.urlName}`}>
+                      {user.name}
+                    </Link>
+                  </div >
+                ))
+            }
+          </div>
+
+
+          <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
+            <AddIcon />
+          </Fab>
         </div>
-        <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
-          <AddIcon />
-        </Fab>
+
         {this.state.isHidden ?
           <div id="add-new-form-wrapper">
             <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
@@ -241,6 +265,7 @@ const mapStateToProps = state => (
     data: state.setClientsReducer
   })
 
+const authCondition = authUser => !!authUser;
 
 export default compose(
   withFirebase,

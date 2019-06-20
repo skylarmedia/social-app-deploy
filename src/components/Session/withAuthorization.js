@@ -12,9 +12,12 @@ const withAuthorization = condition => Component => {
         componentDidMount() {
             this.listener = this.props.firebase.auth.onAuthStateChanged(
                 authUser => {
-                    console.log(authUser, 'auth User');
+                    authUser
+                        ? this.setState({ authUser })
+                        : this.props.history.push(`/`);
                 },
             );
+            console.log(this.props, 'props in auth')
         }
 
         componentWillUnmount() {

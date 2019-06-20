@@ -4,6 +4,7 @@ import {
   Route, Switch
 } from 'react-router-dom';
 
+
 import { withFirebase } from '../Firebase';
 
 import { AuthUserContext } from '../Session';
@@ -27,6 +28,10 @@ import AdminViewPost from '../AdminViewPost';
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
 import CalendarCategoryContainer from '../CalendarCategoryContainer'
+import { PasswordForgetForm } from '../PasswordForget';
+import PasswordChangeForm from '../PasswordChange';
+import { withAuthorization } from '../Session';
+
 
 // class App extends Component {
 //   constructor(props) {
@@ -57,14 +62,17 @@ const App = () => (
   <Router>
     <div>
       <Navigation />
-
       <hr />
+      <Route exact path="/" component={SignInPage} />
       <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route path="/social-app-deploy/" component={SignInPage} />
       <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route exact path="/" component={SignInPage} />
-      <Route exact path={ROUTES.HOME} component={HomePage} />
+      <AuthUserContext.Consumer>
+        {authUser => (
+          <Route exact path={ROUTES.HOME} component={HomePage} />
+        )}
+      </AuthUserContext.Consumer>
       <Route path={ROUTES.CLIENTS} component={Clients} />
       <Route path={ROUTES.DATES} component={Dates} />
       <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />
