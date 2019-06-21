@@ -30,16 +30,12 @@ class ClientCalendarSingle extends Component {
         console.log(this.props.posts, 'flitered')
 
         const filteredList = filtered.map(item => {
-            const color = item.data().selectedCategory.split('|||')[1]
 
             let friendlyUrl = item.data().title.toLowerCase().replace(/ /g, '-');
             let itemId = item.id;
-            const clientButtonStyle = {
-                background: color
-            }
             return (
                 <div>
-                    <Link style={clientButtonStyle} to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`}>{item.data().title} < br /></Link >
+                    <Link to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`}>{item.data().title} < br /></Link >
                     {
                         item.data().approved ? "checked" : 'Not checked'
                     }
