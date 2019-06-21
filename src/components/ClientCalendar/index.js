@@ -6,7 +6,8 @@ import { withFirebase } from '../Firebase';
 import CalendarSingle from '../CalendarSingle';
 import { Link } from 'react-router-dom';
 import { compose } from 'recompose';
-import ClientCalendarSingle from '../ClientCalendarSingle'
+import ClientCalendarSingle from '../ClientCalendarSingle';
+import CategoryList from '../CategoryList';
 
 
 
@@ -21,7 +22,8 @@ class ClientCalendar extends React.Component {
         allmonths: moment.months(),
         selectedDay: null,
         currentMonth: parseInt(moment().format('M')),
-        currentPosts: []
+        currentPosts: [],
+        categories: []
     };
 
     componentWillMount() {
@@ -29,6 +31,16 @@ class ClientCalendar extends React.Component {
         this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), parseInt(this.props.match.params.month)).then(snapshot => {
             this.setState({
                 currentPosts: snapshot.docs
+            })
+        })
+
+        this.props.firebase.getUserCategories(localStorage.getItem('userId')).then(snapshot => {
+            const catArr = [...this.state.categories]
+            snapshot.docs.map(category => {
+                catArr.push(category.data())
+            })
+            this.setState({
+                categories: catArr
             })
         })
     }
@@ -284,54 +296,57 @@ class ClientCalendar extends React.Component {
 
 
         return (
-            <div className="tail-datetime-calendar">
-                <div className="calendar-navi">
-                    <span
-                        onClick={e => {
-                            this.onPrev();
-                        }}
-                        class="calendar-button button-prev"
-                    />
-                    {!this.state.showMonthTable && (
+            <React.Fragment>
+                <CategoryList colors={this.state.categories} />
+                <div className="tail-datetime-calendar">
+                    <div className="calendar-navi">
                         <span
                             onClick={e => {
-                                this.showMonth();
+                                this.onPrev();
                             }}
-                            class="calendar-label"
-                        >
-                            {this.month()}
+                            class="calendar-button button-prev"
+                        />
+                        {!this.state.showMonthTable && (
+                            <span
+                                onClick={e => {
+                                    this.showMonth();
+                                }}
+                                class="calendar-label"
+                            >
+                                {this.month()}
+                            </span>
+                        )}
+                        <span className="calendar-label" onClick={e => this.showYearTable()}>
+                            {this.year()}
                         </span>
-                    )}
-                    <span className="calendar-label" onClick={e => this.showYearTable()}>
-                        {this.year()}
-                    </span>
-                    <span
-                        onClick={e => {
-                            this.onNext();
-                        }}
-                        className="calendar-button button-next"
-                    />
-                </div>
-
-                <div className="calendar-date">
-                    {this.state.showYearTable && <this.YearTable props={this.year()} />}
-                    {this.state.showMonthTable && (
-                        <this.MonthList data={moment.months()} />
-                    )}
-                </div>
-
-                {this.state.showDateTable && (
-                    <div className="calendar-date">
-                        <table className="calendar-day">
-                            <thead>
-                                <tr>{weekdayshortname}</tr>
-                            </thead>
-                            <tbody>{daysinmonth}</tbody>
-                        </table>
+                        <span
+                            onClick={e => {
+                                this.onNext();
+                            }}
+                            className="calendar-button button-next"
+                        />
                     </div>
-                )}
-                <button onClick={this.getState.bind(this)}>Get state</button>
-            </div>
+
+                    <div className="calendar-date">
+                        {this.state.showYearTable && <this.YearTable props={this.year()} />}
+                        {this.state.showMonthTable && (
+                            <this.MonthList data={moment.months()} />
+                        )}
+                    </div>
+
+                    {this.state.showDateTable && (
+                        <div className="calendar-date">
+                            <table className="calendar-day">
+                                <thead>
+                                    <tr>{weekdayshortname}</tr>
+                                </thead>
+                                <tbody>{daysinmonth}</tbody>
+                            </table>
+                        </div>
+                    )}
+                    <button onClick={this.getState.bind(this)}>Get state</button>
+                </div>
+            </React.Fragment>
         );
     }
 }

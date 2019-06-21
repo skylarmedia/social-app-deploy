@@ -314,9 +314,6 @@ class Calendar extends React.Component {
       showCat: !this.state.showCat,
       categories: currentCat
     })
-
-    console.log(arr2, 'push categories')
-
     this.props.firebase.sendCategories(this.props.match.params.clientId, arr2);
 
 
