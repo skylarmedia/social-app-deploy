@@ -55,8 +55,6 @@ class SignInFormBase extends Component {
 
     this.props.firebase
       .doSignInWithEmailAndPassword(email, password).then(value => {
-
-        console.log(value.docs[0].data().admin == 1, 'value inside')
         if (value.docs[0].data().admin == 1) {
           this.props.history.push({
             pathname: `/home`,
@@ -67,9 +65,8 @@ class SignInFormBase extends Component {
         }
         else {
           localStorage.setItem('userId', value.docs[0].data().urlName)
-          this.props.onSetUserId(value.docs[0].data().userId)
           this.props.history.push({
-            pathname: `/client-calendar/${this.state.year}/5`,
+            pathname: `/client-calendar/${this.state.year}/${this.state.month}`,
             state: {
               userId: value.docs[0].data().urlName
             }

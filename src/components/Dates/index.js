@@ -4,6 +4,7 @@ import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
 import Calendar from '../Calendar'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 
@@ -21,16 +22,16 @@ class Dates extends Component {
             chosenYear: '',
             showCalendar: false,
             clientId: '',
+            isLoading: false,
             passDates: (month, year) => {
                 this.setState({
                     chosenMonth: month,
                     chosenYear: year,
                     showCalendar: true
                 })
-            }
+            },
 
         }
-
         this.submitForm = this.submitForm.bind(this);
     }
 
@@ -38,7 +39,8 @@ class Dates extends Component {
         this.props.firebase.getUID(this.props.match.params.id).then(snapshot => {
             snapshot.docs.map(item => {
                 this.setState({
-                    clientId: item.data().userId
+                    clientId: item.data().userId,
+                    isLoading: !this.state.isLoading
                 })
             })
         })
@@ -56,8 +58,6 @@ class Dates extends Component {
                 this.setState({
                     date: dateArr
                 });
-                console.log(this.state, 'state after render');
-                console.log(dateArr, 'date array');
             })
         })
 
@@ -67,17 +67,7 @@ class Dates extends Component {
     }
 
     componentDidMount() {
-        // var url_string = window.location.href  //window.location.href
-        // var url = new URL(url_string);
-        // var c = url.searchParams.get("clientId");
 
-        // this.setState({
-        //     clientId: c
-        // }, () => {
-        //     localStorage.setItem('clientId', this.state.clientId)
-        // })
-
-        // console.log(c, 'c');
     }
 
 
@@ -103,16 +93,7 @@ class Dates extends Component {
                 showAddDate: !this.state.showAddDate,
                 date: [...this.state.date, tempDateObj]
             });
-
-            alert(this.state.clientId)
-            alert(this.state.month)
-            alert(this.state.year)
         }
-
-
-
-
-
     }
 
     convert(num) {
@@ -158,47 +139,52 @@ class Dates extends Component {
                 <br />
             </Link>
         ));
-        console.log(this.state, 'state in render');
         return (
-            <div>
-                <Link to='/Home'>Back</Link><br />
-                {this.props.match.params.id}<br />
-                Dates
-                {renderDates}
-                {this.state.showAddDate ?
-                    <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-                        <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">Close</button>
-                        <select onChange={this.handleMonth.bind(this)} value={this.state.value}>
-                            <option value="1">January</option>
-                            <option value="2">February</option>
-                            <option value="3">March</option>
-                            <option value="4">April</option>
-                            <option value="5">May</option>
-                            <option value="6">June</option>
-                            <option value="7">July</option>
-                            <option value="8">August</option>
-                            <option value="9">September</option>
-                            <option value="10">October</option>
-                            <option value="11">November</option>
-                            <option value="12">December</option>
-                        </select>
-                        <select onChange={this.handleYear.bind(this)}>
-                            <option value="2019">2019</option>
-                            <option value="2020">2020</option>
-                        </select>
+            this.state.isLoading ?
+                <div>
+                    <Link to='/Home'>Back</Link><br />
+                    {this.props.match.params.id}<br />
+                    Dates
+            {renderDates}
+                    {this.state.showAddDate ?
+                        <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
+                            <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">Close</button>
+                            <select onChange={this.handleMonth.bind(this)} value={this.state.value}>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                            <select onChange={this.handleYear.bind(this)}>
+                                <option value="2019">2019</option>
+                                <option value="2020">2020</option>
+                            </select>
 
-                        <input type="submit" value="Submit" />
-                    </form>
-                    :
-                    ''
-                }
-                {this.state.showCalender ?
-                    <Calendar impData={this.state} />
-                    : ''
-                }
-                }
-                <button onClick={this.toggleAddDate.bind(this)}>Add New</button>
-            </div>
+                            <input type="submit" value="Submit" />
+                        </form>
+                        :
+                        ''
+                    }
+                    {this.state.showCalender ?
+                        <Calendar impData={this.state} />
+                        : ''
+                    }
+                    }
+            <button onClick={this.toggleAddDate.bind(this)}>Add New</button>
+                </div>
+
+                :
+                <CircularProgress />
+
+
         )
     }
 }
