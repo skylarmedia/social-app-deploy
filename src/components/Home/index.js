@@ -143,9 +143,7 @@ class Home extends Component {
     this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
       .put(this.state.file).then(snapshot => {
         const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
-        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl).then(res => {
-          console.log(res, 'user response')
-        })
+        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl)
         this.setState({
           isHidden: !this.state.isHidden
         })
@@ -186,9 +184,11 @@ class Home extends Component {
                   <div data-id={user.userId} className="client-wrapper col-sm-4" key={index}>
                     <img src={user.logo} />
                     <button onClick={() => this.deleteUser(user.userId, index)} style={styleDelete}>
-                      <Fab disabled aria-label="Delete">
+                      {/* <Fab disabled aria-label="Delete">
                         <DeleteIcon />
-                      </Fab>
+                      </Fab> */}
+
+                      X
                     </button>
                     <Link to={`/dates/${user.urlName}`}>
                       {user.name}

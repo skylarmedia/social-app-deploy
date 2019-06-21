@@ -87,7 +87,7 @@ class Firebase {
 
     getSocialPosts = (id, month) => this.db.collection('users').doc(id).collection('posts').get();
 
-    getClients = () => this.db.collection('users').where('status', '==', 1).get();
+    getClients = () => this.db.collection('users').where('status', '==', 1).where('admin', '==', 0).get();
 
     getPostId = (id) => this.db.collection('clients').doc(id).collection('posts').get();
 
