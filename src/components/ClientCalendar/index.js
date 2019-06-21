@@ -9,6 +9,7 @@ import { compose } from 'recompose';
 import ClientCalendarSingle from '../ClientCalendarSingle'
 
 
+
 class ClientCalendar extends React.Component {
     weekdayshort = moment.weekdaysShort();
 
@@ -16,7 +17,7 @@ class ClientCalendar extends React.Component {
         showYearTable: false,
         showMonthTable: false,
         showDateTable: true,
-        dateObject: moment(),
+        dateObject: moment(`2019-${this.props.match.params.month}`),
         allmonths: moment.months(),
         selectedDay: null,
         currentMonth: parseInt(moment().format('M')),
@@ -25,13 +26,10 @@ class ClientCalendar extends React.Component {
 
     componentWillMount() {
         console.log(localStorage, 'local storage');
-        console.log(this.props.match.params.month, 'params in month')
-        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), 6).then(snapshot => {
-
-            console.log(snapshot.docs, 'snapshot in client calendar')
-            // this.setState({
-            //     currentPosts: snapshot.docs
-            // })
+        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), parseInt(this.props.match.params.month)).then(snapshot => {
+            this.setState({
+                currentPosts: snapshot.docs
+            })
         })
     }
 
@@ -130,7 +128,8 @@ class ClientCalendar extends React.Component {
 
 
         this.props.history.push(`/client-calendar/2019/${parseInt(this.props.match.params.month) - 1}`);
-        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), parseInt(this.props.match.params.month) + 1).then(snapshot => {
+        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), parseInt(this.props.match.params.month - 1)).then(snapshot => {
+            console.log(snapshot, 'snapshot val prev')
             this.setState({
                 currentPosts: snapshot.docs,
                 dateObject: this.state.dateObject.subtract(1, curr)

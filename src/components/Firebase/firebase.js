@@ -165,7 +165,6 @@ class Firebase {
 
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password).then(res => {
-            console.log(res.user.email, 'res')
             return this.db.collection('users').where('email', '==', res.user.email).get();
         })
 
