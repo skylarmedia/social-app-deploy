@@ -63,7 +63,6 @@ class Home extends Component {
       opened.map(item => {
         setArr.push(item.data())
       })
-      console.log(setArr, 'set arr')
       this.setState({
         users: setArr,
         loading: !this.state.isLoading

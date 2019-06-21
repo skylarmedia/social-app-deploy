@@ -35,6 +35,14 @@ class Dates extends Component {
     }
 
     componentWillMount() {
+        this.props.firebase.getUID(this.props.match.params.id).then(snapshot => {
+            snapshot.docs.map(item => {
+                this.setState({
+                    clientId: item.data().userId
+                })
+            })
+        })
+
         this.props.firebase.getDates(this.props.match.params.id).then(snapshot => {
             const list = snapshot.docs;
             list.map(item => {
@@ -55,13 +63,7 @@ class Dates extends Component {
 
         // Get UID
 
-        this.props.firebase.getUID(this.props.match.params.id).then(snapshot => {
-            snapshot.docs.map(item => {
-                this.setState({
-                    clientId: item.data().userId
-                })
-            })
-        })
+
     }
 
     componentDidMount() {
@@ -95,15 +97,16 @@ class Dates extends Component {
         if (this.state.date.filter(e => e.month === tempDateObj.month).length > 0) {
             alert('Sorry that month is already in use, please select again')
         } else {
-            this.props.firebase.addDate(this.state.clientId, this.state.month, this.state.year);
-            // this.setState({
-            //     showAddDate: !this.state.showAddDate,
-            //     date: [...this.state.date, tempDateObj]
-            // });
+            alert(this.props.match.params.id)
+            this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
+            this.setState({
+                showAddDate: !this.state.showAddDate,
+                date: [...this.state.date, tempDateObj]
+            });
 
-            // alert(this.props.match.params.id)
-            // alert(this.state.month)
-            // alert(this.state.year)
+            alert(this.state.clientId)
+            alert(this.state.month)
+            alert(this.state.year)
         }
 
 
@@ -150,7 +153,7 @@ class Dates extends Component {
     render() {
         const renderDates = this.state.date.map(item => (
             // <Link to={`/calendar?month=${item.month}&year=${item.year}&clientId=${this.state.clientId}`}>
-            <Link to={`/calendar/${item.year}/${item.month}/${this.state.clientId}`}>
+            <Link to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}>
                 {this.convert(item.month)} {item.year}
                 <br />
             </Link>

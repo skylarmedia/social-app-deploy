@@ -24,7 +24,6 @@ class Firebase {
         this.db = app.firestore();
         this.storage = app.storage();
         this.functions = app.functions();
-
     }
 
     // Admin Functions
@@ -76,7 +75,6 @@ class Firebase {
         logo: 'https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg'
     });
 
-
     getUniqueClientPosts = (id, currentMonth) => this.db.collection('users').doc(id).collection('posts').where('month', '==', currentMonth).get();
 
     deletePost = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).delete()
@@ -95,7 +93,7 @@ class Firebase {
 
     getDates = (id) => this.db.collection('users').doc(id).collection('dates').get()
 
-    addDate = (urlName, month, year) => this.db.collection('users').where('urlName', '==', urlName).collection('dates').set({
+    addDate = (id, month, year) => this.db.collection('users').doc(id).collection('dates').add({
         month: month,
         year: year
     });
@@ -103,7 +101,7 @@ class Firebase {
     getUID = (urlName) => this.db.collection('users').where('urlName', '==', urlName).get()
 
     addUser = (email, password, name, logo) => this.auth.createUserWithEmailAndPassword(email, password).then(cred => {
-        return this.db.collection('users').doc(cred.user.uid).set({
+        return this.db.collection('users').doc(name.toLowerCase().replace(/ /g, '-')).set({
             name: name,
             logo: logo,
             status: 1,
@@ -116,7 +114,6 @@ class Firebase {
     // Posts Function
 
     editPostFirebase = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).get();
-
 
     editPostFirebase = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).get();
 
