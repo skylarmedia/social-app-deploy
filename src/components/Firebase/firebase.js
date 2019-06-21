@@ -95,10 +95,12 @@ class Firebase {
 
     getDates = (id) => this.db.collection('users').doc(id).collection('dates').get()
 
-    addDate = (id, month, year) => this.db.collection('users').where('urlName', '==', id).collection('dates').add({
+    addDate = (urlName, month, year) => this.db.collection('users').where('urlName', '==', urlName).collection('dates').set({
         month: month,
         year: year
     });
+
+    getUID = (urlName) => this.db.collection('users').where('urlName', '==', urlName).get()
 
     addUser = (email, password, name, logo) => this.auth.createUserWithEmailAndPassword(email, password).then(cred => {
         return this.db.collection('users').doc(cred.user.uid).set({
@@ -139,6 +141,9 @@ class Firebase {
         friendlyUrl: friendlyUrl,
         approved: approved
     });
+
+    // Get UID
+
 
 
 

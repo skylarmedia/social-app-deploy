@@ -52,20 +52,30 @@ class Dates extends Component {
                 console.log(dateArr, 'date array');
             })
         })
+
+        // Get UID
+
+        this.props.firebase.getUID(this.props.match.params.id).then(snapshot => {
+            snapshot.docs.map(item => {
+                this.setState({
+                    clientId: item.data().userId
+                })
+            })
+        })
     }
 
     componentDidMount() {
-        var url_string = window.location.href  //window.location.href
-        var url = new URL(url_string);
-        var c = url.searchParams.get("clientId");
+        // var url_string = window.location.href  //window.location.href
+        // var url = new URL(url_string);
+        // var c = url.searchParams.get("clientId");
 
-        this.setState({
-            clientId: c
-        }, () => {
-            localStorage.setItem('clientId', this.state.clientId)
-        })
+        // this.setState({
+        //     clientId: c
+        // }, () => {
+        //     localStorage.setItem('clientId', this.state.clientId)
+        // })
 
-        console.log(c, 'c');
+        // console.log(c, 'c');
     }
 
 
@@ -78,7 +88,6 @@ class Dates extends Component {
 
     submitForm = e => {
         e.preventDefault();
-        console.log(this.state.date, 'dates')
         let tempDateObj = {};
         tempDateObj.month = this.state.month
         tempDateObj.year = this.state.year
@@ -86,11 +95,15 @@ class Dates extends Component {
         if (this.state.date.filter(e => e.month === tempDateObj.month).length > 0) {
             alert('Sorry that month is already in use, please select again')
         } else {
-            this.setState({
-                showAddDate: !this.state.showAddDate,
-                date: [...this.state.date, tempDateObj]
-            });
-            this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
+            this.props.firebase.addDate(this.state.clientId, this.state.month, this.state.year);
+            // this.setState({
+            //     showAddDate: !this.state.showAddDate,
+            //     date: [...this.state.date, tempDateObj]
+            // });
+
+            // alert(this.props.match.params.id)
+            // alert(this.state.month)
+            // alert(this.state.year)
         }
 
 
@@ -135,7 +148,6 @@ class Dates extends Component {
 
 
     render() {
-
         const renderDates = this.state.date.map(item => (
             // <Link to={`/calendar?month=${item.month}&year=${item.year}&clientId=${this.state.clientId}`}>
             <Link to={`/calendar/${item.year}/${item.month}/${this.state.clientId}`}>
