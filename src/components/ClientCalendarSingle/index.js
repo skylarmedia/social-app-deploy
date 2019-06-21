@@ -23,12 +23,11 @@ class ClientCalendarSingle extends Component {
     render() {
 
         let linkMonth = this.getMonthFromString(this.props.month);
-        // console.log(this.props.month, 'props in calendar single')
-        console.log(linkMonth, 'link month')
 
         const filtered = this.props.posts.filter(item => {
             return item.data().day == this.props.day
         });
+        console.log(this.props.posts, 'flitered')
 
         const filteredList = filtered.map(item => {
             let friendlyUrl = item.data().title.toLowerCase().replace(/ /g, '-');

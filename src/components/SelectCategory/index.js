@@ -14,7 +14,8 @@ class SelectCategory extends Component {
             name: '',
             categoryName: '',
             category: {},
-            color: '#EF463B '
+            color: '#EF463B ',
+            sendCategory: []
         }
 
         this.removeCategory = this.removeCategory.bind(this);
@@ -23,12 +24,19 @@ class SelectCategory extends Component {
 
     submitCategories = (e) => {
         e.preventDefault();
-        let categoryObj = {}
+        let categoryObj = {
+            categories: {}
+        }
 
-        categoryObj.color = this.state.color;
-        categoryObj.name = this.state.name;
+        let sendCategory = {}
+
+        categoryObj.categories.color = this.state.color;
+        categoryObj.categories.name = this.state.name;
+        sendCategory.color = this.state.color;
+        sendCategory.name = this.state.name
         this.setState({
-            setCategories: [...this.state.setCategories, categoryObj]
+            setCategories: [...this.state.setCategories, categoryObj],
+            sendCategory: [...this.state.sendCategory, sendCategory]
         })
     }
 
@@ -51,7 +59,7 @@ class SelectCategory extends Component {
 
     passCategories = (e) => {
         e.preventDefault();
-        this.props.getCategories(this.state.setCategories)
+        this.props.getCategories(this.state.setCategories, this.state.sendCategory)
     }
 
 
@@ -59,13 +67,13 @@ class SelectCategory extends Component {
     render() {
         let categoryList = this.state.setCategories.map((item, i) => {
             let categoryStyle = {
-                background: item.color
+                background: item.categories.color
             }
             return (
                 <li key={i}>
                     <button onClick={this.removeCategory} data-index={i}>Remove</button>
                     <div className="hex-color" style={categoryStyle}></div>
-                    <div>{item.name}</div>
+                    <div>{item.categories.name}</div>
                 </li>
             )
 

@@ -57,9 +57,16 @@ class Firebase {
 
     getMessages = (id, month, day) => this.db.collection('chats').doc(id).collection('messages').where('month', '==', month).where('day', '==', day).get();
 
-    sendCategories = (user, categories) => this.db.collection('users').doc(user).collection('categories').add({
-        categories: categories
-    });
+    sendCategories = (user, categories) => {
+        categories.forEach(function (category) {
+            app.firestore().collection('users').doc(user).collection('categories').add({
+                categories: category
+            });
+        })
+    }
+
+    getAdminPost = (user, postId) => this.db.collection('users').doc(user).collection('posts').doc(postId).get();
+
 
 
     getAll = user => this.db.collection('users').doc(user).get();
@@ -107,6 +114,7 @@ class Firebase {
             status: 1,
             userId: cred.user.uid,
             admin: 0,
+            email: email,
             urlName: name.toLowerCase().replace(/ /g, '-')
         })
     })
@@ -157,7 +165,8 @@ class Firebase {
 
     doSignInWithEmailAndPassword = (email, password) =>
         this.auth.signInWithEmailAndPassword(email, password).then(res => {
-            return this.db.collection('users').doc(res.user.uid).get();
+            console.log(res.user.email, 'res')
+            return this.db.collection('users').where('email', '==', res.user.email).get();
         })
 
     doSignOut = () => this.auth.signOut().then(() => { })

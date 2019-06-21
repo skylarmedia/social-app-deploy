@@ -7,6 +7,10 @@ import { withFirebase } from '../Firebase';
 import { compose } from "redux";
 import SelectCategory from '../SelectCategory'
 import CategoryList from '../CategoryList';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
+
+
 
 const parts = window.location.search.substr(1).split("&");
 
@@ -37,7 +41,9 @@ class Calendar extends React.Component {
       currentYear: 0,
       posts: [],
       showCat: false,
-      categories: []
+      categories: [],
+      newColors: [],
+      isLoading: false
     };
 
     this.onDoubleClick = this.handleDoubleClickItem.bind(this)
@@ -52,15 +58,22 @@ class Calendar extends React.Component {
     if (this.props.match.params.clientId) {
       this.props.firebase.getSocialPosts(this.props.match.params.clientId).then(snapshot => {
         this.setState({
-          posts: snapshot.docs
+          posts: snapshot.docs,
+          isLoading: !this.state.isLoading
         });
       })
 
       this.props.firebase.getUserCategories(this.props.match.params.clientId).then(snapshot => {
+        const catArr = [...this.state.categories]
+        snapshot.docs.map(category => {
+
+          catArr.push(category.data())
+        })
         this.setState({
-          categories: snapshot.docs
+          categories: catArr
         })
       })
+
     }
   }
 
@@ -285,27 +298,39 @@ class Calendar extends React.Component {
 
   showCategories = e => {
     e.preventDefault();
-
     this.setState({
       showCat: !this.state.showCat
     })
   }
 
-  sendCategories = arr => {
+  sendCategories = (arr, arr2) => {
+    const currentCat = [...this.state.categories]
 
-    console.log(arr, 'arr')
-    this.props.firebase.sendCategories(this.props.match.params.clientId, arr);
+    arr.map(item => {
+      currentCat.push(item);
+    })
+
+    this.setState({
+      showCat: !this.state.showCat,
+      categories: currentCat
+    })
+
+    console.log(arr2, 'push categories')
+
+    this.props.firebase.sendCategories(this.props.match.params.clientId, arr2);
+
+
   }
 
 
   render() {
 
 
-    let catList = this.state.categories.map(item => {
-      return item.data().categories.map(innerItem => (
-        <div>{innerItem.name}TEST</div>
-      ))
-    })
+    // let catList = this.state.categories.map(item => {
+    //   return item.data().categories.map(innerItem => (
+    //     <div>{innerItem.name}TEST</div>
+    //   ))
+    // })
 
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
@@ -322,7 +347,6 @@ class Calendar extends React.Component {
           <CalendarSingle day={d} posts={this.state.posts} month={this.props.match.params.month} clientId={this.props.match.params.clientId} history={this.props.history} />
           <Link to={`/add-post/2019/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`}>+</Link>
         </td>
-
       );
     }
     var totalSlots = [...blanks, ...daysInMonth];
@@ -338,7 +362,6 @@ class Calendar extends React.Component {
         cells.push(row);
       }
       if (i === totalSlots.length - 1) {
-        // let insertRow = cells.slice();
         rows.push(cells);
       }
     });
@@ -347,69 +370,77 @@ class Calendar extends React.Component {
       return <tr>{d}</tr>;
     });
 
+    console.log(this.state, 'state of colours')
+
     return (
-      <div>
-        <button onClick={this.showCategories}>Add Categories</button>
-        {
-          this.state.showCat && (
-            <SelectCategory className="selected-categoryComponent" userId={this.props.match.params.clientId} getCategories={this.sendCategories} />
-          )
-        }
-        <CategoryList colors={this.state.categories} />
-        <div className="tail-datetime-calendar">
+      <React.Fragment>
+        <div>
+          <button onClick={this.showCategories}>Add Categories</button>
+          {
+            this.state.showCat && (
+              <SelectCategory className="selected-categoryComponent" userId={this.props.match.params.clientId} getCategories={this.sendCategories} />
+            )
+          }
+          <CategoryList colors={this.state.categories} />
+          {
+            this.state.isLoading ? <div className="tail-datetime-calendar">
 
-          <div className="calendar-navi">
-            <span
-              onClick={e => {
-                this.onPrev();
-              }}
-              class="calendar-button button-prev"
-            />
-            {!this.state.showMonthTable && !this.state.showYearEditor && (
-              <span
-                onClick={e => {
-                  this.showMonth();
-                }}
-                class="calendar-label"
-              >
-                {this.month()},
+              <div className="calendar-navi">
+                <span
+                  onClick={e => {
+                    this.onPrev();
+                  }}
+                  class="calendar-button button-prev"
+                />
+                {!this.state.showMonthTable && !this.state.showYearEditor && (
+                  <span
+                    onClick={e => {
+                      this.showMonth();
+                    }}
+                    class="calendar-label"
+                  >
+                    {this.month()},
             </span>
-            )}
-            <span
-              className="calendar-label"
-              onClick={e => {
-                this.showYearEditor();
-              }}
-            >
-              {this.year()}
-            </span>
+                )}
+                <span
+                  className="calendar-label"
+                  onClick={e => {
+                    this.showYearEditor();
+                  }}
+                >
+                  {this.year()}
+                </span>
 
-            <span
-              onClick={e => {
-                this.onNext();
-              }}
-              className="calendar-button button-next"
-            />
-          </div>
-          <div className="calendar-date">
-            {this.state.showYearNav && <this.YearTable props={this.year()} />}
-            {this.state.showMonthTable && (
-              <this.MonthList data={moment.months()} />
-            )}
-          </div>
+                <span
+                  onClick={e => {
+                    this.onNext();
+                  }}
+                  className="calendar-button button-next"
+                />
+              </div>
+              <div className="calendar-date">
+                {this.state.showYearNav && <this.YearTable props={this.year()} />}
+                {this.state.showMonthTable && (
+                  <this.MonthList data={moment.months()} />
+                )}
+              </div>
 
-          {this.state.showCalendarTable && (
-            <div className="calendar-date">
-              <table className="calendar-day">
-                <thead>
-                  <tr>{weekdayshortname}</tr>
-                </thead>
-                <tbody>{daysinmonth}</tbody>
-              </table>
+              {this.state.showCalendarTable && (
+                <div className="calendar-date">
+                  <table className="calendar-day">
+                    <thead>
+                      <tr>{weekdayshortname}</tr>
+                    </thead>
+                    <tbody>{daysinmonth}</tbody>
+                  </table>
+                </div>
+              )}
             </div>
-          )}
+              :
+              <CircularProgress />
+          }
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

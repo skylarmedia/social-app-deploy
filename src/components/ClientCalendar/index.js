@@ -24,10 +24,14 @@ class ClientCalendar extends React.Component {
     };
 
     componentWillMount() {
-        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), this.state.currentMonth).then(snapshot => {
-            this.setState({
-                currentPosts: snapshot.docs
-            })
+        console.log(localStorage, 'local storage');
+        console.log(this.props.match.params.month, 'params in month')
+        this.props.firebase.getUniqueClientPosts(localStorage.getItem('userId'), 6).then(snapshot => {
+
+            console.log(snapshot.docs, 'snapshot in client calendar')
+            // this.setState({
+            //     currentPosts: snapshot.docs
+            // })
         })
     }
 

@@ -13,9 +13,18 @@ class EditCategoryForm extends Component {
     }
 
     componentWillMount() {
-        this.props.firebase.getUserCategories(this.props.clientId).then(item => {
+        this.props.firebase.getUserCategories(this.props.clientId).then(items => {
+
+            const editCatArr = []
+            items.docs.map(item => {
+                console.log(item.data(), 'item in map')
+                let currentCat = {}
+                currentCat.color = item.data().categories.color;
+                currentCat.name = item.data().categories.name
+                editCatArr.push(currentCat);
+            })
             this.setState({
-                categories: item.docs
+                categories: editCatArr
             })
         });
     }
@@ -29,18 +38,16 @@ class EditCategoryForm extends Component {
 
     render() {
         const options = this.state.categories.map(item => {
-            return item.data().categories.map(innerItem => {
-                if (this.handleText(this.props.category) == innerItem.name) {
-                    return (
-                        <option value={`${innerItem.name}|||${innerItem.color}`} selected>{innerItem.name}</option>
-                    )
-                } else {
-                    return (
-                        <option value={`${innerItem.name}|||${innerItem.color}`}>{innerItem.name}</option>
-                    )
-                }
-
-            })
+            // console.log(item, 'item in category ')
+            if (this.handleText(this.props.category) == item.name) {
+                return (
+                    <option value={`${item.name}|||${item.color}`} selected>{item.name}</option>
+                )
+            } else {
+                return (
+                    <option value={`${item.name}|||${item.color}`}>{item.name}</option>
+                )
+            }
         })
 
         return (

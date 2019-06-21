@@ -17,6 +17,7 @@ import 'firebase/storage';
 import TextField from '@material-ui/core/TextField';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withAuthorization } from '../Session';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 
@@ -65,7 +66,7 @@ class Home extends Component {
       })
       this.setState({
         users: setArr,
-        loading: !this.state.isLoading
+        isLoading: !this.state.isLoading
       })
     });
   }
@@ -142,17 +143,16 @@ class Home extends Component {
     this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
       .put(this.state.file).then(snapshot => {
         const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
-        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl)
+        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
+        const userObj = {}
+        userObj.logo = encodedUrl;
+        userObj.name = this.state.username;
+        userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
         this.setState({
+          users: [...this.state.users, userObj],
           isHidden: !this.state.isHidden
         })
       });
-
-    // this.props.firebase.getClients().then(snapshot => {
-    //   this.setState({
-    //     users: snapshot.docs
-    //   })
-    // });
   };
 
 
@@ -161,6 +161,8 @@ class Home extends Component {
       background: "transparent",
       border: "none"
     }
+
+    console.log(this.state.users, 'users')
 
     // const renderPosts = 
 
@@ -174,34 +176,40 @@ class Home extends Component {
     return (
 
       <div>
+        {
+          this.state.isLoading ?
+            <div>
+              <div id="client-list" className="row">
+                {
+                  this.state.users.map((user, index) => {
+                    console.log(user.userId)
+                    return (
+                      <div data-id={user.userId} className="client-wrapper col-sm-4" key={index}>
+                        <img src={user.logo} />
+                        <button onClick={() => this.deleteUser(user.urlName, index)} style={styleDelete}>
+                          <Fab disabled aria-label="Delete">
+                            <DeleteIcon />
+                          </Fab>
 
-        <div>
-          <div id="client-list" className="row">
-            {
-              this.state.users.map((user, index) =>
-                (
-                  <div data-id={user.userId} className="client-wrapper col-sm-4" key={index}>
-                    <img src={user.logo} />
-                    <button onClick={() => this.deleteUser(user.userId, index)} style={styleDelete}>
-                      {/* <Fab disabled aria-label="Delete">
-                        <DeleteIcon />
-                      </Fab> */}
-
-                      X
+                          X
                     </button>
-                    <Link to={`/dates/${user.urlName}`}>
-                      {user.name}
-                    </Link>
-                  </div >
-                ))
-            }
-          </div>
+                        <Link to={`/dates/${user.urlName}`}>
+                          {user.name}
+                        </Link>
+                      </div >
+                    )
+                  }
+                  )
+                }
+              </div>
+              <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
+                <AddIcon />
+              </Fab>
+            </div>
+            :
+            <CircularProgress />
+        }
 
-
-          <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
-            <AddIcon />
-          </Fab>
-        </div>
 
         {this.state.isHidden ?
           <div id="add-new-form-wrapper">
