@@ -172,6 +172,8 @@ class Home extends Component {
       this.state.username === '';
 
 
+    console.log(this.props, 'props in home');
+
 
     return (
 

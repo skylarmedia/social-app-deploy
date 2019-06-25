@@ -322,13 +322,6 @@ class Calendar extends React.Component {
 
   render() {
 
-
-    // let catList = this.state.categories.map(item => {
-    //   return item.data().categories.map(innerItem => (
-    //     <div>{innerItem.name}TEST</div>
-    //   ))
-    // })
-
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
     });

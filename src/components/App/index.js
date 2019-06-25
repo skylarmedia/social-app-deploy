@@ -68,11 +68,7 @@ const App = () => (
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
       <Route path="/social-app-deploy/" component={SignInPage} />
       <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-      <AuthUserContext.Consumer>
-        {authUser => (
-          <Route exact path={ROUTES.HOME} component={HomePage} />
-        )}
-      </AuthUserContext.Consumer>
+      <Route exact path={ROUTES.HOME} component={HomePage} />
       <Route path={ROUTES.CLIENTS} component={Clients} />
       <Route path={ROUTES.DATES} component={Dates} />
       <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />
