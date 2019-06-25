@@ -127,22 +127,12 @@ class Home extends Component {
     });
   }
 
-  setBackground = () => {
-    this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
-      .put(this.state.file).then(snapshot => {
-        const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
-        this.setState({
-          backgroundUrl: encodedUrl
-        })
-      })
-  }
-
   addFile = event => {
     this.setState({
       file: event.target.files[0]
     });
 
-    this.setBackground()
+
   }
 
   onChange = event => {
@@ -151,25 +141,26 @@ class Home extends Component {
 
   onSubmit = event => {
     event.preventDefault();
+    this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
+      .put(this.state.file).then(snapshot => {
+        const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
+        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
+        const userObj = {}
+        userObj.logo = encodedUrl;
+        userObj.name = this.state.username;
+        userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
+        this.setState({
+          users: [...this.state.users, userObj],
+          isHidden: !this.state.isHidden,
+          backgroundUrl: encodedUrl
+        })
+      })
 
-    // this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
-    // const userObj = {}
-    // userObj.logo = encodedUrl;
-    // userObj.name = this.state.username;
-    // userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
-    // this.setState({
-    //   users: [...this.state.users, userObj],
-    //   isHidden: !this.state.isHidden,
-    //   backgroundUrl: encodedUrl
-    // })
+
   };
 
 
   render() {
-    const styleDelete = {
-      background: "transparent",
-      border: "none"
-    }
 
     const backgroundUrlStyle = {
       backgroundImage: `url(${this.state.backgroundUrl})`,
@@ -192,29 +183,27 @@ class Home extends Component {
 
       <div>
         {
-          this.state.isLoading ?
+          this.state.isLoading && this.state.users.length > 0 ?
             <div>
               <div id="client-list" className="row">
                 {
                   this.state.users.map((user, index) => {
-                    console.log(user.userId)
                     return (
-                      <div data-id={user.userId} className="client-wrapper col-sm-4" key={index}>
-                        <img src={user.logo} />
-                        <button onClick={() => this.deleteUser(user.urlName, index)} style={styleDelete}>
+                      <div data-id={user.userId} className="client-wrapper flex-column d-flex col-sm-4" key={index}>
+                        <button className="delete-button" onClick={() => this.deleteUser(user.urlName, index)}>
                           <Fab disabled aria-label="Delete">
                             <DeleteIcon />
                           </Fab>
-
-                          X
-                    </button>
+                        </button>
                         <Link to={`/dates/${user.urlName}`}>
                           {user.name}
                         </Link>
+                        <Link to={`/dates/${user.urlName}`}>
+                          <img src={user.logo} className="user-background" />
+                        </Link>
                       </div >
                     )
-                  }
-                  )
+                  })
                 }
               </div>
               <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
@@ -222,7 +211,31 @@ class Home extends Component {
               </Fab>
             </div>
             :
-            <CircularProgress />
+            (this.state.isLoading && this.state.users.length == 0 ?
+              <div>
+                <div className="container empty-state">
+                  <h2 className="text-center">Welcome Home</h2>
+                  <div className="container row">
+                    <div className="dashed col-md-3">
+
+                    </div>
+
+                    <div className="dashed col-md-3">
+                    </div>
+
+                    <div className="dashed col-md-3">
+                    </div>
+
+                    <div className="dashed col-md-3">
+                    </div>
+                  </div>
+
+                </div>
+                <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
+                  <AddIcon />
+                </Fab>
+              </div>
+              : < CircularProgress />)
         }
 
 

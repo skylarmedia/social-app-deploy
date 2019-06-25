@@ -110,11 +110,6 @@ class Firebase {
         this.auth.currentUser.updateProfile({
             photoURL: logo,
             displayName: name
-        }).then((user) => {
-            console.log('in current user');
-            alert('updated');
-            console.log(user, 'USER UPDATED');
-            console.log(this.auth.currentUser, 'current user !!')
         })
 
         return this.db.collection('users').doc(name.toLowerCase().replace(/ /g, '-')).set({
