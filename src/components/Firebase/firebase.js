@@ -67,8 +67,6 @@ class Firebase {
 
     getAdminPost = (user, postId) => this.db.collection('users').doc(user).collection('posts').doc(postId).get();
 
-
-
     getAll = user => this.db.collection('users').doc(user).get();
 
     getUserCategories = (user) => this.db.collection('users').doc(user).collection('categories').get();
@@ -107,12 +105,23 @@ class Firebase {
 
     getUID = (urlName) => this.db.collection('users').where('urlName', '==', urlName).get()
 
-    addUser = (email, password, name, logo) => this.auth.createUserWithEmailAndPassword(email, password).then(cred => {
+    addUser = (email, password, name, logo) => this.auth.createUserWithEmailAndPassword(email, password).then(user => {
+
+        this.auth.currentUser.updateProfile({
+            photoURL: logo,
+            displayName: name
+        }).then((user) => {
+            console.log('in current user');
+            alert('updated');
+            console.log(user, 'USER UPDATED');
+            console.log(this.auth.currentUser, 'current user !!')
+        })
+
         return this.db.collection('users').doc(name.toLowerCase().replace(/ /g, '-')).set({
             name: name,
             logo: logo,
             status: 1,
-            userId: cred.user.uid,
+            userId: user.user.uid,
             admin: 0,
             email: email,
             urlName: name.toLowerCase().replace(/ /g, '-')

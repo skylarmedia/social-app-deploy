@@ -18,6 +18,7 @@ import TextField from '@material-ui/core/TextField';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withAuthorization } from '../Session';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import './index.css';
 
 
 
@@ -38,7 +39,8 @@ class Home extends Component {
       passwordOne: '',
       error: null,
       firestorageRef: this.props.firebase.storage,
-      adminEmail: ''
+      adminEmail: '',
+      backgroundUrl: ''
     }
 
     this.baseState = this.state
@@ -46,7 +48,6 @@ class Home extends Component {
     this.handleLogoUpload = this.handleLogoUpload.bind(this);
     this.addFile = this.addFile.bind(this);
   }
-
 
   getPosts() {
 
@@ -126,12 +127,22 @@ class Home extends Component {
     });
   }
 
-  addFile = event => {
+  setBackground = () => {
+    this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
+      .put(this.state.file).then(snapshot => {
+        const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
+        this.setState({
+          backgroundUrl: encodedUrl
+        })
+      })
+  }
 
-    console.log(event.target.files[0], 'target');
+  addFile = event => {
     this.setState({
       file: event.target.files[0]
-    })
+    });
+
+    this.setBackground()
   }
 
   onChange = event => {
@@ -140,19 +151,17 @@ class Home extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
-      .put(this.state.file).then(snapshot => {
-        const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
-        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
-        const userObj = {}
-        userObj.logo = encodedUrl;
-        userObj.name = this.state.username;
-        userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
-        this.setState({
-          users: [...this.state.users, userObj],
-          isHidden: !this.state.isHidden
-        })
-      });
+
+    // this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
+    // const userObj = {}
+    // userObj.logo = encodedUrl;
+    // userObj.name = this.state.username;
+    // userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
+    // this.setState({
+    //   users: [...this.state.users, userObj],
+    //   isHidden: !this.state.isHidden,
+    //   backgroundUrl: encodedUrl
+    // })
   };
 
 
@@ -160,6 +169,11 @@ class Home extends Component {
     const styleDelete = {
       background: "transparent",
       border: "none"
+    }
+
+    const backgroundUrlStyle = {
+      backgroundImage: `url(${this.state.backgroundUrl})`,
+      backgroundSize: "cover"
     }
 
     console.log(this.state.users, 'users')
@@ -173,7 +187,6 @@ class Home extends Component {
 
 
     console.log(this.props, 'props in home');
-
 
     return (
 
@@ -217,6 +230,9 @@ class Home extends Component {
           <div id="add-new-form-wrapper">
             <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
             <form onSubmit={this.onSubmit} id="add-new-form">
+              <div id="avatar-upload" className="d-flex align-items-end justify-content-center" style={backgroundUrlStyle}>
+                <input type="file" onChange={this.addFile} />
+              </div>
               <TextField
                 margin="normal"
                 variant="outlined"
@@ -246,11 +262,9 @@ class Home extends Component {
                 placeholder="Password"
                 label="Password"
               />
-              <CloudUploadIcon />
-              <input type="file" onChange={this.addFile} />
               <button disabled={isInvalid} type="submit">
                 Create User
-            </button>
+              </button>
 
               {this.state.error && <p>{this.state.error.message}</p>}
             </form>

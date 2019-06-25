@@ -39,8 +39,10 @@ class SignUpFormBase extends Component {
     this.props.firebase
       .doCreateUserWithEmailAndPassword(email, passwordOne)
       .then(authUser => {
+        console.log(authUser, 'auth users');
+        alert('ran auth user');
         this.setState({ ...INITIAL_STATE });
-        this.props.history.push(ROUTES.HOME);
+        // this.props.history.push(ROUTES.HOME);
       })
       .catch(error => {
         this.setState({ error });
@@ -60,48 +62,48 @@ class SignUpFormBase extends Component {
     } = this.state;
 
     const isInvalid =
-    passwordOne !== passwordTwo ||
-    passwordOne === '' ||
-    email === '' ||
-    username === '';
+      passwordOne !== passwordTwo ||
+      passwordOne === '' ||
+      email === '' ||
+      username === '';
 
 
     return (
       <form onSubmit={this.onSubmit}>
-      <input
-        name="username"
-        value={username}
-        onChange={this.onChange}
-        type="text"
-        placeholder="Full Name"
-      />
-      <input
-        name="email"
-        value={email}
-        onChange={this.onChange}
-        type="text"
-        placeholder="Email Address"
-      />
-      <input
-        name="passwordOne"
-        value={passwordOne}
-        onChange={this.onChange}
-        type="password"
-        placeholder="Password"
-      />
-      <input
-        name="passwordTwo"
-        value={passwordTwo}
-        onChange={this.onChange}
-        type="password"
-        placeholder="Confirm Password"
-      />
-       <button disabled={isInvalid} type="submit">
-        Sign Up
+        <input
+          name="username"
+          value={username}
+          onChange={this.onChange}
+          type="text"
+          placeholder="Full Name"
+        />
+        <input
+          name="email"
+          value={email}
+          onChange={this.onChange}
+          type="text"
+          placeholder="Email Address"
+        />
+        <input
+          name="passwordOne"
+          value={passwordOne}
+          onChange={this.onChange}
+          type="password"
+          placeholder="Password"
+        />
+        <input
+          name="passwordTwo"
+          value={passwordTwo}
+          onChange={this.onChange}
+          type="password"
+          placeholder="Confirm Password"
+        />
+        <button disabled={isInvalid} type="submit">
+          Sign Up
       </button>
 
-      {error && <p>{error.message}</p>}
-    </form>
+        {error && <p>{error.message}</p>}
+      </form>
     );
   }
 }
