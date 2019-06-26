@@ -53,17 +53,17 @@ class CalendarSingle extends Component {
 
         return (
             <div className="calendar-popup-wrapper">
-                {this.props.day}<br />
+                <p className="calendar-single-day">{this.props.day}</p><br />
                 {this.props.posts.map((item, index) => {
                     if (item.data().month == this.props.month) {
                         if (item.data().day === this.props.day) {
                             return (
-                                <div class="hidden-calendar-wrapper">
+                                <div class="hidden-calendar-wrapper d-flex flex-column">
                                     {
                                         item.data().approved ?
-                                            <p>Approved</p>
+                                            <img src={require('../assets/check.svg')} className="check" />
                                             :
-                                            <p>Not approved</p>
+                                            ''
                                     }
                                     <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} itemId={item.id} push={this.props.history} clientId={this.props.clientId} selectedCategory={item.data().selectedCategory} />
                                 </div>

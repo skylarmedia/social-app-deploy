@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
-import TextField from '@material-ui/core/TextField';
 
 class AdminChatBox extends Component {
     constructor(props) {
@@ -51,6 +50,15 @@ class AdminChatBox extends Component {
     }
 }
 
+const mapDispatchToProps = dispatch => ({
+    onSetMessage: message => dispatch({ type: 'MESSAGE_SENT', message }),
+});
+
+
 export default compose(
-    withFirebase
+    withFirebase,
+    connect(
+        null,
+        mapDispatchToProps
+    )
 )(AdminChatBox)

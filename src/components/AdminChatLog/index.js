@@ -8,7 +8,8 @@ class AdminChatLog extends Component {
         super(props)
 
         this.state = {
-            messages: []
+            messages: [],
+            message: {}
         }
 
     }
@@ -22,30 +23,39 @@ class AdminChatLog extends Component {
         })
     }
 
+    static getDerivedStateFromProps(nextProps, prevState) {
+        if (nextProps.incomingMessage !== prevState.message) {
 
-    componentDidMount() {
+            return {
+                messages: [...prevState.messages, nextProps.incomingMessage]
+            }
+
+        }
+        else {
+            alert('old props')
+        }
     }
 
-    componentWillUnmount() {
-        this.setState({
-            messages: []
-        })
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(snapshot, 'snapshot before update');
+        console.log(this.state, 'state after update')
+
     }
 
     componentWillMount() {
+        console.log(this.props.incomingMessage);
+        console.log(this.state, 'state in will mount method ')
+    }
+
+
+    componentDidMount() {
 
     }
 
+
+
     componentWillUnmount() {
-        console.log(this.props, ' props in admin view post')
 
-        var unsubscribe = this.props.firebase.listenChatChanges(this.props.id)
-            .onSnapshot(function () {
-                // Respond to data
-                // ...
-            });
-
-        unsubscribe();
     }
 
 
@@ -54,6 +64,9 @@ class AdminChatLog extends Component {
 
         console.log(this.props.id, 'props on id')
         console.log(this.state.messages, 'messages')
+
+
+        console.log(this.state, 'in message render')
         const logoStyles = {
             width: 100,
             height: 100
@@ -63,11 +76,8 @@ class AdminChatLog extends Component {
             return (
                 (
                     <li className="row">
-                        <div>
-                            <img src={item.data().logo} style={logoStyles} />
-                            <p>{item.data().user}</p>
-                        </div>
-                        <p>{item.data().message}</p>
+                        <img src="https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg" />
+                        <p>{item.message}</p>
                     </li>
                 )
             )

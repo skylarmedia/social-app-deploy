@@ -22,7 +22,9 @@ class AdminViewPost extends Component {
             metaImageFiles: [],
             categories: [],
             approved: false,
-            selectedCategory: ''
+            selectedCategory: '',
+            incomingMessage: {}
+
         }
     }
 
@@ -32,7 +34,6 @@ class AdminViewPost extends Component {
         console.log(this.props.match.params.itemId, 'itemId');
         console.log(this.props.match.params.client, 'client');
         this.props.firebase.getAdminPost(this.props.match.params.client, this.props.match.params.itemId).then(snapshot => {
-            console.log(snapshot.data(), 'doc in snapshot')
 
             this.setState({
                 title: snapshot.data().title,
@@ -44,14 +45,21 @@ class AdminViewPost extends Component {
                 day: snapshot.data().day,
                 selectedCategory: snapshot.data().selectedCategory,
                 time: snapshot.data().time
-
-
             })
         })
     }
 
     getMessage = (id, month, day, title, message) => {
-        this.props.firebase.postMessage(id, month, day, title, message);
+        const incomingMessageObj = {}
+        incomingMessageObj.id = id
+        incomingMessageObj.month = month
+        incomingMessageObj.day = day
+        incomingMessageObj.title = title
+        incomingMessageObj.message = message
+
+        this.setState({
+            incomingMessage: incomingMessageObj
+        });
     }
 
     getType = (url) => {
@@ -66,12 +74,11 @@ class AdminViewPost extends Component {
 
             return type
         }
-
     }
 
 
     render() {
-
+        console.log(this.state.incomingMessage, 'incoming message');
         const media = this.state.metaImageFiles.map((item) => {
             if (this.getType(item) == 'video') {
                 return (
@@ -98,7 +105,7 @@ class AdminViewPost extends Component {
                 <br />
                 <hr />
                 <AdminChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} />
-                <AdminChatLog month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} />
+                <AdminChatLog incomingMessage={this.state.incomingMessage} />
             </div>
         )
     }

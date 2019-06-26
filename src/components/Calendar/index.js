@@ -335,7 +335,7 @@ class Calendar extends React.Component {
       daysInMonth.push(
         <td key={d} className={`calendar-day TEST ${currentDay}`}>
           <CalendarSingle day={d} posts={this.state.posts} month={this.props.match.params.month} clientId={this.props.match.params.clientId} history={this.props.history} />
-          <Link to={`/add-post/2019/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`}>+</Link>
+          <Link to={`/add-post/2019/${this.props.match.params.month}/${d}/${this.props.match.params.clientId}`} className="add-post-link">+</Link>
         </td>
       );
     }
