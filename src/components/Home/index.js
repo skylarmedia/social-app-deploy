@@ -150,13 +150,10 @@ class Home extends Component {
         userObj.name = this.state.username;
         userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
         this.setState({
-          users: [...this.state.users, userObj],
           isHidden: !this.state.isHidden,
-          backgroundUrl: encodedUrl
+          users: [...this.state.users, userObj]
         })
-      })
-
-
+      });
   };
 
 

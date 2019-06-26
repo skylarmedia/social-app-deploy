@@ -5,6 +5,10 @@ import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
 import Calendar from '../Calendar'
 import CircularProgress from '@material-ui/core/CircularProgress';
+import './index.css';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 
 
@@ -133,14 +137,13 @@ class Dates extends Component {
 
     render() {
         const renderDates = this.state.date.map(item => (
-            // <Link to={`/calendar?month=${item.month}&year=${item.year}&clientId=${this.state.clientId}`}>
             <Link to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}>
                 {this.convert(item.month)} {item.year}
                 <br />
             </Link>
         ));
         return (
-            this.state.isLoading ?
+            this.state.isLoading && this.state.date.length > 0 ?
                 <div>
                     <Link to='/Home'>Back</Link><br />
                     {this.props.match.params.id}<br />
@@ -149,25 +152,24 @@ class Dates extends Component {
                     {this.state.showAddDate ?
                         <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
                             <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">Close</button>
-                            <select onChange={this.handleMonth.bind(this)} value={this.state.value}>
-                                <option value="1">January</option>
-                                <option value="2">February</option>
-                                <option value="3">March</option>
-                                <option value="4">April</option>
-                                <option value="5">May</option>
-                                <option value="6">June</option>
-                                <option value="7">July</option>
-                                <option value="8">August</option>
-                                <option value="9">September</option>
-                                <option value="10">October</option>
-                                <option value="11">November</option>
-                                <option value="12">December</option>
-                            </select>
-                            <select onChange={this.handleYear.bind(this)}>
-                                <option value="2019">2019</option>
-                                <option value="2020">2020</option>
-                            </select>
-
+                            <Select onChange={this.handleMonth.bind(this)} value={this.state.value}>
+                                <MenuItem value="1">January</MenuItem>
+                                <MenuItem value="2">February</MenuItem>
+                                <MenuItem value="3">March</MenuItem>
+                                <MenuItem value="4">April</MenuItem>
+                                <MenuItem value="5">May</MenuItem>
+                                <MenuItem value="6">June</MenuItem>
+                                <MenuItem value="7">July</MenuItem>
+                                <MenuItem value="8">August</MenuItem>
+                                <MenuItem value="9">September</MenuItem>
+                                <MenuItem value="10">October</MenuItem>
+                                <MenuItem value="11">November</MenuItem>
+                                <MenuItem value="12">December</MenuItem>
+                            </Select>
+                            <Select onChange={this.handleYear.bind(this)}>
+                                <MenuItem value="2019">2019</MenuItem>
+                                <MenuItem value="2020">2020</MenuItem>
+                            </Select>
                             <input type="submit" value="Submit" />
                         </form>
                         :
@@ -180,9 +182,46 @@ class Dates extends Component {
                     }
             <button onClick={this.toggleAddDate.bind(this)}>Add New</button>
                 </div>
-
-                :
-                <CircularProgress />
+                : (this.state.isLoading && this.state.date.length == 0 ?
+                    <div className="container">
+                        {this.state.showAddDate ?
+                            <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
+                                <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">Close</button>
+                                <Select onChange={this.handleMonth.bind(this)} value={this.state.value}>
+                                    Placeholder
+                                    <MenuItem value="1">January</MenuItem>
+                                    <MenuItem value="2">February</MenuItem>
+                                    <MenuItem value="3">March</MenuItem>
+                                    <MenuItem value="4">April</MenuItem>
+                                    <MenuItem value="5">May</MenuItem>
+                                    <MenuItem value="6">June</MenuItem>
+                                    <MenuItem value="7">July</MenuItem>
+                                    <MenuItem value="8">August</MenuItem>
+                                    <MenuItem value="9">September</MenuItem>
+                                    <MenuItem value="10">October</MenuItem>
+                                    <MenuItem value="11">November</MenuItem>
+                                    <MenuItem value="12">December</MenuItem>
+                                </Select>
+                                <Select onChange={this.handleYear.bind(this)}>
+                                    Placeholder
+                                    <MenuItem value="2019">2019</MenuItem>
+                                    <MenuItem value="2020">2020</MenuItem>
+                                </Select>
+                                <input type="submit" value="Submit" />
+                            </form>
+                            :
+                            ''
+                        }
+                        <h2 className="text-center">Client A-Game’s Calendars</h2>
+                        <img src={require('../assets/repeat-grid.svg')} id="no-date-calendar" />
+                        <p>You don’t seem to have any calendars set up yet. Click below to add one and get started!</p>
+                        <div className="text-center arrow-wrapper">
+                            <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">Add New</button>
+                            <img src={require('../assets/arrow.svg')} />
+                        </div>
+                    </div>
+                    :
+                    <CircularProgress />)
 
 
         )

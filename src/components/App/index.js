@@ -26,12 +26,13 @@ import ClientViewPost from '../ClientViewPost';
 import HiddenCalendarSingle from '../HiddenCalendarSingle'
 import AdminViewPost from '../AdminViewPost';
 import * as ROUTES from '../../constants/routes';
+import MenuButton from '../MenuButton';
 import { withAuthentication } from '../Session';
 import CalendarCategoryContainer from '../CalendarCategoryContainer'
 import { PasswordForgetForm } from '../PasswordForget';
 import PasswordChangeForm from '../PasswordChange';
 import { withAuthorization } from '../Session';
-
+import './index.css';
 
 // class App extends Component {
 //   constructor(props) {
@@ -61,8 +62,11 @@ import { withAuthorization } from '../Session';
 const App = () => (
   <Router>
     <div>
-      <Navigation />
-      <hr />
+      <div className="menu-wrapper">
+        <MenuButton />
+        <Navigation />
+        <hr />
+      </div>
       <Route exact path="/" component={SignInPage} />
       <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
