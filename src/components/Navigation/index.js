@@ -11,7 +11,7 @@ const Navigation = ({ authUser }) => (
 
   <AuthUserContext.Consumer>
     {authUser =>
-      authUser ? <NavigationAuth authUser={authUser} /> : <NavigationNonAuth />
+      authUser ? <NavigationAuth authUser={authUser} id="page-wrap" /> : <NavigationNonAuth id="page-wrap" />
     }
   </AuthUserContext.Consumer>
 );
@@ -20,7 +20,6 @@ const NavigationAuth = (props) => (
   <div id="auth-nav-wrapper">
     <ul id="nav-id">
       <li>
-        {console.log(props.authUser.photoURL, 'props in nav')}
         <Link to={ROUTES.LANDING}>Landing</Link>
       </li>
       <li>

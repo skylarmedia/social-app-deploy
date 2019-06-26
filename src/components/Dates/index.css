@@ -25,3 +25,18 @@
     width: 149px;
     border-radius: 11px;
   }
+
+
+  select{
+    background:#fff;
+    color:red;
+  }
+
+  .single-calendar-wrapper{
+    background-image:url('../assets/grouped-single-calendar.svg');
+    height: 180px;
+    width: 213px;
+    display: block;
+    background-size: cover;
+    position:relative;
+  }

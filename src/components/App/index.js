@@ -33,6 +33,8 @@ import { PasswordForgetForm } from '../PasswordForget';
 import PasswordChangeForm from '../PasswordChange';
 import { withAuthorization } from '../Session';
 import './index.css';
+import NavigationWrapper from '../NavigationWrapper';
+import Header from '../Header';
 
 // class App extends Component {
 //   constructor(props) {
@@ -61,12 +63,9 @@ import './index.css';
 
 const App = () => (
   <Router>
-    <div>
-      <div className="menu-wrapper">
-        <MenuButton />
-        <Navigation />
-        <hr />
-      </div>
+    <div id="outer-container">
+      <Header />
+      <NavigationWrapper />
       <Route exact path="/" component={SignInPage} />
       <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
       <Route path={ROUTES.SIGN_UP} component={SignUpPage} />

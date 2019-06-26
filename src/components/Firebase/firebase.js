@@ -98,6 +98,8 @@ class Firebase {
 
     getDates = (id) => this.db.collection('users').doc(id).collection('dates').get()
 
+    deleteDate = (user, id) => this.db.collection('users').doc(user).collection('dates').doc(id).delete()
+
     addDate = (id, month, year) => this.db.collection('users').doc(id).collection('dates').add({
         month: month,
         year: year
