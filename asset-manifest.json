@@ -1,17 +1,22 @@
 {
   "files": {
-    "main.css": "/social-app-deploy/static/css/main.444c250e.chunk.css",
-    "main.js": "/social-app-deploy/static/js/main.1cf9b980.chunk.js",
-    "main.js.map": "/social-app-deploy/static/js/main.1cf9b980.chunk.js.map",
+    "main.css": "/social-app-deploy/static/css/main.331ada41.chunk.css",
+    "main.js": "/social-app-deploy/static/js/main.c22620ba.chunk.js",
+    "main.js.map": "/social-app-deploy/static/js/main.c22620ba.chunk.js.map",
     "runtime~main.js": "/social-app-deploy/static/js/runtime~main.7a0b50cb.js",
     "runtime~main.js.map": "/social-app-deploy/static/js/runtime~main.7a0b50cb.js.map",
-    "static/css/2.49d8c5c4.chunk.css": "/social-app-deploy/static/css/2.49d8c5c4.chunk.css",
-    "static/js/2.6252ba3d.chunk.js": "/social-app-deploy/static/js/2.6252ba3d.chunk.js",
-    "static/js/2.6252ba3d.chunk.js.map": "/social-app-deploy/static/js/2.6252ba3d.chunk.js.map",
+    "static/css/2.7e6b12ab.chunk.css": "/social-app-deploy/static/css/2.7e6b12ab.chunk.css",
+    "static/js/2.18fe9fbb.chunk.js": "/social-app-deploy/static/js/2.18fe9fbb.chunk.js",
+    "static/js/2.18fe9fbb.chunk.js.map": "/social-app-deploy/static/js/2.18fe9fbb.chunk.js.map",
     "index.html": "/social-app-deploy/index.html",
-    "precache-manifest.1c01ddb71d1deb4767e3c9de53618aa3.js": "/social-app-deploy/precache-manifest.1c01ddb71d1deb4767e3c9de53618aa3.js",
+    "precache-manifest.94f97d76b56fd56f4a2069ee9434a329.js": "/social-app-deploy/precache-manifest.94f97d76b56fd56f4a2069ee9434a329.js",
     "service-worker.js": "/social-app-deploy/service-worker.js",
-    "static/css/2.49d8c5c4.chunk.css.map": "/social-app-deploy/static/css/2.49d8c5c4.chunk.css.map",
-    "static/css/main.444c250e.chunk.css.map": "/social-app-deploy/static/css/main.444c250e.chunk.css.map"
+    "static/css/2.7e6b12ab.chunk.css.map": "/social-app-deploy/static/css/2.7e6b12ab.chunk.css.map",
+    "static/css/main.331ada41.chunk.css.map": "/social-app-deploy/static/css/main.331ada41.chunk.css.map",
+    "static/media/arrow.svg": "/social-app-deploy/static/media/arrow.cab4dd14.svg",
+    "static/media/check.svg": "/social-app-deploy/static/media/check.5d1fa9cf.svg",
+    "static/media/index.css": "/social-app-deploy/static/media/pantonskylar-semibold-webfont.c1e3922d.svg",
+    "static/media/repeat-grid.svg": "/social-app-deploy/static/media/repeat-grid.1b3a5737.svg",
+    "static/media/skylar_Icon_wingPortion.svg": "/social-app-deploy/static/media/skylar_Icon_wingPortion.b1ca3ff5.svg"
   }
 }
