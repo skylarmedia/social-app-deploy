@@ -14,6 +14,7 @@
     top: 0;
     display: flex;
     flex-direction: column;
+    left:0;
     align-items: center;
     justify-content: center;
 }
@@ -34,8 +35,15 @@
 }
 
 .user-background{
-    height: 500px;
+    height:178px;
+    width:100%;
     object-fit: cover;
+}
+
+.client-wrapper{
+    height:178px;
+    width:24%;
+    position:relative;
 }
 
 .delete-button{
@@ -45,7 +53,25 @@
     border:none;
 }
 
+.delete-button button{
+    width: 40px;
+    height: 40px;
+}
+
 .dashed{
     border:3px dashed #002D5B;
-    height:500px;
+    height:178px;
+    width:24%;
+}
+
+.container{
+    max-width:1140px;
+}
+
+#home-page .add-date-btn{
+    margin-top:88px;
+}
+
+.empty-state .text-center{
+    margin-top:14px;
 }

@@ -243,9 +243,9 @@ class Dates extends Component {
                             :
                             ''
                         }
-                        <h2 className="text-center">Client A-Game’s Calendars</h2>
+                        <h2 className="text-center" id="client-heading">Client A-Game’s Calendars</h2>
                         <img src={require('../assets/repeat-grid.svg')} id="no-date-calendar" />
-                        <p>You don’t seem to have any calendars set up yet. Click below to add one and get started!</p>
+                        <p className="text-center client-text">You don’t seem to have any calendars set up yet. Click below to add one and get started!</p>
                         <div className="text-center arrow-wrapper">
                             <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">Add New</button>
                             <img src={require('../assets/arrow.svg')} />

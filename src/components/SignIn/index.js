@@ -16,7 +16,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 const SignInPage = () => (
   <React.Fragment>
     <div id="sign-in-wrapper" className="d-flex justify-content-center align-items-center flex-column">
-      <h1>SignIn</h1>
       <SignInForm />
     </div>
   </React.Fragment>
@@ -95,6 +94,7 @@ class SignInFormBase extends Component {
 
     return (
       <React.Fragment>
+        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
         <form onSubmit={this.onSubmit} className="d-flex flex-column">
           <TextField
             name="email"
@@ -115,8 +115,9 @@ class SignInFormBase extends Component {
             variant="outlined"
             placeholder="Password"
           />
-          <Button disabled={isInvalid} type="submit" variant="contained" color="primary">Sign In</Button>
-
+          <div id="sign-in-button-wrap">
+            <Button disabled={isInvalid} type="submit" variant="contained" color="primary" id="sign-in-button">Sign In</Button>
+          </div>
           {error && <p>{error.message}</p>}
         </form>
         {

@@ -1,3 +1,66 @@
+@font-face {
+  font-family: 'Panton';
+  src: url('../assets/fonts/pantonskylar-bold-webfont.eot');
+  src: url('../assets/fonts/pantonskylar-bold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/pantonskylar-bold-webfont.woff2') format('woff2'),
+       url('../assets/fonts/pantonskylar-bold-webfont.woff') format('woff'),
+       url('../assets/fonts/pantonskylar-bold-webfont.ttf') format('truetype'),
+       url('../assets/fonts/pantonskylar-bold-webfont.svg#panton_skylarbold') format('svg');
+  font-weight: 700;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'Panton';
+  src: url('../assets/fonts/pantonskylar-light-webfont.eot');
+  src: url('../assets/fonts/pantonskylar-light-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/pantonskylar-light-webfont.woff2') format('woff2'),
+       url('../assets/fonts/pantonskylar-light-webfont.woff') format('woff'),
+       url('../assets/fonts/pantonskylar-light-webfont.ttf') format('truetype'),
+       url('../assets/fonts/pantonskylar-light-webfont.svg#panton_skylarlight') format('svg');
+  font-weight: 300;
+  font-style: normal;
+
+}
+
+
+
+
+@font-face {
+  font-family: 'Panton';
+  src: url('../assets/fonts/pantonskylar-regular-webfont.eot');
+  src: url('../assets/fonts/pantonskylar-regular-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/pantonskylar-regular-webfont.woff2') format('woff2'),
+       url('../assets/fonts/pantonskylar-regular-webfont.woff') format('woff'),
+       url('../assets/fonts/pantonskylar-regular-webfont.ttf') format('truetype'),
+       url('../assets/fonts/pantonskylar-regular-webfont.svg#panton_skylarregular') format('svg');
+  font-weight: normal;
+  font-style: normal;
+
+}
+
+@font-face {
+  font-family: 'Panton';
+  src: url('../assets/fonts/pantonskylar-semibold-webfont.eot');
+  src: url('../assets/fonts/pantonskylar-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+       url('../assets/fonts/pantonskylar-semibold-webfont.woff2') format('woff2'),
+       url('../assets/fonts/pantonskylar-semibold-webfont.woff') format('woff'),
+       url('../assets/fonts/pantonskylar-semibold-webfont.ttf') format('truetype'),
+       url('../assets/fonts/pantonskylar-semibold-webfont.svg#panton_skylarsemibold') format('svg');
+  font-weight: 600;
+  font-style: normal;
+}
+
+*{
+  font-family:'Panton' !important;
+}
+
+
+
 #no-date-calendar{
     width:100%;
 }
@@ -39,4 +102,13 @@
     display: block;
     background-size: cover;
     position:relative;
+  }
+
+  #client-heading{
+    margin-top: 123px; 
+    margin-bottom:23px;
+  }
+
+  .client-text{
+    margin-top:20px;
   }

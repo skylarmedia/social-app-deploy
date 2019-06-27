@@ -91,9 +91,6 @@ class Home extends Component {
       users: this.state.users.filter((_, i) => i !== index)
     });
 
-
-
-
   }
 
   addClient = (e) => {
@@ -173,20 +170,20 @@ class Home extends Component {
       this.state.email === '' ||
       this.state.username === '';
 
-
-    console.log(this.props, 'props in home');
-
     return (
 
-      <div>
+      <div id="home-page" className="container">
+        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+        <h2 className="text-center welcome">Welcome Home!</h2>
         {
           this.state.isLoading && this.state.users.length > 0 ?
             <div>
+              <p className="text-center">What client do you want to work on today?</p>
               <div id="client-list" className="row">
                 {
                   this.state.users.map((user, index) => {
                     return (
-                      <div data-id={user.userId} className="client-wrapper flex-column d-flex col-sm-4" key={index}>
+                      <div data-id={user.userId} className="client-wrapper flex-column d-flex" key={index}>
                         <button className="delete-button" onClick={() => this.deleteUser(user.urlName, index)}>
                           <Fab disabled aria-label="Delete">
                             <DeleteIcon />
@@ -203,36 +200,35 @@ class Home extends Component {
                   })
                 }
               </div>
-              <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
-                <AddIcon />
-              </Fab>
+              <div id="add-new-btn-wrapper" className="text-center">
+                <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn">Add New</button>
+              </div>
             </div>
             :
             (this.state.isLoading && this.state.users.length == 0 ?
               <div>
-                <div className="container empty-state">
-                  <h2 className="text-center">Welcome Home</h2>
-                  <div className="container row">
-                    <div className="dashed col-md-3">
+                <div className="empty-state">
+                  <div className="row justify-content-between">
+                    <div className="dashed">
 
                     </div>
 
-                    <div className="dashed col-md-3">
+                    <div className="dashed">
                     </div>
 
-                    <div className="dashed col-md-3">
+                    <div className="dashed">
                     </div>
 
-                    <div className="dashed col-md-3">
+                    <div className="dashed">
                     </div>
                   </div>
-
+                  <p className="text-center">You don’t seem to have any client calendars set up yet.<br />Click below to add one and get started!</p>
                 </div>
-                <Fab color="secondary" aria-label="Add" onClick={this.toggleAddNew.bind(this)}>
-                  <AddIcon />
-                </Fab>
+                <div id="add-new-btn-wrapper" className="text-center mt-88">
+                  <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn">Add New</button>
+                </div>
               </div>
-              : < CircularProgress />)
+              : <div className="progress-wrapper"><CircularProgress /></div>)
         }
 
 
@@ -272,9 +268,10 @@ class Home extends Component {
                 placeholder="Password"
                 label="Password"
               />
-              <button disabled={isInvalid} type="submit">
-                Create User
-              </button>
+
+              <div id="add-new-btn-wrapper" className="text-center mt-88">
+                <button disabled={isInvalid} type="submit" className="add-date-btn">Add New</button>
+              </div>
 
               {this.state.error && <p>{this.state.error.message}</p>}
             </form>
