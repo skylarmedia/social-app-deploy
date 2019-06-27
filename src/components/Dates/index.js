@@ -174,9 +174,9 @@ class Dates extends Component {
             this.state.isLoading && this.state.date.length > 0 ?
                 <div>
                     <Link to='/Home'>Back</Link><br />
-                    {this.props.match.params.id}<br />
-                    Dates
-            {renderDates}
+                    <div id="dates-list" className="container">
+                        {renderDates}
+                    </div>
                     {this.state.showAddDate ?
                         <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
                             <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">Close</button>
