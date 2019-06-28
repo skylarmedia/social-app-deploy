@@ -60,7 +60,6 @@ class Dates extends Component {
                 obj["month"] = item.data().month;
                 obj["year"] = item.data().year;
                 obj["id"] = item.id
-
                 dateArr.push(obj);
                 this.setState({
                     date: dateArr
@@ -90,11 +89,14 @@ class Dates extends Component {
         if (this.state.date.filter(e => e.month === tempDateObj.month).length > 0) {
             alert('Sorry that month is already in use, please select again')
         } else {
-            this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year);
+            this.props.firebase.addDate(this.props.match.params.id, this.state.month, this.state.year).then(() => {
+                window.location.reload();
+            });
             this.setState({
                 showAddDate: !this.state.showAddDate,
                 date: [...this.state.date, tempDateObj]
             });
+
         }
     }
 
@@ -132,9 +134,9 @@ class Dates extends Component {
     }
 
     deleteDate = (id, index) => {
-
-        alert(this.props.match.params.id)
-        this.props.firebase.deleteDate(this.props.match.params.id, id);
+        if (this.props.match.params.id !== undefined) {
+            this.props.firebase.deleteDate(this.props.match.params.id, id);
+        }
 
         this.setState({
             date: this.state.date.filter((_, i) => i !== index)
@@ -181,7 +183,7 @@ class Dates extends Component {
                     {this.state.showAddDate ?
                         <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
                             <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">x</button>
-                            <FormControl style={formControlStyles}>
+                            <div className="d-flex justify-content-between inner-date-wrapper">
                                 <InputLabel htmlFor="month-helper">Month</InputLabel>
 
                                 <Select onChange={this.handleMonth.bind(this)} className="select-date" value={this.state.month} style={selectStyles} id="month-helper">
@@ -198,11 +200,12 @@ class Dates extends Component {
                                     <MenuItem value="11">November</MenuItem>
                                     <MenuItem value="12">December</MenuItem>
                                 </Select>
-                            </FormControl>
-                            <Select onChange={this.handleYear.bind(this)} style={selectStyles} class="select-date" id="month-helper">
-                                <MenuItem value="2019">2019</MenuItem>
-                                <MenuItem value="2020">2020</MenuItem>
-                            </Select>
+
+                                <Select onChange={this.handleYear.bind(this)} style={selectStyles} class="select-date" id="month-helper" value={this.state.year}>
+                                    <MenuItem value="2019">2019</MenuItem>
+                                    <MenuItem value="2020">2020</MenuItem>
+                                </Select>
+                            </div>
                             <input type="submit" value="Submit" className="add-date-btn" />
                         </form>
                         :
@@ -242,7 +245,7 @@ class Dates extends Component {
 
                                     </Select>
                                 </div>
-                                <input type="submit" value="Submit" className="add-date-btn" />
+                                <input type="submit" value="Submit" className="add-date-btn" onSubmit={this.submitForm.bind(this)} />
                             </form>
                             :
                             ''

@@ -11,8 +11,8 @@ import { notStrictEqual } from 'assert';
 import FileUploader from "react-firebase-file-uploader";
 import MenuItem from '@material-ui/core/MenuItem';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 import 'firebase/storage';
 import TextField from '@material-ui/core/TextField';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
@@ -62,7 +62,6 @@ class Home extends Component {
       const opened = snapshot.docs;
 
       const setArr = [...this.state.users]
-
       opened.map(item => {
         setArr.push(item.data())
       })
@@ -71,11 +70,23 @@ class Home extends Component {
         isLoading: !this.state.isLoading
       })
     });
+
+
+  }
+
+  componentWillUnmount() {
+    this.setState({
+      file: null,
+      username: '',
+    })
   }
 
   toggleAddNew() {
     this.setState({
-      isHidden: !this.state.isHidden
+      isHidden: !this.state.isHidden,
+      file: null,
+      backgroundUrl: '',
+      username: '',
     })
   }
 
@@ -127,8 +138,23 @@ class Home extends Component {
 
   addFile = event => {
     this.setState({
-      file: event.target.files[0]
+      file: event.target.files[0],
+      backgroundUrl: '',
+    }, () => {
+      this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
+        .put(this.state.file).then(snapshot => {
+          console.log(snapshot, 'snapshot in it')
+          const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
+
+          alert('file uploaded')
+          this.setState({
+            backgroundUrl: encodedUrl,
+          })
+        })
     });
+
+    console.log(this.state.file, 'file upload')
+
 
 
   }
@@ -139,19 +165,27 @@ class Home extends Component {
 
   onSubmit = event => {
     event.preventDefault();
-    this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
-      .put(this.state.file).then(snapshot => {
-        const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
-        this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
-        const userObj = {}
-        userObj.logo = encodedUrl;
-        userObj.name = this.state.username;
-        userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
-        this.setState({
-          isHidden: !this.state.isHidden,
-          users: [...this.state.users, userObj]
-        })
-      });
+    this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, this.state.backgroundUrl);
+    const userObj = {}
+    userObj.logo = this.state.backgroundUrl;
+    userObj.name = this.state.username;
+    userObj.urlName = this.state.username.toLowerCase().replace(/ /g, '-')
+    this.setState({
+      isHidden: !this.state.isHidden,
+      users: [...this.state.users, userObj],
+      backgroundUrl: '',
+      username: '',
+      passwordOne: '',
+      email: '',
+      file: null
+    })
+
+
+    // this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
+    //   .put(this.state.file).then(snapshot => {
+    //     const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
+    //     this.props.firebase.addUser(this.state.email, this.state.passwordOne, this.state.username, encodedUrl);
+    //   })
   };
 
 
@@ -173,7 +207,7 @@ class Home extends Component {
       this.state.email === '' ||
       this.state.username === '';
 
-
+    console.log(this.state.file, 'file upload after render')
     return (
 
       <div id="home-page" className="container">
@@ -238,10 +272,10 @@ class Home extends Component {
 
         {this.state.isHidden ?
           <div id="add-new-form-wrapper">
-            <button onClick={this.toggleAddNew.bind(this)} id="x-add-new">X</button>
+            <button onClick={this.toggleAddNew.bind(this)} id="x-add-new" className="toggle-close">x</button>
             <form onSubmit={this.onSubmit} id="add-new-form">
               <div id="avatar-upload" className="d-flex align-items-end justify-content-center" style={backgroundUrlStyle}>
-                <input type="file" onChange={this.addFile} />
+
               </div>
               <TextField
                 margin="normal"
@@ -278,7 +312,7 @@ class Home extends Component {
                 placeholder="Password"
                 label="Password"
               />
-
+              <input type="file" onChange={this.addFile} />
               <div id="add-new-btn-wrapper" className="text-center mt-88">
                 <button disabled={isInvalid} type="submit" className="add-date-btn">Add New</button>
               </div>

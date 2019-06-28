@@ -62,6 +62,14 @@
   .tail-datetime-calendar .calendar-navi span:hover {
     background-color: rgba(0, 0, 0, 0.15);
   }
+
+  .bm-burger-button {
+    filter: brightness(9.5);
+}
+
+  /* .bm-burger-button button{
+    background-image: url("../assets/hamburger-closed.png") !important;
+  } */
   .tail-datetime-calendar .calendar-navi span.button-prev {
     background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC\
       9zdmciIHdpZHRoPSI2IiBoZWlnaHQ9IjE2IiB2aWV3Qm94PSIwIDAgNiAxNiI+PHBhdGggZmlsbD0iI2ZmZmZmZiIgZD0iT\

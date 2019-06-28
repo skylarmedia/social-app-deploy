@@ -81,10 +81,10 @@ class HiddenCalendarSingle extends Component {
                 <p>{this.props.title}</p>
                 <p>{this.truncate(this.props.copy)}</p>
                 <p>{this.props.time}</p>
-                {this.props.hashtags &&
-                    <p>{this.props.hashtags}</p>
-                }
-                {this.props.itemId}
+                <p className="mb-0">{this.props.hashtags.map(item => (
+                    <span>#{item} </span>
+                ))}</p>
+
 
                 <Link to={`/edit-post/${this.props.month}/${this.props.day}/${this.props.itemId}/${this.props.clientId}`}>Edit Post</Link>
             </div >
@@ -96,11 +96,14 @@ class HiddenCalendarSingle extends Component {
         return (
             <React.Fragment>
                 <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)} style={buttonStyle}>{this.props.title}</button>
-                <div class="hidden-post">
-                    {this.state.isHiddenCalendar &&
-                        hiddenPost()
-                    }
-                </div>
+                {this.state.isHiddenCalendar && (
+                    <div class="hidden-post">
+                        {hiddenPost()}
+                    </div>
+                )
+
+                }
+
             </React.Fragment>
         )
     }

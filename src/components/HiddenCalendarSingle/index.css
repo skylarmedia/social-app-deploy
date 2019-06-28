@@ -1,9 +1,11 @@
 .hidden-post{
     position: absolute;
-    border: 1px solid grey;
+    border: 2px solid #002D5B;
     z-index: 99999;
     box-shadow: 4px 14px 12px -1px rgba(0,0,0,0.2);
-    right: -80px;
-    top: -75px;
+    right: -415px;
+    top: -155px;
     background: #fff;
+    width: 409px;
+    padding: 20px;
 }

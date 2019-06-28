@@ -15,7 +15,7 @@ class NavigationWrapper extends Component {
 
     render() {
         return (
-            <Menu id="main-menu" customBurgerIcon={<img src={require('../assets/hamburger-closed.png')} id="hamburger-menu" />} noOverlay>
+            <Menu id="main-menu" noOverlay>
                 <Navigation />
             </Menu>
         )

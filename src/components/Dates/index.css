@@ -102,10 +102,13 @@
     border-radius: 11px;
   }
 
+  .react-time-picker__inputGroup__input{
+    width:18px !important;
+  }
+
 
   select{
     background:#fff;
-    color:red;
   }
 
   .single-calendar-wrapper{
@@ -152,11 +155,33 @@
     margin-top:63px;
   }
 
-  .date-wrapper{
+  .date-wrapper a{
+    color:#002D5B;
+    text-decoration:none;
+  }
+
+  .inner-date-wrapper{
     width:600px;
   }
 
+
   .date-wrapper select{
     width:150px;
-    padding-left:20px;
+  }
+
+  body .bm-menu{
+    background: #093e73;
+  }
+
+  #main-menu{
+    top:0;
+  }
+
+  #nav-id{
+    padding:0;
+    list-style:none;
+  }
+
+  #nav-id li a{
+    color:#fff;
   }

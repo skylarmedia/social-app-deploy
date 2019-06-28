@@ -9,6 +9,9 @@ import { bigIntLiteral } from '@babel/types';
 import "./index.css";
 import TextField from '@material-ui/core/TextField';
 
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 class AddPost extends Component {
     constructor(props) {
         super(props)
@@ -95,9 +98,14 @@ class AddPost extends Component {
 
     createUI() {
         return this.state.values.map((el, i) =>
-            <div key={i}>
-                <input type="text" value={el || ''} onChange={this.handleChange.bind(this, i)} />
-                <input type='button' value='remove' onClick={this.removeClick.bind(this, i)} />
+            <div key={i} className="d-flex align-items-center">
+                <TextField
+                    type="text" value={el || ''} onChange={this.handleChange.bind(this, i)}
+                    className="outlined-title hash-field"
+                    margin="normal"
+                    variant="outlined"
+                />
+                <input type='button' value='x' onClick={this.removeClick.bind(this, i)} className="remove-hash" />
             </div>
         )
     }
@@ -105,9 +113,14 @@ class AddPost extends Component {
 
     createHashtags() {
         return this.state.hashtags.map((el, i) =>
-            <div key={i}>
-                <input type="text" value={el || ''} onChange={this.handleHash.bind(this, i)} />
-                <input type='button' value='remove' onClick={this.removeHash.bind(this, i)} />
+            <div key={i} className="d-flex align-items-center">
+                <TextField
+                    type="text" value={el || ''} onChange={this.handleHash.bind(this, i)}
+                    className="outlined-title hash-field"
+                    margin="normal"
+                    variant="outlined"
+                />
+                <input type='button' value='x' onClick={this.removeHash.bind(this, i)} className="remove-hash" />
             </div>
         );
     }
@@ -277,30 +290,54 @@ class AddPost extends Component {
         console.log(this.state);
     }
 
+    monthNumToName = (monthnum) => {
+        var months = [
+            'January', 'February', 'March', 'April', 'May',
+            'June', 'July', 'August', 'September',
+            'October', 'November', 'December'
+        ];
+
+        return months[monthnum - 1] || '';
+    }
+
     render() {
+
+        const buttonStyles = {
+            backgroundColor: '#EF463B',
+            borderColor: '#007bff',
+            width: "40px",
+            height: "40px"
+        }
+
+
+
+
+
         return (
             <React.Fragment>
-                <div className="container">
+                <div className="container add-post">
+                    <p className="heading text-center add-post-heading">Client {this.props.match.params.clientId} Calendar<br />{this.monthNumToName(parseInt(this.props.match.params.month))} {this.props.match.params.year} - Add Post</p>
                     <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
                     <form onSubmit={this.onSubmitForm}>
                         <div className="d-flex justify-content-between align-items-center">
                             <div className="outter-form-wrap">
-                                <TextField
-                                    id="outlined-name"
-                                    label="Title"
-                                    name="title"
-                                    value={this.state.value} onChange={this.handleTitle} required
-                                    margin="normal"
-                                    variant="outlined"
-                                />
+                                <div className="d-flex align-items-end justify-content-between">
+                                    <TextField
+                                        className="outlined-title"
+                                        label="Title"
+                                        name="title"
+                                        value={this.state.value} onChange={this.handleTitle} required
+                                        margin="normal"
+                                        variant="outlined"
+                                    />
+                                    <TimePicker
+                                        onChange={this.onChangeTime}
+                                        value={this.state.time}
+                                    />
+                                </div>
                                 <br />
-                                <TimePicker
-                                    onChange={this.onChangeTime}
-                                    value={this.state.time}
-                                />
-                                <br />
                                 <TextField
-                                    id="outlined-name"
+                                    className="outlined-copy"
                                     label="Copy"
                                     name="copy"
                                     multiline
@@ -310,12 +347,18 @@ class AddPost extends Component {
                                     variant="outlined"
                                 />
                                 <br />
+                                <p className="heading">Hashtags:</p>
                                 {this.createHashtags()}
-                                <input type='button' value='Add Hashtags' onClick={this.addHash.bind(this)} className="add-date-btn" />
+                                <Fab color="red" aria-label="Add" onClick={this.addHash.bind(this)} style={buttonStyles}>
+                                    <AddIcon />
+                                </Fab>
+                                {/* <input type='button' value='Add Hashtags' className="add-date-btn" /> */}
                                 <br />
+                                <p className="heading">Links:</p>
                                 {this.createUI()}
-                                <br />
-                                <input type='button' value='Add Link' onClick={this.addClick.bind(this)} className="add-date-btn" />
+                                <Fab color="red" aria-label="Add" onClick={this.addClick.bind(this)} style={buttonStyles}>
+                                    <AddIcon />
+                                </Fab>
                                 <br />
                                 <br />
                             </div>
@@ -324,7 +367,7 @@ class AddPost extends Component {
                                 <button onClick={this.uploadFiles}>Upload Files</button>
                             </div>
                         </div>
-                        <div>
+                        <div className="text-center">
                             <input type="submit" value="Submit" className="add-date-btn" />
                         </div>
                     </form>

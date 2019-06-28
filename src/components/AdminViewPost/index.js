@@ -43,9 +43,30 @@ class AdminViewPost extends Component {
                 month: snapshot.data().month,
                 day: snapshot.data().day,
                 selectedCategory: snapshot.data().selectedCategory,
-                time: snapshot.data().time
+                time: snapshot.data().time,
+                messages: []
             })
         })
+
+        this.props.firebase.getMessages(this.props.match.params.client, parseInt(this.props.match.params.month), parseInt(this.props.match.params.day)).then(snapshot => {
+            const emptyMessage = []
+            snapshot.docs.map(item => {
+                var emptyMessageObj = {}
+                emptyMessageObj.day = item.data().day;
+                emptyMessageObj.logo = item.data().logo;
+                emptyMessageObj.message = item.data().message;
+                emptyMessageObj.month = item.data().month;
+                emptyMessageObj.title = item.data().title;
+
+                emptyMessage.push(emptyMessageObj);
+                console.log(emptyMessage, 'empty message')
+            })
+
+
+            this.setState({
+                messages: emptyMessage
+            })
+        });
 
 
     }
@@ -53,14 +74,14 @@ class AdminViewPost extends Component {
     getMessage = (id, month, day, title, message) => {
         const incomingMessageObj = {}
         incomingMessageObj.id = id
-
+        // incomingMessageObj.logo = logo
         incomingMessageObj.month = month
         incomingMessageObj.day = day
         incomingMessageObj.title = title
         incomingMessageObj.message = message
 
         this.setState({
-            incomingMessage: incomingMessageObj
+            messages: [...this.state.messages, incomingMessageObj]
         });
 
         this.props.firebase.adminSendMessage(id, month, day, title, message);
@@ -82,7 +103,7 @@ class AdminViewPost extends Component {
 
 
     render() {
-        console.log(this.state.incomingMessage, 'incoming message');
+        console.log(this.state.messages, 'incoming message view post');
         const media = this.state.metaImageFiles.map((item) => {
             if (this.getType(item) == 'video') {
                 return (
@@ -109,7 +130,7 @@ class AdminViewPost extends Component {
                 <br />
                 <hr />
                 <AdminChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} />
-                <AdminChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} />
+                <AdminChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} messages={this.state.messages} />
             </div>
         )
     }

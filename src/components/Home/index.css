@@ -20,18 +20,24 @@
 }
 
 #x-add-new{
-  position: fixed;
-  top: 10%;
-  background: #fff;
-  border-radius:50%;
-  font-weight:bold;
   z-index: 9999999999;
   color:#ee463a;
-  right: 10%;
-  border: none;
-  width: 40px;
-  height:40px;
-  font-size: 22px;
+}
+
+#add-new-form .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline{
+    border-color:#fff;
+}
+
+#add-new-form .MuiInputLabel-outlined{
+    color:#fff;
+}
+
+#add-new-form .MuiInputBase-input{
+    color:#fff;
+}
+
+#client-list{
+    margin-top:61px;
 }
 
 .user-background{
@@ -41,9 +47,10 @@
 }
 
 .client-wrapper{
-    height:178px;
-    width:24%;
-    position:relative;
+    height: 178px;
+    width: 23%;
+    margin-right: 20px;
+    position: relative;
 }
 
 .delete-button{

@@ -33,7 +33,7 @@ class ClientViewPost extends Component {
                     media: item.data().metaImageFiles,
                     title: item.data().title,
                     copy: item.data().copy,
-                    hashtags: item.data().hashtags.split(' '),
+                    hashtags: item.data().hashtags,
                     links: item.data().links,
                     postId: item.id,
                     approved: item.data().approved
