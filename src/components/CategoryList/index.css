@@ -1,0 +1,9 @@
+.category-color{
+    margin-bottom: 5px;
+    width: 185px;
+    padding-left: 12px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+}

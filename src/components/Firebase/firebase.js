@@ -65,6 +65,14 @@ class Firebase {
         })
     }
 
+    adminSendMessage = (id, month, day, title, message) => this.db.collection('chats').doc(id).collection('messages').add({
+        message,
+        month,
+        day,
+        title,
+        logo: 'https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg'
+    })
+
     getAdminPost = (user, postId) => this.db.collection('users').doc(user).collection('posts').doc(postId).get();
 
     getAll = user => this.db.collection('users').doc(user).get();

@@ -3,6 +3,7 @@ import { SketchPicker } from 'react-color';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import './index.css';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 class SelectCategory extends Component {
@@ -70,10 +71,14 @@ class SelectCategory extends Component {
                 background: item.categories.color
             }
             return (
-                <li key={i}>
-                    <button onClick={this.removeCategory} data-index={i}>Remove</button>
-                    <div className="hex-color" style={categoryStyle}></div>
-                    <div>{item.categories.name}</div>
+                <li key={i} className="category-list-item">
+                    <button onClick={this.removeCategory} data-index={i}>
+                        <DeleteIcon className="delete-category" />
+                    </button>
+                    <div className="d-flex align-items-center">
+                        <div className="hex-color" style={categoryStyle}></div>
+                        <p className="mb-0" className="">{item.categories.name}</p>
+                    </div>
                 </li>
             )
 

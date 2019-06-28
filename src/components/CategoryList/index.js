@@ -1,21 +1,21 @@
 import React from 'react';
+import './index.css';
 
 const CategoryList = (props) => (
     <div>
         {
+
             props.colors.map((item, index) => {
-                console.log(item.categories, 'item in color')
                 let categoryStyle = {
-                    background: item.categories.color,
-                    width: 50,
-                    height: 50
+                    background: item.categories.color
                 }
+
                 return (
                     <div key={index}>
-                        {index}
                         <div>
-                            <div class="category-color" style={categoryStyle}></div>
-                            <p>{item.categories.name}</p>
+                            <div className="category-color" style={categoryStyle}>
+                                {item.categories.name}
+                            </div>
                         </div>
                     </div>
                 )

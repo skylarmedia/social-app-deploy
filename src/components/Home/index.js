@@ -18,6 +18,7 @@ import TextField from '@material-ui/core/TextField';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withAuthorization } from '../Session';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { fade, withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import './index.css';
 
 
@@ -161,7 +162,9 @@ class Home extends Component {
       backgroundSize: "cover"
     }
 
-    console.log(this.state.users, 'users')
+    const textFieldStyles = {
+      borderColor: 'red',
+    }
 
     // const renderPosts = 
 
@@ -169,6 +172,7 @@ class Home extends Component {
       this.state.passwordOne === '' ||
       this.state.email === '' ||
       this.state.username === '';
+
 
     return (
 
@@ -247,6 +251,7 @@ class Home extends Component {
                 onChange={this.onChange}
                 type="text"
                 label="Name"
+                style={textFieldStyles}
               />
               <TextField
                 margin="normal"
@@ -257,6 +262,11 @@ class Home extends Component {
                 type="text"
                 placeholder="Email Address"
                 label="Email"
+                InputProps={{
+                  style: {
+                    borderColor: "red"
+                  }
+                }}
               />
               <TextField
                 margin="normal"

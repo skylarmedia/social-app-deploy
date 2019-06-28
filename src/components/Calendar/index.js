@@ -296,6 +296,14 @@ class Calendar extends React.Component {
     return c
   }
 
+  removeCategory = (index) => {
+    const categories = [...this.state.categories]
+
+    alert('ran')
+
+
+  }
+
   showCategories = e => {
     e.preventDefault();
     this.setState({
@@ -357,24 +365,21 @@ class Calendar extends React.Component {
     });
 
     let daysinmonth = rows.map((d, i) => {
-      return <tr>{d}</tr>;
+      return <tr className="days-in-month">{d}</tr>;
     });
 
     console.log(this.state, 'state of colours')
 
     return (
       <React.Fragment>
+        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
         <div>
-          <button onClick={this.showCategories}>Add Categories</button>
-          {
-            this.state.showCat && (
-              <SelectCategory className="selected-categoryComponent" userId={this.props.match.params.clientId} getCategories={this.sendCategories} />
-            )
-          }
-          <CategoryList colors={this.state.categories} />
           {
             this.state.isLoading ? <div className="tail-datetime-calendar">
-
+              <div className="calendar-heading">
+                <h2 className="text-center">Client {this.props.match.params.clientId} Calendar </h2>
+                <p className="text-center">{this.month()}     {this.year()}</p>
+              </div>
               <div className="calendar-navi">
                 <span
                   onClick={e => {
@@ -389,8 +394,7 @@ class Calendar extends React.Component {
                     }}
                     class="calendar-label"
                   >
-                    {this.month()},
-            </span>
+                  </span>
                 )}
                 <span
                   className="calendar-label"
@@ -398,7 +402,7 @@ class Calendar extends React.Component {
                     this.showYearEditor();
                   }}
                 >
-                  {this.year()}
+
                 </span>
 
                 <span
@@ -419,12 +423,19 @@ class Calendar extends React.Component {
                 <div className="calendar-date">
                   <table className="calendar-day">
                     <thead>
-                      <tr>{weekdayshortname}</tr>
+                      <tr id="weekdays">{weekdayshortname}</tr>
                     </thead>
                     <tbody>{daysinmonth}</tbody>
                   </table>
                 </div>
               )}
+              {
+                this.state.showCat && (
+                  <SelectCategory className="selected-categoryComponent" userId={this.props.match.params.clientId} getCategories={this.sendCategories} removeCategory={() => this.removeCategory} />
+                )
+              }
+              <button onClick={this.showCategories} id="add-category-button">Add Categories</button>
+              <CategoryList colors={this.state.categories} />
             </div>
               :
               <CircularProgress />

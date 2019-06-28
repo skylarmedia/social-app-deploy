@@ -6,6 +6,8 @@ import TimePicker from 'react-time-picker';
 import { SketchPicker } from 'react-color';
 import * as ROUTES from '../../constants/routes';
 import { bigIntLiteral } from '@babel/types';
+import "./index.css";
+import TextField from '@material-ui/core/TextField';
 
 class AddPost extends Component {
     constructor(props) {
@@ -35,7 +37,6 @@ class AddPost extends Component {
 
         this.handleTitle = this.handleTitle.bind(this);
         this.renderAddLinks = this.renderAddLinks.bind(this);
-        this.handleUpload = this.handleUpload.bind(this);
         this.fileChangeHandler = this.fileChangeHandler.bind(this);
         this.onSubmitForm = this.onSubmitForm.bind(this);
         this.showCategory = this.showCategory.bind(this);
@@ -43,6 +44,9 @@ class AddPost extends Component {
         this.onChangeTime = this.onChangeTime.bind(this);
         this.addFile = this.addFile.bind(this);
         this.uploadFiles = this.uploadFiles.bind(this);
+        this.addHash = this.addHash.bind(this);
+        this.removeHash = this.removeHash.bind(this)
+
     }
 
 
@@ -98,10 +102,30 @@ class AddPost extends Component {
         )
     }
 
+
+    createHashtags() {
+        return this.state.hashtags.map((el, i) =>
+            <div key={i}>
+                <input type="text" value={el || ''} onChange={this.handleHash.bind(this, i)} />
+                <input type='button' value='remove' onClick={this.removeHash.bind(this, i)} />
+            </div>
+        );
+    }
+
     handleChange(i, event) {
         let values = [...this.state.values];
         values[i] = event.target.value;
         this.setState({ values });
+    }
+
+    handleHash(i, event) {
+        let hashtags = [...this.state.hashtags];
+        hashtags[i] = event.target.value;
+        this.setState({ hashtags });
+    }
+
+    addHash() {
+        this.setState(prevState => ({ hashtags: [...prevState.hashtags, ''] }))
     }
 
     addClick() {
@@ -114,8 +138,10 @@ class AddPost extends Component {
         this.setState({ values });
     }
 
-    handleUpload = (e) => {
-
+    removeHash(i) {
+        let hashtags = [...this.state.hashtags];
+        hashtags.splice(i, 1);
+        this.setState({ hashtags });
     }
 
     handleSubmit(event) {
@@ -254,34 +280,56 @@ class AddPost extends Component {
     render() {
         return (
             <React.Fragment>
-                <form onSubmit={this.onSubmitForm}>
-                    <label>Title
-                        <input name="title" value={this.state.value} onChange={this.handleTitle} required />
-                    </label>
-                    <br />
-                    <br />
-                    <label>Copy
-                        <textarea name="copy" value={this.state.value} onChange={this.handleCopy} />
-                    </label>
-                    <br />
-                    <br />
-                    <label>Hashtags
-                        <input name="hashtags" value={this.state.value} onChange={this.handleHashtags} />
-                    </label>
-                    <br />
-                    {this.createUI()}
-                    <br /><br />
-                    <input type='button' value='Add More' onClick={this.addClick.bind(this)} />
-                    <input type="submit" value="Submit" />
-                    <TimePicker
-                        onChange={this.onChangeTime}
-                        value={this.state.time}
-                    />
-                    <input type="file" multiple onChange={this.addFile} />
-                    <button onClick={this.uploadFiles}>Upload Files</button>
-                </form>
-                <button onClick={this.showState.bind(this)}>Show State</button>
-            </React.Fragment>
+                <div className="container">
+                    <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+                    <form onSubmit={this.onSubmitForm}>
+                        <div className="d-flex justify-content-between align-items-center">
+                            <div className="outter-form-wrap">
+                                <TextField
+                                    id="outlined-name"
+                                    label="Title"
+                                    name="title"
+                                    value={this.state.value} onChange={this.handleTitle} required
+                                    margin="normal"
+                                    variant="outlined"
+                                />
+                                <br />
+                                <TimePicker
+                                    onChange={this.onChangeTime}
+                                    value={this.state.time}
+                                />
+                                <br />
+                                <TextField
+                                    id="outlined-name"
+                                    label="Copy"
+                                    name="copy"
+                                    multiline
+                                    value={this.state.value} onChange={this.handleTitle} required
+                                    margin="normal"
+                                    value={this.state.value} onChange={this.handleCopy}
+                                    variant="outlined"
+                                />
+                                <br />
+                                {this.createHashtags()}
+                                <input type='button' value='Add Hashtags' onClick={this.addHash.bind(this)} className="add-date-btn" />
+                                <br />
+                                {this.createUI()}
+                                <br />
+                                <input type='button' value='Add Link' onClick={this.addClick.bind(this)} className="add-date-btn" />
+                                <br />
+                                <br />
+                            </div>
+                            <div>
+                                <input type="file" multiple onChange={this.addFile} />
+                                <button onClick={this.uploadFiles}>Upload Files</button>
+                            </div>
+                        </div>
+                        <div>
+                            <input type="submit" value="Submit" className="add-date-btn" />
+                        </div>
+                    </form>
+                </div >
+            </React.Fragment >
         )
     }
 }

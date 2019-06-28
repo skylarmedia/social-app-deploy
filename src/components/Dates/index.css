@@ -65,6 +65,14 @@
     width:100%;
 }
 
+.toggle-close{
+  background: transparent;
+  color: #EF463B;
+  font-weight: bold;
+  border: none;
+  font-size: 41px;
+}
+
 .add-date-form{
     height: 100vh;
     width: 100vw;
@@ -76,7 +84,12 @@
     align-items: center;
     justify-content: center;
     left:0;
+    z-index:1;
     right:0;
+  }
+
+  .add-date-form .add-date-btn{
+    margin-top:58px;
   }
 
   .add-date-btn{
@@ -97,11 +110,13 @@
 
   .single-calendar-wrapper{
     background-image:url('../assets/grouped-single-calendar.svg');
-    height: 180px;
-    width: 213px;
+    height: 240px;
+    width: 23%;
+    margin-left: 1%;
     display: block;
     background-size: cover;
-    position:relative;
+    position: relative;
+    background-size: 100% 100%;
   }
 
   #client-heading{
@@ -111,4 +126,37 @@
 
   .client-text{
     margin-top:20px;
+  }
+
+  .date-wrapper{
+    margin:0 auto;
+  }
+
+  .delete-date{
+    font-weight: bold;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    position: absolute;
+    top: 5px;
+    right: 6px;
+    font-size: 31px;
+    cursor:pointer;
+  }
+
+  #arrow{
+    position:absolute;
+  }
+
+  .arrow-wrapper .add-date-btn{
+    margin-top:63px;
+  }
+
+  .date-wrapper{
+    width:600px;
+  }
+
+  .date-wrapper select{
+    width:150px;
+    padding-left:20px;
   }

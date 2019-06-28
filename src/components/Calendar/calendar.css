@@ -11,20 +11,12 @@
 
 /* @start tail.DateTime */
 .tail-datetime-calendar {
-    width: 90%;
-    height: auto;
-    margin: 15px;
-    padding: 0;
-    display: block;
-    overflow: hidden;
-    position: absolute;
-    border-collapse: separate;
-    font-family: "Open Sans", Calibri, Arial, sans-serif;
-    background-color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3125);
-    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3125);
-    border-radius: 3px;
-    -webkit-border-radius: 3px;
+  width: 85%;
+  margin: 0 auto;
+  z-index: 1;
+  position: absolute;
+  left: 0;
+  right: 0;
   }
   .tail-datetime-calendar:after {
     clear: both;
@@ -44,7 +36,7 @@
     display: table;
     border-spacing: 0;
     border-collapse: separate;
-    background-color: #ee463a;
+    background-color: #002D5B;
     border-radius: 3px 3px 0 0;
     -webkit-border-radius: 3px 3px 0 0;
   }
@@ -114,7 +106,7 @@
     font-weight: normal;
     line-height: 35px;
     border: 0;
-    background-color: #223344;
+    background-color: #F2F2F2;
   }
   .tail-datetime-calendar .calendar-date table tbody tr > * {
     color: #334455;
@@ -283,3 +275,45 @@
     margin: 0 auto;
     top: 0;
   }
+
+  #weekdays{
+    background-color:#EBEBEB !important;
+  }
+
+#weekdays th{
+  font-size:24px;
+  font-weight:600;
+  color:#002D5B;
+}
+
+.calendar-heading h2, .calendar-heading p{
+  font-size:20px;
+  font-weight:600;
+}
+
+.calendar-heading{
+  margin: 40px 0 30px;
+}
+
+.calendar-link{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-navi{
+  height:20px;
+}
+
+#add-category-button{
+  width: 181px;
+  height: 36px;
+  border: 2px solid #EF463B;
+  color: #EF463B;
+  font-size: 16px;
+  text-transform: uppercase;
+  border-radius: 11px;
+  margin: 20px 0;
+}

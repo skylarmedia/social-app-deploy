@@ -54,6 +54,7 @@ class EditCategoryForm extends Component {
             <React.Fragment>
                 <form>
                     <select name="options" onChange={this.props.getSelectedCategory}>
+                        <option value={`No Category ||| #fff`} selected>No Category</option>
                         {options}
                     </select>
                 </form>

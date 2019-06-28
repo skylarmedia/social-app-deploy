@@ -66,11 +66,7 @@ class Dates extends Component {
                     date: dateArr
                 });
             })
-        })
-
-        // Get UID
-
-
+        });
     }
 
     componentDidMount() {
@@ -136,6 +132,8 @@ class Dates extends Component {
     }
 
     deleteDate = (id, index) => {
+
+        alert(this.props.match.params.id)
         this.props.firebase.deleteDate(this.props.match.params.id, id);
 
         this.setState({
@@ -150,7 +148,7 @@ class Dates extends Component {
 
         const renderDates = this.state.date.map((item, index) => (
             <div className="single-calendar-wrapper d-flex align-items-center justify-content-center" index={index} key={item.id}>
-                <button onClick={() => this.deleteDate(item.id, index)}>DELETE</button>
+                <button onClick={() => this.deleteDate(item.id, index)} className="delete-date">x</button>
                 <Link to={`/calendar/${item.year}/${item.month}/${this.props.match.params.id}`}>
                     {this.convert(item.month)} {item.year}
                     <br />
@@ -159,7 +157,9 @@ class Dates extends Component {
         ));
 
         const selectStyles = {
-            backgroundColor: "#fff"
+            backgroundColor: "#fff",
+            width: "269px",
+            paddingLeft: "20px"
         }
 
         const formControlStyles = {
@@ -173,13 +173,14 @@ class Dates extends Component {
         return (
             this.state.isLoading && this.state.date.length > 0 ?
                 <div>
-                    <Link to='/Home'>Back</Link><br />
-                    <div id="dates-list" className="container">
+                    <h2 className="text-center" id="client-heading">Client A-Game’s Calendars</h2>
+                    <p className="text-center">Select a month to view it’s calendar.</p>
+                    <div id="dates-list" className="container row date-wrapper justify-content-center">
                         {renderDates}
                     </div>
                     {this.state.showAddDate ?
                         <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-                            <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">Close</button>
+                            <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">x</button>
                             <FormControl style={formControlStyles}>
                                 <InputLabel htmlFor="month-helper">Month</InputLabel>
 
@@ -198,7 +199,7 @@ class Dates extends Component {
                                     <MenuItem value="12">December</MenuItem>
                                 </Select>
                             </FormControl>
-                            <Select onChange={this.handleYear.bind(this)} style={selectStyles} class="select-date">
+                            <Select onChange={this.handleYear.bind(this)} style={selectStyles} class="select-date" id="month-helper">
                                 <MenuItem value="2019">2019</MenuItem>
                                 <MenuItem value="2020">2020</MenuItem>
                             </Select>
@@ -211,34 +212,37 @@ class Dates extends Component {
                         <Calendar impData={this.state} />
                         : ''
                     }
-                    <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">Add New</button>
+                    <div className="text-center">
+                        <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">Add New</button>
+                    </div>
                 </div>
                 : (this.state.isLoading && this.state.date.length == 0 ?
                     <div className="container">
                         {this.state.showAddDate ?
                             <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
-                                <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">Close</button>
-
-                                <Select onChange={this.handleMonth.bind(this)} value={this.state.month} style={selectStyles}>
-                                    <MenuItem value="1">January</MenuItem>
-                                    <MenuItem value="2">February</MenuItem>
-                                    <MenuItem value="3">March</MenuItem>
-                                    <MenuItem value="4">April</MenuItem>
-                                    <MenuItem value="5">May</MenuItem>
-                                    <MenuItem value="6">June</MenuItem>
-                                    <MenuItem value="7">July</MenuItem>
-                                    <MenuItem value="8">August</MenuItem>
-                                    <MenuItem value="9">September</MenuItem>
-                                    <MenuItem value="10">October</MenuItem>
-                                    <MenuItem value="11">November</MenuItem>
-                                    <MenuItem value="12">December</MenuItem>
-                                </Select>
-                                <Select onChange={this.handleYear.bind(this)}>
-                                    Placeholder
+                                <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">x</button>
+                                <div className="d-flex justify-content-between date-wrapper">
+                                    <Select onChange={this.handleMonth.bind(this)} value={this.state.month} style={selectStyles}>
+                                        <MenuItem value="1">January</MenuItem>
+                                        <MenuItem value="2">February</MenuItem>
+                                        <MenuItem value="3">March</MenuItem>
+                                        <MenuItem value="4">April</MenuItem>
+                                        <MenuItem value="5">May</MenuItem>
+                                        <MenuItem value="6">June</MenuItem>
+                                        <MenuItem value="7">July</MenuItem>
+                                        <MenuItem value="8">August</MenuItem>
+                                        <MenuItem value="9">September</MenuItem>
+                                        <MenuItem value="10">October</MenuItem>
+                                        <MenuItem value="11">November</MenuItem>
+                                        <MenuItem value="12">December</MenuItem>
+                                    </Select>
+                                    <Select onChange={this.handleYear.bind(this)} style={selectStyles} value={this.state.year}>
+                                        Placeholder
                                     <MenuItem value="2019">2019</MenuItem>
-                                    <MenuItem value="2020">2020</MenuItem>
-                                </Select>
-                                <input type="submit" value="Submit" />
+
+                                    </Select>
+                                </div>
+                                <input type="submit" value="Submit" className="add-date-btn" />
                             </form>
                             :
                             ''
@@ -248,7 +252,7 @@ class Dates extends Component {
                         <p className="text-center client-text">You don’t seem to have any calendars set up yet. Click below to add one and get started!</p>
                         <div className="text-center arrow-wrapper">
                             <button onClick={this.toggleAddDate.bind(this)} className="add-date-btn">Add New</button>
-                            <img src={require('../assets/arrow.svg')} />
+                            <img src={require('../assets/arrow.svg')} id="arrow" />
                         </div>
                     </div>
                     :

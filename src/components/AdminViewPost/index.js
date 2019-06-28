@@ -5,6 +5,7 @@ import AdminViewPostContent from '../AdminViewPostContent';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 
+
 class AdminViewPost extends Component {
     constructor(props) {
         super(props);
@@ -12,7 +13,7 @@ class AdminViewPost extends Component {
         this.state = {
             title: '',
             copy: '',
-            hashtags: '',
+            hashtags: [],
             time: '',
             month: '',
             day: '',
@@ -31,8 +32,6 @@ class AdminViewPost extends Component {
 
 
     componentWillMount() {
-        console.log(this.props.match.params.itemId, 'itemId');
-        console.log(this.props.match.params.client, 'client');
         this.props.firebase.getAdminPost(this.props.match.params.client, this.props.match.params.itemId).then(snapshot => {
 
             this.setState({
@@ -47,11 +46,14 @@ class AdminViewPost extends Component {
                 time: snapshot.data().time
             })
         })
+
+
     }
 
     getMessage = (id, month, day, title, message) => {
         const incomingMessageObj = {}
         incomingMessageObj.id = id
+
         incomingMessageObj.month = month
         incomingMessageObj.day = day
         incomingMessageObj.title = title
@@ -60,6 +62,8 @@ class AdminViewPost extends Component {
         this.setState({
             incomingMessage: incomingMessageObj
         });
+
+        this.props.firebase.adminSendMessage(id, month, day, title, message);
     }
 
     getType = (url) => {
@@ -98,14 +102,14 @@ class AdminViewPost extends Component {
         }
         )
         return (
-            <div>
-                <AdminViewPostContent post={this.state} />
+            <div className="container">
+                <AdminViewPostContent post={this.state} hashtags={this.state.hashtags} />
                 {media}
                 <br />
                 <br />
                 <hr />
                 <AdminChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} />
-                <AdminChatLog incomingMessage={this.state.incomingMessage} />
+                <AdminChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} />
             </div>
         )
     }

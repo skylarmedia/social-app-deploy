@@ -58,6 +58,11 @@
     height: 40px;
 }
 
+.client-wrapper a{
+    text-decoration:none;
+    color:#002D5B;
+}
+
 .dashed{
     border:3px dashed #002D5B;
     height:178px;
