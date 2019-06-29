@@ -68,6 +68,7 @@ const App = () => (
       <NavigationWrapper />
       <Switch>
         <Route exact path="/" component={SignInPage} />
+        <Route exact path="/social-app-deploy" component={SignInPage} />
         <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route exact path={ROUTES.HOME} component={HomePage} />
