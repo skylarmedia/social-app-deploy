@@ -6,22 +6,9 @@ import TimePicker from 'react-time-picker';
 import EditCategoryForm from '../EditCategoryForm';
 import * as ROUTES from '../../constants/routes';
 import TextField from '@material-ui/core/TextField';
-
-// function getType(url) {
-//     if (url !== 'No Files') {
-//         var checkUrl = new URL(url)
-
-//         var query_string = checkUrl.search;
-
-//         var search_params = new URLSearchParams(query_string);
-
-//         var type = search_params.get('type');
-
-//         return type
-//     }
-
-// }
-
+import DeleteIcon from '@material-ui/icons/Delete';
+import Fab from '@material-ui/core/Fab';
+import './index.css';
 
 class EditPost extends Component {
     constructor(props) {
@@ -31,19 +18,22 @@ class EditPost extends Component {
             post: null,
             postTitle: '',
             postCopy: '',
-            postHashtags: '',
+            postHashtags: [],
             postTime: '',
             values: [],
             firestorageRef: this.props.firebase.storage,
             metaImageFiles: [],
             categories: [],
-            selectedCategory: ''
+            selectedCategory: 'No Category|||#fff',
+            currentHashtag: ''
         }
 
         this.handlePostTitle = this.handlePostTitle.bind(this);
         this.editPostSubmit = this.editPostSubmit.bind(this);
         this.getSelectedCategory = this.getSelectedCategory.bind(this);
-        this.handleHashtags = this.handleHashtags.bind(this);
+        this.deleteHash = this.deleteHash.bind(this);
+        // this.addHashtag = this.addHashtag.bind(this)
+        // this.handleHashtags = this.handleHashtags.bind(this);
     }
 
 
@@ -57,6 +47,7 @@ class EditPost extends Component {
                 values: item.data().links,
                 metaImageFiles: item.data().metaImageFiles,
                 selectedCategory: item.data().selectedCategory
+
             })
         });
     }
@@ -88,7 +79,7 @@ class EditPost extends Component {
         return this.state.values.map((el, i) =>
             <div key={i}>
                 <input type="text" value={el || ''} onChange={this.handleChange.bind(this, i)} />
-                <input type='button' value='remove' onClick={this.removeClick.bind(this, i)} />
+                <input type='button' value='x' onClick={this.removeClick.bind(this, i)} className="remove-hash" />
             </div>
         )
     }
@@ -144,13 +135,47 @@ class EditPost extends Component {
         })
     }
 
-    handleHashtags = (event) => {
-        this.setState({
-            postHashtags: event.target.value
-        });
+    monthNumToName = (monthnum) => {
+        var months = [
+            'January', 'February', 'March', 'April', 'May',
+            'June', 'July', 'August', 'September',
+            'October', 'November', 'December'
+        ];
 
-        console.log(this.state.postHashtags);
+        return months[monthnum - 1] || '';
     }
+
+    onChangeTime = e => {
+        this.setState({
+            postTime: e
+        })
+    }
+
+    deleteHash = (index) => {
+
+        // console.log(this.getAttribute('index'), 'attributed')
+        this.setState({
+            postHashtags: this.state.postHashtags.filter((_, i) => i !== index)
+        });
+    }
+
+    addNewHashtag = (e) => {
+        e.preventDefault();
+
+        this.setState({
+            postHashtags: [...this.state.postHashtags, this.state.currentHashtag],
+            currentHashtag: ''
+        })
+
+    }
+
+    currentHashtagHandle = e => {
+        this.setState({
+            currentHashtag: e.target.value
+        })
+    }
+
+
 
 
 
@@ -167,43 +192,72 @@ class EditPost extends Component {
                     <img src={item} onError="this.style.display='none'" />
                 )
             }
-        }
-        )
-        return (
-            <div> Edit Posts
-                <form onSubmit={this.editPostSubmit}>
-                    <TextField
-                        margin="normal"
-                        variant="outlined"
-                        label="Title"
-                        name="title"
-                        value={this.state.postTitle}
-                        onChange={this.handlePostTitle} />
+        })
 
-                    <TextField
-                        id="outlined-multiline-static"
-                        label="Copy"
-                        multiline
-                        rows="4"
-                        defaultValue="Default Value"
-                        margin="normal"
-                        variant="outlined"
-                        onChange={this.handlePostCopy} value={this.state.postCopy}
-                    />
-                    <br />
-                    Hashtags<input name="hashtags" value={this.state.postHashtags} onChange={this.handleHashtags} /><br />
-                    <TimePicker
-                        onChange={this.onChangeTime}
-                        value={this.state.postTime}
-                    />
-                    {this.state.values && (
-                        this.createUI()
-                    )
-                    }
-                    <input type="submit" value="Submit Edits" />
+        console.log(this.state.selectedCategory, 'selected category')
+
+
+
+        const hashtags = this.state.postHashtags.map((hashtag, index) => (
+            <div>{hashtag}<input type="button" onClick={() => this.deleteHash(index)} value="x" index={index} className="remove-hash" /></div>
+        ));
+        return (
+            <div className="container add-post edit-post">
+                <button onClick={this.deletePost} className="delete-post-button">
+                    <Fab disabled aria-label="Delete">
+                        <DeleteIcon />
+                    </Fab>
+                </button>
+                <p className="heading text-center add-post-heading">Client {this.props.match.params.clientId} Calendar<br />{this.monthNumToName(parseInt(this.props.match.params.month))} {this.props.match.params.year} - Edit Post</p>
+                <form onSubmit={this.editPostSubmit}>
+                    <div className="d-flex align-items-end justify-content-between">
+                        <div>
+                            <TextField
+                                margin="normal"
+                                variant="outlined"
+                                label="Title"
+                                name="title"
+                                value={this.state.postTitle}
+                                onChange={this.handlePostTitle}
+                                className="outlined-title" />
+                            <TimePicker
+                                onChange={this.onChangeTime}
+                                value={this.state.postTime}
+                            />
+
+
+                            <TextField
+                                id="outlined-multiline-static"
+                                label="Copy"
+                                className="outlined-copy"
+                                multiline
+                                rows="4"
+                                defaultValue="Default Value"
+                                margin="normal"
+                                variant="outlined"
+                                onChange={this.handlePostCopy} value={this.state.postCopy}
+                            />
+                            <br />
+                            <p className="heading">Hashtags:</p>
+                            {hashtags}
+                            <p className="heading">Links</p>
+                            {this.state.values && (
+                                this.createUI()
+                            )
+                            }
+                        </div>
+                        <div>{media}</div>
+                    </div>
+                    <div className="text-center">
+                        <input type="submit" value="Submit Edits" className="add-date-btn" />
+                    </div>
+                </form>
+
+                <form onSubmit={this.addNewHashtag.bind(this)} >
+                    <input name="hashtags" value={this.state.currentHashtag} onChange={this.currentHashtagHandle} placeholder="Add Hashtag" /><br />
                 </form>
                 <button onClick={this.deletePost}>Delete</button>
-                {media}
+
                 <EditCategoryForm clientId={this.props.match.params.clientId} getSelectedCategory={this.getSelectedCategory} category={this.state.selectedCategory} />
             </div>
         )

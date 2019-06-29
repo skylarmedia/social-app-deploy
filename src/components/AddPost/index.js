@@ -221,7 +221,8 @@ class AddPost extends Component {
             this.state.values,
             this.state.metaImageFiles,
             friendlyUrl,
-            false
+            false,
+            'No Category|||#fff'
         );
 
         this.props.history.push(`/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`);

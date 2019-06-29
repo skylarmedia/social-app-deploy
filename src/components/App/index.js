@@ -66,30 +66,30 @@ const App = () => (
     <div id="outer-container">
       <Header />
       <NavigationWrapper />
-      <Route exact path="/" component={SignInPage} />
-      <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
-      <Route path={ROUTES.SIGN_UP} component={SignUpPage} />
-      <Route path="/social-app-deploy/" component={SignInPage} />
-      <Route path={ROUTES.SIGN_IN} component={SignInPage} />
-      <Route exact path={ROUTES.HOME} component={HomePage} />
-      <Route path={ROUTES.CLIENTS} component={Clients} />
-      <Route path={ROUTES.DATES} component={Dates} />
-      <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />
-      <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
-      <Route exact path="/server" component={Server} />
-      <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
-      <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
-      <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
-      <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
+      <Switch>
+        <Route exact path="/" component={SignInPage} />
+        <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
+        <Route path={ROUTES.SIGN_IN} component={SignInPage} />
+        <Route exact path={ROUTES.HOME} component={HomePage} />
+        <Route path={ROUTES.CLIENTS} component={Clients} />
+        <Route path={ROUTES.DATES} component={Dates} />
+        <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />
+        <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
+        <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
+        <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
+        <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
+        <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
+        <Route component={NoMatch} />
+      </Switch>
     </div>
   </Router>
 )
-//     </AuthUserContext.Provider>
-//   )
-// }
 
 
-// }
+const NoMatch = ({ location }) => (
+  <div>Sorry this page at {location.pathname} doesn't exist</div>
+)
+
 
 
 
