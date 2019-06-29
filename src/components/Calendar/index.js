@@ -301,7 +301,6 @@ class Calendar extends React.Component {
 
     alert('ran')
 
-
   }
 
   showCategories = e => {
