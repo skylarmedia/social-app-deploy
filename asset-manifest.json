@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/social-app-deploy/static/css/main.3658d09f.chunk.css",
-    "main.js": "/social-app-deploy/static/js/main.0c2a5301.chunk.js",
-    "main.js.map": "/social-app-deploy/static/js/main.0c2a5301.chunk.js.map",
+    "main.js": "/social-app-deploy/static/js/main.2200f74a.chunk.js",
+    "main.js.map": "/social-app-deploy/static/js/main.2200f74a.chunk.js.map",
     "runtime~main.js": "/social-app-deploy/static/js/runtime~main.7a0b50cb.js",
     "runtime~main.js.map": "/social-app-deploy/static/js/runtime~main.7a0b50cb.js.map",
     "static/css/2.7e6b12ab.chunk.css": "/social-app-deploy/static/css/2.7e6b12ab.chunk.css",
     "static/js/2.48be362c.chunk.js": "/social-app-deploy/static/js/2.48be362c.chunk.js",
     "static/js/2.48be362c.chunk.js.map": "/social-app-deploy/static/js/2.48be362c.chunk.js.map",
     "index.html": "/social-app-deploy/index.html",
-    "precache-manifest.b5279336d4cc5ffbb2efb7522c89caa6.js": "/social-app-deploy/precache-manifest.b5279336d4cc5ffbb2efb7522c89caa6.js",
+    "precache-manifest.ae3a7307df74004a0d00e853ca9c0fca.js": "/social-app-deploy/precache-manifest.ae3a7307df74004a0d00e853ca9c0fca.js",
     "service-worker.js": "/social-app-deploy/service-worker.js",
     "static/css/2.7e6b12ab.chunk.css.map": "/social-app-deploy/static/css/2.7e6b12ab.chunk.css.map",
     "static/css/main.3658d09f.chunk.css.map": "/social-app-deploy/static/css/main.3658d09f.chunk.css.map",
