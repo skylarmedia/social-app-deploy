@@ -35,3 +35,8 @@ h2.welcome{
     justify-content: center;
     margin-top:10vw;
 }
+
+#sign-in-wrapper .MuiButton-containedPrimary{
+    background:#EE273B;
+    margin-bottom:10px;
+}

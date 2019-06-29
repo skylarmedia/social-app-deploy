@@ -68,7 +68,7 @@ const App = () => (
       <NavigationWrapper />
       <Switch>
         <Route exact path="/" component={SignInPage} />
-        <Route exact path="/social-app-deploy" component={SignInPage} />
+
         <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route exact path={ROUTES.HOME} component={HomePage} />
@@ -77,7 +77,11 @@ const App = () => (
         <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />
         <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
         <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
-        <Route path="/view-post/:month/:day/:id" component={ClientViewPost} />
+        {/* <AuthUserContext.Consumer>
+          {authUser => (
+            <Route exact path="/view-post/:month/:day/:id" render={(props) => <ClientViewPost {...props} authUser={authUser} />} />
+          )}
+        </AuthUserContext.Consumer> */}
         <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
         <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
         <Route component={NoMatch} />

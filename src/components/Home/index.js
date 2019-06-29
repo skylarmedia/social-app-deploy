@@ -41,7 +41,8 @@ class Home extends Component {
       error: null,
       firestorageRef: this.props.firebase.storage,
       adminEmail: '',
-      backgroundUrl: ''
+      backgroundUrl: '',
+      uploadComplete: false
     }
 
     this.baseState = this.state
@@ -146,9 +147,9 @@ class Home extends Component {
           console.log(snapshot, 'snapshot in it')
           const encodedUrl = `https://firebasestorage.googleapis.com/v0/b/skylar-social-17190.appspot.com/o/${encodeURIComponent(snapshot.metadata.fullPath)}?alt=media`;
 
-          alert('file uploaded')
           this.setState({
             backgroundUrl: encodedUrl,
+            uploadComplete: true
           })
         })
     });
@@ -191,6 +192,8 @@ class Home extends Component {
 
   render() {
 
+    console.log(this, 'props in homepage');
+    // console.log(authUser, 'auth in homepage');
     const backgroundUrlStyle = {
       backgroundImage: `url(${this.state.backgroundUrl})`,
       backgroundSize: "cover"
@@ -205,7 +208,8 @@ class Home extends Component {
     const isInvalid =
       this.state.passwordOne === '' ||
       this.state.email === '' ||
-      this.state.username === '';
+      this.state.username === '' ||
+      this.state.uploadComplete === false;
 
     console.log(this.state.file, 'file upload after render')
     return (
@@ -341,10 +345,6 @@ const mapStateToProps = state => (
 
 const authCondition = authUser => !!authUser;
 
-export default compose(
-  withFirebase,
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )
-)(Home);
+export default withAuthorization(compose(
+  withFirebase
+))(Home);

@@ -187,9 +187,13 @@ class EditPost extends Component {
                         <source src={item} />
                     </video>
                 )
+            } else if (this.getType(item) == 'image') {
+                return (
+                    <img src={item} />
+                )
             } else {
                 return (
-                    <img src={item} onError="this.style.display='none'" />
+                    <div>Sorry There is no media</div>
                 )
             }
         })
@@ -211,7 +215,7 @@ class EditPost extends Component {
                 <p className="heading text-center add-post-heading">Client {this.props.match.params.clientId} Calendar<br />{this.monthNumToName(parseInt(this.props.match.params.month))} {this.props.match.params.year} - Edit Post</p>
                 <form onSubmit={this.editPostSubmit}>
                     <div className="d-flex align-items-end justify-content-between">
-                        <div>
+                        <div className="d-flex flex-wrap justify-content-between">
                             <TextField
                                 margin="normal"
                                 variant="outlined"
@@ -224,8 +228,6 @@ class EditPost extends Component {
                                 onChange={this.onChangeTime}
                                 value={this.state.postTime}
                             />
-
-
                             <TextField
                                 id="outlined-multiline-static"
                                 label="Copy"
@@ -238,13 +240,16 @@ class EditPost extends Component {
                                 onChange={this.handlePostCopy} value={this.state.postCopy}
                             />
                             <br />
-                            <p className="heading">Hashtags:</p>
-                            {hashtags}
-                            <p className="heading">Links</p>
-                            {this.state.values && (
-                                this.createUI()
-                            )
-                            }
+                            <div>
+                                <p className="heading">Hashtags:</p>
+                                {hashtags}
+
+                                <p className="heading">Links:</p>
+                                {this.state.values && (
+                                    this.createUI()
+                                )
+                                }
+                            </div>
                         </div>
                         <div>{media}</div>
                     </div>
@@ -256,7 +261,6 @@ class EditPost extends Component {
                 <form onSubmit={this.addNewHashtag.bind(this)} >
                     <input name="hashtags" value={this.state.currentHashtag} onChange={this.currentHashtagHandle} placeholder="Add Hashtag" /><br />
                 </form>
-                <button onClick={this.deletePost}>Delete</button>
 
                 <EditCategoryForm clientId={this.props.match.params.clientId} getSelectedCategory={this.getSelectedCategory} category={this.state.selectedCategory} />
             </div>

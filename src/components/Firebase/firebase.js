@@ -161,7 +161,7 @@ class Firebase {
         metaImageFiles: metaImageFiles,
         friendlyUrl: friendlyUrl,
         approved: approved,
-        selectedCategory
+        selectedCategory: selectedCategory
     });
 
     // Get UID
@@ -185,7 +185,7 @@ class Firebase {
             return this.db.collection('users').where('email', '==', res.user.email).get();
         })
 
-    doSignOut = () => this.auth.signOut().then(() => { })
+    doSignOut = () => this.auth.signOut()
 
     doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 

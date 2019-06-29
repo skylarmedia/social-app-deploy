@@ -5,6 +5,7 @@ import MediaWrapper from '../MediaWrapper';
 import Hashtags from '../Hashtags';
 import ClientChatBox from '../ClientChatBox';
 import ClientChatLog from '../ClientChatLog';
+import { AuthUserContext } from '../Session'
 
 class ClientViewPost extends Component {
     constructor(props) {
@@ -18,7 +19,8 @@ class ClientViewPost extends Component {
             links: [],
             approved: false,
             postId: '',
-            showPopUp: false
+            showPopUp: false,
+            authUser: null
         }
 
         this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -40,7 +42,34 @@ class ClientViewPost extends Component {
                 })
             })
         })
+        console.log(this.props.authUser, 'props in ')
+
     }
+
+    // static getDerivedStateFromProps(nextProps, prevState) {
+    //     if (nextProps.authUser != prevState.authUser) {
+    //         this.props.firebase.getMessages(this.props.authUser.displayName, parseInt(this.props.match.params.month), parseInt(this.props.match.params.day)).then(snapshot => {
+    //             const emptyMessage = []
+    //             snapshot.docs.map(item => {
+    //                 var emptyMessageObj = {}
+    //                 emptyMessageObj.day = item.data().day;
+    //                 emptyMessageObj.logo = item.data().logo;
+    //                 emptyMessageObj.message = item.data().message;
+    //                 emptyMessageObj.month = item.data().month;
+    //                 emptyMessageObj.title = item.data().title;
+
+    //                 emptyMessage.push(emptyMessageObj);
+    //                 console.log(emptyMessage, 'empty message')
+    //             })
+    //             // this.setState({
+    //             //     messages: emptyMessage
+    //             // })
+    //         });
+
+    //     } else {
+    //         alert('did not received');
+    //     }
+    // }
 
     handleCheckbox = (event) => {
         const target = event.target;
@@ -68,6 +97,7 @@ class ClientViewPost extends Component {
 
     render() {
         console.log(this.state.approved, 'approved');
+        console.log(this.props, 'props in props')
         const approveStyles = {
             margin: 200,
             width: 300,
@@ -127,11 +157,17 @@ class ClientViewPost extends Component {
                     </form>
                 </div>
                 {/* End of media-text-wrapper */}
+                <AuthUserContext.Consumer>
+                    {authUser => authUser ?
+                        <div id="chat-wrapper">
+                            <ClientChatBox authUser />
+                            <ClientChatLog />
+                        </div> :
+                        ""
+                    }
 
-                <div id="chat-wrapper">
-                    <ClientChatBox />
-                    <ClientChatLog />
-                </div>
+                </AuthUserContext.Consumer>
+
             </React.Fragment>
         )
     }
