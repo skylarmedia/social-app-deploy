@@ -46,6 +46,10 @@
     object-fit: cover;
 }
 
+.uncomplete.add-date-btn{
+    background:#b2bec3;
+}
+
 .client-wrapper{
     height: 178px;
     width: 23%;

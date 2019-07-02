@@ -318,7 +318,7 @@ class Home extends Component {
               />
               <input type="file" onChange={this.addFile} />
               <div id="add-new-btn-wrapper" className="text-center mt-88">
-                <button disabled={isInvalid} type="submit" className="add-date-btn">Add New</button>
+                <button disabled={isInvalid} type="submit" className={`add-date-btn ${this.state.uploadComplete ? 'complete' : 'uncomplete'}`}>Add New</button>
               </div>
 
               {this.state.error && <p>{this.state.error.message}</p>}

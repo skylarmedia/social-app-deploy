@@ -8,6 +8,7 @@ import * as ROUTES from '../../constants/routes';
 import { bigIntLiteral } from '@babel/types';
 import "./index.css";
 import TextField from '@material-ui/core/TextField';
+import EditCategoryForm from '../EditCategoryForm';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
@@ -35,7 +36,8 @@ class AddPost extends Component {
             calendarYear: 2019,
             postId: '',
             file: [],
-            metaImageFiles: ["No Files"]
+            metaImageFiles: ["No Files"],
+            selectedCategory: 'No Category|||#fff'
         }
 
         this.handleTitle = this.handleTitle.bind(this);
@@ -94,6 +96,13 @@ class AddPost extends Component {
             pushColorText: e.target.value
         })
     }
+
+    getSelectedCategory = (event) => {
+        this.setState({
+            selectedCategory: event.target.value
+        })
+    }
+
 
 
     createUI() {
@@ -222,7 +231,7 @@ class AddPost extends Component {
             this.state.metaImageFiles,
             friendlyUrl,
             false,
-            'No Category|||#fff'
+            this.state.selectedCategory
         );
 
         this.props.history.push(`/calendar/2019/${this.props.match.params.month}/${this.props.match.params.clientId}`);
@@ -255,7 +264,6 @@ class AddPost extends Component {
     uploadFiles = (e) => {
         e.preventDefault();
         const firestorageRef = this.props.firebase.storage;
-        alert(this.state.file.length)
         const imageRefs = [];
         this.state.file.forEach(file => {
             var type;
@@ -309,6 +317,10 @@ class AddPost extends Component {
             width: "40px",
             height: "40px"
         }
+
+        const renderMedia = this.state.metaImageFiles.map(media => {
+            // alert(media)
+        })
 
 
 
@@ -372,6 +384,7 @@ class AddPost extends Component {
                             <input type="submit" value="Submit" className="add-date-btn" />
                         </div>
                     </form>
+                    <EditCategoryForm clientId={this.props.match.params.clientId} getSelectedCategory={this.getSelectedCategory} category={this.state.selectedCategory} />
                 </div >
             </React.Fragment >
         )

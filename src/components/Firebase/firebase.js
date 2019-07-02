@@ -135,6 +135,14 @@ class Firebase {
         })
     })
 
+    updateCategories = (user, categories) => {
+        categories.map(category => {
+            this.db.collection('users').doc(user).collection('categories').where('name', '==', category).delete();
+        })
+    }
+
+
+
     // Posts Function
 
     editPostFirebase = (id, postId) => this.db.collection('users').doc(id).collection('posts').doc(postId).get();

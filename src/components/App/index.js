@@ -84,7 +84,7 @@ const App = () => (
         </AuthUserContext.Consumer> */}
         <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
         <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
-        <Route component={NoMatch} />
+        {/* <Route component={NoMatch} /> */}
       </Switch>
     </div>
   </Router>

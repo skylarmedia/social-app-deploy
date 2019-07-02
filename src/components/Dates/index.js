@@ -224,7 +224,7 @@ class Dates extends Component {
                         {this.state.showAddDate ?
                             <form className="add-date-form" onSubmit={this.submitForm.bind(this)}>
                                 <button onClick={this.toggleAddDate.bind(this)} className="toggle-close">x</button>
-                                <div className="d-flex justify-content-between date-wrapper">
+                                <div className="d-flex justify-content-between date-wrapper month-wrapper">
                                     <Select onChange={this.handleMonth.bind(this)} value={this.state.month} style={selectStyles}>
                                         <MenuItem value="1">January</MenuItem>
                                         <MenuItem value="2">February</MenuItem>

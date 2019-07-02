@@ -43,7 +43,8 @@ class Calendar extends React.Component {
       showCat: false,
       categories: [],
       newColors: [],
-      isLoading: false
+      isLoading: false,
+      removedCategories: []
     };
 
     this.onDoubleClick = this.handleDoubleClickItem.bind(this)
@@ -65,22 +66,18 @@ class Calendar extends React.Component {
 
       this.props.firebase.getUserCategories(this.props.match.params.clientId).then(snapshot => {
         const catArr = [...this.state.categories]
-        snapshot.docs.map(category => {
 
+        snapshot.docs.map(category => {
           catArr.push(category.data())
         })
         this.setState({
-          categories: catArr
+          categories: catArr,
+          currentCategories: catArr
         })
       })
 
     }
   }
-
-  componentWillUnmount() {
-  }
-
-
 
   handleDoubleClickItem(event) {
     alert('I got double-clicked!');
@@ -170,6 +167,7 @@ class Calendar extends React.Component {
       showCalendarTable: !this.state.showCalendarTable
     });
   };
+
 
   onPrev = () => {
     let curr = "";
@@ -296,11 +294,16 @@ class Calendar extends React.Component {
     return c
   }
 
-  removeCategory = (index) => {
-    const categories = [...this.state.categories]
+  removeCategory = (index, name) => {
+    // const removedCategories = [...this.state.removedCategries];
 
-    alert('ran')
 
+    this.setState({
+      categories: this.state.categories.filter((_, i) => i !== index),
+      removedCategories: [...this.state.removedCategories, name]
+    });
+
+    console.log(this.state.removedCategories)
   }
 
   showCategories = e => {
@@ -311,7 +314,7 @@ class Calendar extends React.Component {
   }
 
   sendCategories = (arr, arr2) => {
-    const currentCat = [...this.state.categories]
+    const currentCat = [...this.state.categories];
 
     arr.map(item => {
       currentCat.push(item);
@@ -326,6 +329,12 @@ class Calendar extends React.Component {
 
   }
 
+  componentWillUnmount() {
+    alert('unmounted')
+    if (this.state.removedCategories.length > 0) {
+      this.props.firebase.updateCategories(this.props.match.params.clientId, this.state.removedCategories);
+    }
+  }
 
   render() {
 
@@ -366,8 +375,6 @@ class Calendar extends React.Component {
     let daysinmonth = rows.map((d, i) => {
       return <tr className="days-in-month">{d}</tr>;
     });
-
-    console.log(this.state, 'state of colours')
 
     return (
       <React.Fragment>
@@ -434,7 +441,7 @@ class Calendar extends React.Component {
                 )
               }
               <button onClick={this.showCategories} id="add-category-button">Add Categories</button>
-              <CategoryList colors={this.state.categories} />
+              <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} />
             </div>
               :
               <CircularProgress />
