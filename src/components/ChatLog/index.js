@@ -16,7 +16,13 @@ class AdminChatLog extends Component {
 
     componentDidMount() {
         console.log(this.props.id, 'props in mounted compoennt')
+        console.log(this.props, 'props in chatlog')
+    }
 
+    componenetDidUpdate(prevProps) {
+        if (this.props.authUser.email !== prevProps.authUser.email) {
+            alert('updated');
+        }
     }
 
 
@@ -24,13 +30,25 @@ class AdminChatLog extends Component {
     render() {
         console.log(this.props.id, 'props on id')
         console.log(this.state.messages, 'messages')
-
+        console.log(this.props.authUser, 'auth user')
 
         // console.log(this.state.messages.length, 'in message render')
         const logoStyles = {
             width: 100,
             height: 100
         }
+
+        let avatar;
+
+        // console.log()
+        if (this.props.authUser) {
+            if (this.props.authUser.email === 'sky3@hotmail.com') {
+                avatar = <img src="https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg" />
+            } else {
+                avatar = <img src={`${this.props.authUser.photoURL}`} className="nav-avatar" />
+            }
+        }
+
 
         // const renderMessage = 
         return (
@@ -41,8 +59,8 @@ class AdminChatLog extends Component {
                             // console.log(this.state.messages, 'message length')
                             return (
                                 (
-                                    <li className="row">
-                                        <img src="https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg" />
+                                    <li className="row align-items-center">
+                                        {avatar}
                                         <p>{item.message}</p>
                                     </li>
                                 )

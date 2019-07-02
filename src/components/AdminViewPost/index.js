@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import AdminChatBox from '../AdminChatBox';
-import AdminChatLog from '../AdminChatLog';
+import ChatBox from '../ChatBox';
+import ChatLog from '../ChatLog';
 import AdminViewPostContent from '../AdminViewPostContent';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
@@ -67,8 +67,6 @@ class AdminViewPost extends Component {
                 messages: emptyMessage
             })
         });
-
-
     }
 
     getMessage = (id, month, day, title, message) => {
@@ -84,7 +82,7 @@ class AdminViewPost extends Component {
             messages: [...this.state.messages, incomingMessageObj]
         });
 
-        this.props.firebase.adminSendMessage(id, month, day, title, message);
+        this.props.firebase.adminSendMessage(id, month, day, title, message, 'https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg');
     }
 
     getType = (url) => {
@@ -129,8 +127,8 @@ class AdminViewPost extends Component {
                 <br />
                 <br />
                 <hr />
-                <AdminChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} />
-                <AdminChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} messages={this.state.messages} />
+                <ChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} />
+                <ChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} messages={this.state.messages} />
             </div>
         )
     }

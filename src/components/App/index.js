@@ -77,11 +77,7 @@ const App = () => (
         <Route path="/edit-post/:month/:day/:postId/:clientId" component={EditPost} />
         <Route exact path={`/calendar-single/:year/:month:day`} component={CalendarSingle} />
         <Route path="/client-calendar/:year/:month" component={ClientCalendar} />
-        {/* <AuthUserContext.Consumer>
-          {authUser => (
-            <Route exact path="/view-post/:month/:day/:id" render={(props) => <ClientViewPost {...props} authUser={authUser} />} />
-          )}
-        </AuthUserContext.Consumer> */}
+        <Route exact path="/view-post/:month/:day/:id" render={(props) => <ClientViewPost {...props} />} />
         <Route path="/admin-view-post/:month/:day/:title/:client/:itemId" component={AdminViewPost} />
         <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
         {/* <Route component={NoMatch} /> */}

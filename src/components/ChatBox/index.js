@@ -3,7 +3,7 @@ import { withFirebase } from '../Firebase';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
-class AdminChatBox extends Component {
+class ChatBox extends Component {
     constructor(props) {
         super(props)
 
@@ -35,6 +35,10 @@ class AdminChatBox extends Component {
         var messageMonth = date.getMonth();
 
         this.props.getMessage(id, month, day, title, message)
+
+        this.setState({
+            message: ''
+        })
     }
 
 
@@ -61,4 +65,4 @@ export default compose(
         null,
         mapDispatchToProps
     )
-)(AdminChatBox)
+)(ChatBox)
