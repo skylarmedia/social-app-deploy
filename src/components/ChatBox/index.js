@@ -8,7 +8,9 @@ class ChatBox extends Component {
         super(props)
 
         this.state = {
-            message: ''
+            message: '',
+            clientLogo: '',
+            authUser: ''
         }
 
         this.setMessage = this.setMessage.bind(this);
@@ -22,19 +24,45 @@ class ChatBox extends Component {
         })
     }
 
+    componentDidMount() {
+        // this.setState({
+        //     clientLogo: this.props.authUser.photoURL
+        // })
+    }
+
+    static getDerivedStateFromProps(props, state) {
+        if (props.authUser !== state.authUser) {
+            return {
+                authUser: props.authUser
+            }
+        }
+
+        // Return null if the state hasn't changed
+        return null;
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.authUser !== prevState.authUser) {
+            this.setState({
+                authUser: this.props.authUser
+            })
+        }
+    }
+
     submitMessage = e => {
-        e.preventDefault();
+        e.preventDefault()
 
         let id = this.props.id
         let month = parseInt(this.props.month)
         let day = parseInt(this.props.day)
         let title = this.props.title
         let message = this.state.message
+        let logo = this.state.authUser.photoURL
 
         let date = new Date;
         var messageMonth = date.getMonth();
 
-        this.props.getMessage(id, month, day, title, message)
+        this.props.getMessage(id, month, day, title, message, logo)
 
         this.setState({
             message: ''
@@ -45,11 +73,17 @@ class ChatBox extends Component {
 
 
     render() {
+        console.log(this.props, 'props in chatbox');
+        console.log(this.state, 'auth user in client chat')
         return (
             <form onSubmit={this.submitMessage}>
                 <textarea onChange={this.setMessage} value={this.state.message} />
+                {/* {this.props.authUser && (
+                    <input type="hidden" value={} />
+                )} */}
+
                 <button onClick={this.submitMessage}>Submit</button>
-            </form>
+            </form >
         )
     }
 }

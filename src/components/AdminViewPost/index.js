@@ -4,6 +4,7 @@ import ChatLog from '../ChatLog';
 import AdminViewPostContent from '../AdminViewPostContent';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
+import { AuthUserContext } from '../Session';
 
 
 class AdminViewPost extends Component {
@@ -69,10 +70,10 @@ class AdminViewPost extends Component {
         });
     }
 
-    getMessage = (id, month, day, title, message) => {
+    getMessage = (id, month, day, title, message, logo) => {
         const incomingMessageObj = {}
         incomingMessageObj.id = id
-        // incomingMessageObj.logo = logo
+        incomingMessageObj.logo = logo
         incomingMessageObj.month = month
         incomingMessageObj.day = day
         incomingMessageObj.title = title
@@ -121,15 +122,20 @@ class AdminViewPost extends Component {
         }
         )
         return (
-            <div className="container">
-                <AdminViewPostContent post={this.state} hashtags={this.state.hashtags} />
-                {media}
-                <br />
-                <br />
-                <hr />
-                <ChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} />
-                <ChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} messages={this.state.messages} />
-            </div>
+
+            <AuthUserContext.Consumer>
+                {authUser => (
+                    <div className="container">
+                        <AdminViewPostContent post={this.state} hashtags={this.state.hashtags} />
+                        {media}
+                        <br />
+                        <br />
+                        <hr />
+                        <ChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} authUser={authUser} />
+                        <ChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} messages={this.state.messages} />
+                    </div>
+                )}
+            </AuthUserContext.Consumer>
         )
     }
 }

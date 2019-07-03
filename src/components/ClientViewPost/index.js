@@ -5,6 +5,7 @@ import MediaWrapper from '../MediaWrapper';
 import Hashtags from '../Hashtags';
 import ChatBox from '../ChatBox';
 import ChatLog from '../ChatLog';
+
 import { AuthUserContext } from '../Session';
 
 class ClientViewPost extends Component {
@@ -41,6 +42,25 @@ class ClientViewPost extends Component {
                 })
             })
         })
+
+        this.props.firebase.getMessages(localStorage.userId, parseInt(this.props.match.params.month), parseInt(this.props.match.params.day)).then(snapshot => {
+            const emptyMessage = []
+            snapshot.docs.map(item => {
+                var emptyMessageObj = {}
+                emptyMessageObj.day = item.data().day;
+                emptyMessageObj.logo = item.data().logo;
+                emptyMessageObj.message = item.data().message;
+                emptyMessageObj.month = item.data().month;
+                emptyMessageObj.title = item.data().title;
+
+                emptyMessage.push(emptyMessageObj);
+                console.log(emptyMessage, 'empty message')
+            })
+
+            this.setState({
+                messages: emptyMessage
+            })
+        });
     }
 
     handleCheckbox = (event) => {
@@ -66,10 +86,10 @@ class ClientViewPost extends Component {
         })
     }
 
-    getMessage = (id, month, day, title, message) => {
+    getMessage = (id, month, day, title, message, logo) => {
         const incomingMessageObj = {}
         incomingMessageObj.id = id
-        // incomingMessageObj.logo = logo
+        incomingMessageObj.logo = logo
         incomingMessageObj.month = month
         incomingMessageObj.day = day
         incomingMessageObj.title = title
@@ -79,7 +99,7 @@ class ClientViewPost extends Component {
             messages: [...this.state.messages, incomingMessageObj]
         });
 
-        this.props.firebase.adminSendMessage(this.props.firebase.authUser.displayName, month, day, title, message, this.props.firebase.authUser.photoURL);
+        this.props.firebase.adminSendMessage(localStorage.userId, month, day, title, message, logo);
     }
 
 

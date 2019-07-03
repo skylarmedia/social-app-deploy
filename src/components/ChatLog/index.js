@@ -43,9 +43,9 @@ class AdminChatLog extends Component {
         // console.log()
         if (this.props.authUser) {
             if (this.props.authUser.email === 'sky3@hotmail.com') {
-                avatar = <img src="https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg" />
+                avatar = <p>Avatar Admin</p>
             } else {
-                avatar = <p>Avatar</p>
+                avatar = <p>Avatar User</p>
             }
         }
 
