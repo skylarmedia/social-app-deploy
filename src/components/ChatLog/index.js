@@ -45,7 +45,7 @@ class AdminChatLog extends Component {
             if (this.props.authUser.email === 'sky3@hotmail.com') {
                 avatar = <img src="https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg" />
             } else {
-                avatar = <img src={`${this.props.authUser.photoURL}`} className="nav-avatar" />
+                avatar = <p>Avatar</p>
             }
         }
 
@@ -60,7 +60,7 @@ class AdminChatLog extends Component {
                             return (
                                 (
                                     <li className="row align-items-center">
-                                        {avatar}
+                                        <img src={`${item.logo}`} />
                                         <p>{item.message}</p>
                                     </li>
                                 )

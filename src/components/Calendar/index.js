@@ -330,7 +330,6 @@ class Calendar extends React.Component {
   }
 
   componentWillUnmount() {
-    alert('unmounted')
     if (this.state.removedCategories.length > 0) {
       this.props.firebase.updateCategories(this.props.match.params.clientId, this.state.removedCategories);
     }
