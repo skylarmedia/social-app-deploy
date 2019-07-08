@@ -92,7 +92,7 @@ class HiddenCalendarSingle extends Component {
         return (
             <React.Fragment>
                 <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)} style={buttonStyle} className="label-button">{this.props.title}
-                    {this.props.adminRead != false ? '' : <img src={require('../assets/not-read-tab.png')} className="not-read" />}
+                    {this.props.adminRead != false ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />}
                 </button>
                 {this.state.isHiddenCalendar && (
                     <div class="hidden-post">

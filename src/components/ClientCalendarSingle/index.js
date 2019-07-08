@@ -52,8 +52,8 @@ class ClientCalendarSingle extends Component {
             return (
                 <div>
                     <Link to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`} style={clientTitleStyles} className="">{item.data().title}{item.data}{selectedCategory}< br />
-                        {item.data().clientRead != false ? '' : <img src={require('../assets/not-read-tab.png')} className="not-read" />}
-                    </Link >
+                        {item.data().clientRead != false ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />}
+                    </Link>
                     {
                         item.data().approved ? "checked" : ''
                     }
