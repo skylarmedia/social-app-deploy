@@ -62,12 +62,12 @@ import Header from '../Header';
 //     <AuthUserContext.Provider value={this.state.authUser}>
 
 const App = () => (
-  <Router>
+  <Router basename={'/social-appp-deploy'}>
     <div id="outer-container">
       <Header />
       <NavigationWrapper />
       <Switch>
-        <Route exact path="/" component={SignInPage} />
+        <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
         <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
         <Route path={ROUTES.SIGN_IN} component={SignInPage} />
         <Route exact path={ROUTES.HOME} component={HomePage} />
