@@ -10,13 +10,16 @@ import * as ROUTES from '../../constants/routes';
 const withAuthorizationAdmin = condition => Component => {
     class WithAuthorization extends React.Component {
         componentDidMount() {
-            authUser => {
-                authUser.email == 'sky5@hotmail.com'
-                    ? alert('ADMIN')
-                    : alert('NOT ADMIN')
-            },
-                console.log(this.props, 'props in auth')
+            this.listener = this.props.firebase.auth.onAuthStateChanged(
+                authUser => {
+                    authUser.email == 'sky5@hotamil.com'
+                        ? this.setState({ authUser })
+                        : this.props.history.push(`/`);
+                },
+            );
+            console.log(this.props, 'props in auth')
         }
+
 
         componentWillUnmount() {
             this.listener();
@@ -26,7 +29,7 @@ const withAuthorizationAdmin = condition => Component => {
             return (
                 <AuthUserContext.Consumer>
                     {authUser =>
-                        condition(authUser) ? <Component {...this.props} /> : null
+                        condition(authUser) ? <Component {...this.props} /> : <div>NOT AUTHORIZED</div>
                     }
                 </AuthUserContext.Consumer>
             );
@@ -36,7 +39,7 @@ const withAuthorizationAdmin = condition => Component => {
     return compose(
         withRouter,
         withFirebase,
-    )(WithAuthorizationAdmin);
+    )(withAuthorizationAdmin);
 };
 
 export default withAuthorizationAdmin;

@@ -4,7 +4,10 @@ import ChatLog from '../ChatLog';
 import AdminViewPostContent from '../AdminViewPostContent';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
+import EmojiField from 'emoji-picker-textfield';
 import { AuthUserContext } from '../Session';
+
+
 
 
 class AdminViewPost extends Component {
@@ -72,7 +75,7 @@ class AdminViewPost extends Component {
                 emptyMessage.push(emptyMessageObj);
             })
 
-            emptyMessage.sort((a, b) => (a.time < b.time) ? 1 : -1)
+            emptyMessage.sort((a, b) => (a.time > b.time) ? 1 : -1)
 
             console.log(emptyMessage, 'sorterd');
 
@@ -118,9 +121,19 @@ class AdminViewPost extends Component {
         }
     }
 
+    inputComponent = (props) => {
+        // you need to explicitly pass 'fieldType="input"'.
+        return <EmojiField name="my-input" onChange={props.onChange} fieldType="input" />
+    }
+
+    textAreaComponent = (props) => {
+        // defaults to textarea, no need to pass fieldType
+        return <EmojiField name="my-textarea" onChange={props.onChange} />
+    }
+
+
 
     render() {
-        console.log(this.state.messages, 'incoming message view post');
         const media = this.state.metaImageFiles.map((item) => {
             if (this.getType(item) == 'video') {
                 return (
@@ -143,14 +156,20 @@ class AdminViewPost extends Component {
 
             <AuthUserContext.Consumer>
                 {authUser => (
-                    <div className="container">
-                        <AdminViewPostContent post={this.state} hashtags={this.state.hashtags} />
-                        {media}
-                        <br />
-                        <br />
-                        <hr />
-                        <ChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} authUser={authUser} />
-                        <ChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} messages={this.state.messages} />
+                    <div className="container d-flex justify-content-between">
+                        <div className="col-sm-6">
+
+                            <AdminViewPostContent post={this.state} hashtags={this.state.hashtags} />
+                            {media}
+                            <br />
+                            <br />
+                        </div>
+
+                        <div className="col-sm-6">
+                            <ChatLog incomingMessage={this.state.incomingMessage} id={this.props.match.params.client} month={this.props.match.params.month} day={this.props.match.params.day} messages={this.state.messages} />
+                            <ChatBox getMessage={this.getMessage} month={this.props.match.params.month} day={this.props.match.params.day} title={this.props.match.params.title} id={this.props.match.params.client} authUser={authUser} />
+
+                        </div>
                     </div>
                 )}
             </AuthUserContext.Consumer>

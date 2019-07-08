@@ -9,6 +9,9 @@ import SelectCategory from '../SelectCategory'
 import CategoryList from '../CategoryList';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { withAuthorizationAdmin } from '../Session';
+import { AuthUserContext } from '../Session';
+
+import { withAuthorization } from '../Session';
 
 
 
@@ -339,6 +342,8 @@ class Calendar extends React.Component {
 
   render() {
 
+    console.log(localStorage.authUser.email, 'auth user mounted')
+
     let weekdayshortname = this.weekdayshort.map(day => {
       return <th key={day}>{day}</th>;
     });
@@ -453,6 +458,8 @@ class Calendar extends React.Component {
   }
 }
 
-export default withAuthorizationAdmin(compose(
-  withFirebase
-))(Calendar)
+const condition = authUser => authUser && JSON.parse(localStorage.getItem('authUser')).email == 'sky5@hotmail.com'
+export default compose(
+  withFirebase,
+  withAuthorization(condition)
+)(Calendar)

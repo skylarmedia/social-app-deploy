@@ -219,6 +219,10 @@ class Firebase {
         })
     }
 
+
+    user = uid => this.db.collection('users').doc(uid).get();
+
+
 }
 
 

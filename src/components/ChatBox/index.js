@@ -3,6 +3,9 @@ import { withFirebase } from '../Firebase';
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
 
+import 'emoji-mart/css/emoji-mart.css'
+import { Picker } from 'emoji-mart'
+
 class ChatBox extends Component {
     constructor(props) {
         super(props)
@@ -69,6 +72,29 @@ class ChatBox extends Component {
         })
     }
 
+    addEmoji = (e) => {
+        //console.log(e.unified)
+        if (e.unified.length <= 5) {
+            let emojiPic = String.fromCodePoint(`0x${e.unified}`)
+            this.setState({
+                message: this.state.message + emojiPic
+            })
+        } else {
+
+            let sym = e.unified.split('-')
+            let codesArray = []
+            sym.forEach(el => codesArray.push('0x' + el))
+            //console.log(codesArray.length)
+            //console.log(codesArray)  // ["0x1f3f3", "0xfe0f"]
+
+            let emojiPic = String.fromCodePoint(...codesArray)
+            this.setState({
+                message: this.state.message + emojiPic
+            })
+        }
+    }
+
+
 
 
 
@@ -76,14 +102,19 @@ class ChatBox extends Component {
         console.log(this.props, 'props in chatbox');
         console.log(this.state, 'auth user in client chat')
         return (
-            <form onSubmit={this.submitMessage}>
-                <textarea onChange={this.setMessage} value={this.state.message} />
-                {/* {this.props.authUser && (
+            <div>
+                <form onSubmit={this.submitMessage}>
+                    <textarea onChange={this.setMessage} value={this.state.message} />
+                    {/* {this.props.authUser && (
                     <input type="hidden" value={} />
                 )} */}
 
-                <button onClick={this.submitMessage}>Submit</button>
-            </form >
+                    <button onClick={this.submitMessage}>Submit</button>
+                </form >
+                <span>
+                    <Picker onSelect={this.addEmoji} />
+                </span>
+            </div>
         )
     }
 }

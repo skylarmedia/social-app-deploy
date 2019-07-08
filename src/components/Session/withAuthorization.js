@@ -14,7 +14,7 @@ const withAuthorization = condition => Component => {
                 authUser => {
                     authUser
                         ? this.setState({ authUser })
-                        : this.props.history.push(`/`);
+                        : alert('you aren ot allowed')
                 },
             );
             console.log(this.props, 'props in auth')
@@ -24,11 +24,16 @@ const withAuthorization = condition => Component => {
             this.listener();
         }
 
+        notAdmin = e => {
+            alert("Sorry you are not allowed to visit this page")
+            this.props.history.push(`/`);
+        }
+
         render() {
             return (
                 <AuthUserContext.Consumer>
                     {authUser =>
-                        condition(authUser) ? <Component {...this.props} /> : null
+                        condition(authUser) ? <Component {...this.props} /> : this.notAdmin()
                     }
                 </AuthUserContext.Consumer>
             );
