@@ -19,6 +19,7 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import { withAuthorization } from '../Session';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { fade, withStyles, makeStyles, createMuiTheme } from '@material-ui/core/styles';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import './index.css';
 
 
@@ -42,7 +43,8 @@ class Home extends Component {
       firestorageRef: this.props.firebase.storage,
       adminEmail: '',
       backgroundUrl: '',
-      uploadComplete: false
+      uploadComplete: false,
+      loadSpinner: false
     }
 
     this.baseState = this.state
@@ -141,6 +143,7 @@ class Home extends Component {
     this.setState({
       file: event.target.files[0],
       backgroundUrl: '',
+      loadSpinner: !this.state.loadSpinner
     }, () => {
       this.state.firestorageRef.ref().child(`${this.state.username}/logo/`)
         .put(this.state.file).then(snapshot => {
@@ -149,7 +152,8 @@ class Home extends Component {
 
           this.setState({
             backgroundUrl: encodedUrl,
-            uploadComplete: true
+            uploadComplete: true,
+            loadSpinner: !this.state.loadSpinner
           })
         })
     });
@@ -199,6 +203,10 @@ class Home extends Component {
       backgroundSize: "cover"
     }
 
+    const progressStyles = {
+      color: '#ee463a'
+    }
+
     const textFieldStyles = {
       borderColor: 'red',
     }
@@ -217,116 +225,125 @@ class Home extends Component {
     return (
 
       <div id="home-page" className="container">
-        <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
-        <h2 className="text-center welcome">Welcome Home!</h2>
-        {
-          this.state.isLoading && this.state.users.length > 0 ?
-            <div>
-              <p className="text-center">What client do you want to work on today?</p>
-              <div id="client-list" className="row">
-                {
-                  this.state.users.map((user, index) => {
-                    return (
-                      <div data-id={user.userId} className="client-wrapper flex-column d-flex" key={index}>
-                        <button className="delete-button" onClick={() => this.deleteUser(user.urlName, index)}>
-                          <Fab disabled aria-label="Delete">
-                            <DeleteIcon />
-                          </Fab>
-                        </button>
-                        <Link to={`/dates/${user.urlName}`}>
-                          {user.name}
-                        </Link>
-                        <Link to={`/dates/${user.urlName}`}>
-                          <img src={user.logo} className="user-background" />
-                        </Link>
-                      </div >
-                    )
-                  })
-                }
-              </div>
-              <div id="add-new-btn-wrapper" className="text-center">
-                <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn">Add New</button>
-              </div>
-            </div>
-            :
-            (this.state.isLoading && this.state.users.length == 0 ?
+        <TransitionGroup component={null}>
+          <img src={require('../assets/skylar_Icon_wingPortion.svg')} id="wing-logo" />
+          <h2 className="text-center welcome">Welcome Home!</h2>
+          {
+            this.state.isLoading && this.state.users.length > 0 ?
               <div>
-                <div className="empty-state">
-                  <div className="row justify-content-between">
-                    <div className="dashed">
-
-                    </div>
-
-                    <div className="dashed">
-                    </div>
-
-                    <div className="dashed">
-                    </div>
-
-                    <div className="dashed">
-                    </div>
-                  </div>
-                  <p className="text-center">You don’t seem to have any client calendars set up yet.<br />Click below to add one and get started!</p>
+                <p className="text-center">What client do you want to work on today?</p>
+                <div id="client-list" className="row">
+                  {
+                    this.state.users.map((user, index) => {
+                      return (
+                        <div data-id={user.userId} className="client-wrapper flex-column d-flex" key={index}>
+                          <button className="delete-button" onClick={() => this.deleteUser(user.urlName, index)}>
+                            <Fab disabled aria-label="Delete">
+                              <DeleteIcon />
+                            </Fab>
+                          </button>
+                          <Link to={`/dates/${user.urlName}`}>
+                            {user.name}
+                          </Link>
+                          <Link to={`/dates/${user.urlName}`}>
+                            <img src={user.logo} className="user-background" />
+                          </Link>
+                        </div >
+                      )
+                    })
+                  }
                 </div>
-                <div id="add-new-btn-wrapper" className="text-center mt-88">
+                <div id="add-new-btn-wrapper" className="text-center">
                   <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn">Add New</button>
                 </div>
               </div>
-              : <div className="progress-wrapper"><CircularProgress /></div>)
-        }
+              :
+              (this.state.isLoading && this.state.users.length == 0 ?
+                <div>
+                  <div className="empty-state">
+                    <div className="row justify-content-between">
+                      <div className="dashed">
+
+                      </div>
+
+                      <div className="dashed">
+                      </div>
+
+                      <div className="dashed">
+                      </div>
+
+                      <div className="dashed">
+                      </div>
+                    </div>
+                    <p className="text-center">You don’t seem to have any client calendars set up yet.<br />Click below to add one and get started!</p>
+                  </div>
+                  <div id="add-new-btn-wrapper" className="text-center mt-88">
+                    <button onClick={this.toggleAddNew.bind(this)} className="add-date-btn">Add New</button>
+                  </div>
+                </div>
+                : <div className="progress-wrapper"><CircularProgress /></div>)
+          }
 
 
-        {this.state.isHidden ?
-          <div id="add-new-form-wrapper">
-            <button onClick={this.toggleAddNew.bind(this)} id="x-add-new" className="toggle-close">x</button>
-            <form onSubmit={this.onSubmit} id="add-new-form">
-              <div id="avatar-upload" className="d-flex align-items-end justify-content-center" style={backgroundUrlStyle}>
+          {this.state.isHidden ?
+            <CSSTransition classNames="dialog" timeout={300}>
+              <div id="add-new-form-wrapper">
+                <button onClick={this.toggleAddNew.bind(this)} id="x-add-new" className="toggle-close">x</button>
+
+                <form onSubmit={this.onSubmit} id="add-new-form" className="d-flex flex-column">
+                  <div id="avatar-upload" className="d-flex align-items-end justify-content-center align-items-center" style={backgroundUrlStyle}>
+                    {this.state.loadSpinner === true ? <CircularProgress style={progressStyles} /> : ''}
+
+                  </div>
+                  <TextField
+                    margin="normal"
+                    variant="outlined"
+                    name="username"
+                    value={this.state.username}
+                    onChange={this.onChange}
+                    type="text"
+                    label="Name"
+                    style={textFieldStyles}
+                  />
+                  <TextField
+                    margin="normal"
+                    variant="outlined"
+                    name="email"
+                    value={this.state.email}
+                    onChange={this.onChange}
+                    type="text"
+                    placeholder="Email Address"
+                    label="Email"
+                    InputProps={{
+                      style: {
+                        borderColor: "red"
+                      }
+                    }}
+                  />
+                  <TextField
+                    margin="normal"
+                    variant="outlined"
+                    name="passwordOne"
+                    value={this.state.passwordOne}
+                    onChange={this.onChange}
+                    type="password"
+                    placeholder="Password"
+                    label="Password"
+                  />
+                  <input type="file" onChange={this.addFile} id="add-file" />
+                  <div id="add-new-btn-wrapper" className="text-center mt-88">
+                    <button disabled={isInvalid} type="submit" className={`add-date-btn ${this.state.uploadComplete ? 'complete' : 'uncomplete'}`}>Add New</button>
+                  </div>
+
+                  {this.state.error && <p>{this.state.error.message}</p>}
+                </form>
 
               </div>
-              <TextField
-                margin="normal"
-                variant="outlined"
-                name="username"
-                value={this.state.username}
-                onChange={this.onChange}
-                type="text"
-                label="Name"
-                style={textFieldStyles}
-              />
-              <TextField
-                margin="normal"
-                variant="outlined"
-                name="email"
-                value={this.state.email}
-                onChange={this.onChange}
-                type="text"
-                placeholder="Email Address"
-                label="Email"
-                InputProps={{
-                  style: {
-                    borderColor: "red"
-                  }
-                }}
-              />
-              <TextField
-                margin="normal"
-                variant="outlined"
-                name="passwordOne"
-                value={this.state.passwordOne}
-                onChange={this.onChange}
-                type="password"
-                placeholder="Password"
-                label="Password"
-              />
-              <input type="file" onChange={this.addFile} />
-              <div id="add-new-btn-wrapper" className="text-center mt-88">
-                <button disabled={isInvalid} type="submit" className={`add-date-btn ${this.state.uploadComplete ? 'complete' : 'uncomplete'}`}>Add New</button>
-              </div>
+            </CSSTransition>
+            :
+            ''}
 
-              {this.state.error && <p>{this.state.error.message}</p>}
-            </form>
-          </div> :
-          ''}
+        </TransitionGroup>
       </div>
     )
   }
@@ -345,7 +362,7 @@ const mapStateToProps = state => (
     data: state.setClientsReducer
   })
 
-const authCondition = authUser => !!authUser;
+const authCondition = authUser => authUser;
 
 export default withAuthorization(compose(
   withFirebase

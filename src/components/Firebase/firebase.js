@@ -138,7 +138,7 @@ class Firebase {
 
     updateCategories = (user, categories) => {
         categories.map(category => {
-            this.db.collection('users').doc(user).collection('categories').where('name', '==', category).delete();
+            this.db.collection('users').doc(user).collection('categories').doc('JfldYWxlRlYj9kYzwpv3').delete();
         })
     }
 

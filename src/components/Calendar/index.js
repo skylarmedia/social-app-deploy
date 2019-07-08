@@ -8,6 +8,7 @@ import { compose } from "redux";
 import SelectCategory from '../SelectCategory'
 import CategoryList from '../CategoryList';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { withAuthorizationAdmin } from '../Session';
 
 
 
@@ -67,7 +68,7 @@ class Calendar extends React.Component {
       this.props.firebase.getUserCategories(this.props.match.params.clientId).then(snapshot => {
         const catArr = [...this.state.categories]
 
-        snapshot.docs.map(category => {
+        snapshot.docs.map((category, index) => {
           catArr.push(category.data())
         })
         this.setState({
@@ -75,6 +76,7 @@ class Calendar extends React.Component {
           currentCategories: catArr
         })
       })
+
 
     }
   }
@@ -295,15 +297,12 @@ class Calendar extends React.Component {
   }
 
   removeCategory = (index, name) => {
-    // const removedCategories = [...this.state.removedCategries];
-
-
     this.setState({
       categories: this.state.categories.filter((_, i) => i !== index),
       removedCategories: [...this.state.removedCategories, name]
     });
 
-    console.log(this.state.removedCategories)
+    console.log(this.state.removedCategories, 'removed categories');
   }
 
   showCategories = e => {
@@ -330,9 +329,12 @@ class Calendar extends React.Component {
   }
 
   componentWillUnmount() {
-    if (this.state.removedCategories.length > 0) {
-      this.props.firebase.updateCategories(this.props.match.params.clientId, this.state.removedCategories);
-    }
+    // if (this.state.removedCategories.length > 0) {
+    //   console.log(this.state.removedCategories, 'removed');
+    //   this.props.firebase.updateCategories(this.props.match.params.clientId, this.state.removedCa)
+    // }
+
+    console.log(this.state.categories, 'categories in unmount')
   }
 
   render() {
@@ -451,6 +453,6 @@ class Calendar extends React.Component {
   }
 }
 
-export default compose(
-  withFirebase(Calendar)
-)
+export default withAuthorizationAdmin(compose(
+  withFirebase
+))(Calendar)

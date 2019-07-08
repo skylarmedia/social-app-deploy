@@ -67,7 +67,7 @@ class CalendarSingle extends Component {
                                     }
 
                                     {
-                                        item.data().adminRead ? 'Read' : ''
+                                        item.data().adminRead ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />
                                     }
                                     <HiddenCalendarSingle title={item.data().title} copy={item.data().copy} time={item.data().time} hashtags={item.data().hashtags} links={item.data().links} day={item.data().day} month={item.data().month} itemId={item.id} push={this.props.history} clientId={this.props.clientId} selectedCategory={item.data().selectedCategory} adminRead={item.data().adminRead} />
                                 </div>

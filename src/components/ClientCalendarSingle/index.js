@@ -46,17 +46,23 @@ class ClientCalendarSingle extends Component {
                 backgroundColor: selectedCategory,
                 height: "38px",
                 display: "inline-block",
-                position: "relative"
+                position: "relative",
+                width: "75%",
+                marginLeft: "10px",
+                paddingLeft: "5px",
+                color: "#002D5B"
+                /* padding: 10px; */
             }
 
             return (
                 <div>
                     <Link to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`} style={clientTitleStyles} className="">{item.data().title}{item.data}{selectedCategory}< br />
                         {item.data().clientRead != false ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />}
+                        {
+                            item.data().approved ? <img src={require('../assets/check.svg')} className="check" /> : ''
+                        }
                     </Link>
-                    {
-                        item.data().approved ? "checked" : ''
-                    }
+
                 </div>
             )
         }
@@ -65,7 +71,7 @@ class ClientCalendarSingle extends Component {
 
         return (
             <div>
-                {this.props.day}
+                <p className="calendar-single-day">{this.props.day}</p>
                 {filteredList}
             </div >
         )

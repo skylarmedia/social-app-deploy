@@ -28,6 +28,7 @@
     "react-scripts": "3.0.0",
     "react-time-picker": "^3.5.2",
     "react-toolbox": "^2.0.0-beta.13",
+    "react-transition-group": "^4.2.1",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { withFirebase } from '../Firebase';
 import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import './index.css'
 
 let timer = 0;
@@ -91,17 +92,20 @@ class HiddenCalendarSingle extends Component {
         }
         return (
             <React.Fragment>
-                <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)} style={buttonStyle} className="label-button">{this.props.title}
-                    {this.props.adminRead != false ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />}
-                </button>
-                {this.state.isHiddenCalendar && (
-                    <div class="hidden-post">
-                        {hiddenPost()}
-                    </div>
-                )
+                <TransitionGroup component={null}>
+                    <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)} style={buttonStyle} className="label-button">{this.props.title}
+                        {this.props.adminRead != false ? '' : <img src={require('../assets/not-read.svg')} className="not-read" />}
+                    </button>
+                    {this.state.isHiddenCalendar && (
+                        <CSSTransition classNames="dialog" timeout={300}>
+                            <div class="hidden-post">
+                                {hiddenPost()}
+                            </div>
+                        </CSSTransition>
+                    )
 
-                }
-
+                    }
+                </TransitionGroup>
             </React.Fragment>
         )
     }
