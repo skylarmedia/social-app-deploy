@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { compose } from 'recompose';
 import { withFirebase } from '../Firebase';
 import { connect } from 'react-redux';
+import "./index.css";
 
 class AdminChatLog extends Component {
     constructor(props) {
@@ -60,7 +61,7 @@ class AdminChatLog extends Component {
                             return (
                                 (
                                     <li className="row align-items-center">
-                                        <img src={`${item.logo}`} />
+                                        <img src={`${item.logo}`} className="avatar-chat" />
                                         <p>{item.message}</p>
                                     </li>
                                 )

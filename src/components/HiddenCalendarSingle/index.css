@@ -9,3 +9,18 @@
     width: 409px;
     padding: 20px;
 }
+
+.label-button{
+    position:relative;
+}
+
+.not-read{
+    position: absolute;
+    right: 0;
+    width: 20px;
+    top:0;
+}
+
+.tail-datetime-calendar .calendar-date table tbody tr > *{
+    width:249px;
+}

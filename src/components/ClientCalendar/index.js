@@ -299,6 +299,10 @@ class ClientCalendar extends React.Component {
             <React.Fragment>
                 <CategoryList colors={this.state.categories} />
                 <div className="tail-datetime-calendar">
+                    <div className="calendar-heading">
+                        <h2 className="text-center">Client {localStorage.userId} Calendar </h2>
+                        <p className="text-center">{this.month()}     {this.year()}</p>
+                    </div>
                     <div className="calendar-navi">
                         <span
                             onClick={e => {

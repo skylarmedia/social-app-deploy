@@ -72,8 +72,6 @@ class HiddenCalendarSingle extends Component {
     }
 
 
-
-
     render() {
         const friendlyUrlTitle = this.props.title.replace(/\s+/g, '-') + '-' + this.props.month + '-' + this.props.day
         const hiddenPost = () => (
@@ -84,8 +82,6 @@ class HiddenCalendarSingle extends Component {
                 <p className="mb-0">{this.props.hashtags.map(item => (
                     <span>#{item} </span>
                 ))}</p>
-
-
                 <Link to={`/edit-post/${this.props.month}/${this.props.day}/${this.props.itemId}/${this.props.clientId}`}>Edit Post</Link>
             </div >
         )
@@ -95,7 +91,9 @@ class HiddenCalendarSingle extends Component {
         }
         return (
             <React.Fragment>
-                <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)} style={buttonStyle}>{this.props.title}</button>
+                <button onClick={this.toggleIsHidden} onDoubleClick={this.handleDoubleClick.bind(this)} style={buttonStyle} className="label-button">{this.props.title}
+                    {this.props.adminRead != false ? '' : <img src={require('../assets/not-read-tab.png')} className="not-read" />}
+                </button>
                 {this.state.isHiddenCalendar && (
                     <div class="hidden-post">
                         {hiddenPost()}

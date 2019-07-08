@@ -20,6 +20,12 @@ class ClientCalendarSingle extends Component {
         return new Date(Date.parse(mon + " 1, 2012")).getMonth() + 1
     }
 
+    handleColor = (string) => {
+        if (string !== undefined) {
+            return string.split('|||')[1]
+        }
+    }
+
     render() {
 
         let linkMonth = this.getMonthFromString(this.props.month);
@@ -33,11 +39,23 @@ class ClientCalendarSingle extends Component {
 
             let friendlyUrl = item.data().title.toLowerCase().replace(/ /g, '-');
             let itemId = item.id;
+
+            let selectedCategory = this.handleColor(item.data().selectedCategory);
+
+            let clientTitleStyles = {
+                backgroundColor: selectedCategory,
+                height: "38px",
+                display: "inline-block",
+                position: "relative"
+            }
+
             return (
                 <div>
-                    <Link to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`}>{item.data().title} < br /></Link >
+                    <Link to={`/view-post/${linkMonth}/${this.props.day}/${friendlyUrl}`} style={clientTitleStyles} className="">{item.data().title}{item.data}{selectedCategory}< br />
+                        {item.data().clientRead != false ? '' : <img src={require('../assets/not-read-tab.png')} className="not-read" />}
+                    </Link >
                     {
-                        item.data().approved ? "checked" : 'Not checked'
+                        item.data().approved ? "checked" : ''
                     }
                 </div>
             )

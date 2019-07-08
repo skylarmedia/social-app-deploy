@@ -21,7 +21,9 @@ class ClientViewPost extends Component {
             approved: false,
             postId: '',
             showPopUp: false,
-            messages: []
+            messages: [],
+            adminRead: null,
+            clientRead: null
         }
 
         this.handleCheckbox = this.handleCheckbox.bind(this);
@@ -38,7 +40,13 @@ class ClientViewPost extends Component {
                     copy: item.data().copy,
                     links: item.data().links,
                     postId: item.id,
-                    approved: item.data().approved
+                    approved: item.data().approved,
+                    adminRead: item.data().adminRead,
+                    clientRead: item.data().clientRead
+                }, () => {
+                    if (this.state.clientRead == false) {
+                        this.props.firebase.editReadClient(localStorage.userId, this.state.postId, true);
+                    }
                 })
             })
         })
@@ -52,10 +60,13 @@ class ClientViewPost extends Component {
                 emptyMessageObj.message = item.data().message;
                 emptyMessageObj.month = item.data().month;
                 emptyMessageObj.title = item.data().title;
+                emptyMessageObj.time = item.data().time;
 
                 emptyMessage.push(emptyMessageObj);
                 console.log(emptyMessage, 'empty message')
             })
+
+            emptyMessage.sort((a, b) => (a.time < b.time) ? 1 : -1)
 
             this.setState({
                 messages: emptyMessage
@@ -95,16 +106,24 @@ class ClientViewPost extends Component {
         incomingMessageObj.title = title
         incomingMessageObj.message = message
 
+
         this.setState({
-            messages: [...this.state.messages, incomingMessageObj]
+            messages: [...this.state.messages, incomingMessageObj],
+            adminRead: false
         });
 
         this.props.firebase.adminSendMessage(localStorage.userId, month, day, title, message, logo);
     }
 
+    componentWillUnmount() {
+        this.props.firebase.editReadAdmin(localStorage.userId, this.state.postId, this.state.adminRead)
+    }
+
+
+
 
     render() {
-        console.log(this.state.approved, 'approved');
+        console.log(this.state, 'read or not read');
         const approveStyles = {
             margin: 200,
             width: 300,

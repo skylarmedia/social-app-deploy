@@ -70,7 +70,8 @@ class Firebase {
         month,
         day,
         title,
-        logo: logo
+        logo: logo,
+        time: new Date().getTime()
     })
 
     getAdminPost = (user, postId) => this.db.collection('users').doc(user).collection('posts').doc(postId).get();
@@ -158,6 +159,13 @@ class Firebase {
         selectedCategory
     });
 
+    editReadAdmin = (user, postId, readValue) => this.db.collection('users').doc(user).collection('posts').doc(postId).update({
+        adminRead: readValue
+    })
+
+    editReadClient = (user, postId, readValue) => this.db.collection('users').doc(user).collection('posts').doc(postId).update({
+        clientRead: readValue
+    })
     addPost = (id, title, copy, hashtags, time, day, month, links, metaImageFiles, friendlyUrl, approved, selectedCategory) => this.db.collection('users').doc(id).collection('posts').add({
         title: title,
         copy: copy,
@@ -169,7 +177,9 @@ class Firebase {
         metaImageFiles: metaImageFiles,
         friendlyUrl: friendlyUrl,
         approved: approved,
-        selectedCategory: selectedCategory
+        selectedCategory: selectedCategory,
+        clientRead: true,
+        adminRead: true
     });
 
     // Get UID

@@ -46,7 +46,8 @@ class EditPost extends Component {
                 postTime: item.data().time,
                 values: item.data().links,
                 metaImageFiles: item.data().metaImageFiles,
-                selectedCategory: item.data().selectedCategory
+                selectedCategory: item.data().selectedCategory,
+
 
             })
         });

@@ -25,7 +25,8 @@ class AdminViewPost extends Component {
             categories: [],
             approved: false,
             selectedCategory: '',
-            incomingMessage: {}
+            incomingMessage: {},
+            clientRead: null
 
         }
     }
@@ -45,11 +46,19 @@ class AdminViewPost extends Component {
                 day: snapshot.data().day,
                 selectedCategory: snapshot.data().selectedCategory,
                 time: snapshot.data().time,
-                messages: []
+                messages: [],
+                adminRead: snapshot.data().adminRead,
+                postId: snapshot.id
+            }, () => {
+                if (this.state.adminRead == false) {
+                    this.props.firebase.editReadAdmin(this.props.match.params.client, this.state.postId, true);
+                }
             })
         })
 
+
         this.props.firebase.getMessages(this.props.match.params.client, parseInt(this.props.match.params.month), parseInt(this.props.match.params.day)).then(snapshot => {
+
             const emptyMessage = []
             snapshot.docs.map(item => {
                 var emptyMessageObj = {}
@@ -58,10 +67,14 @@ class AdminViewPost extends Component {
                 emptyMessageObj.message = item.data().message;
                 emptyMessageObj.month = item.data().month;
                 emptyMessageObj.title = item.data().title;
+                emptyMessageObj.time = item.data().time;
 
                 emptyMessage.push(emptyMessageObj);
-                console.log(emptyMessage, 'empty message')
             })
+
+            emptyMessage.sort((a, b) => (a.time < b.time) ? 1 : -1)
+
+            console.log(emptyMessage, 'sorterd');
 
 
             this.setState({
@@ -80,10 +93,15 @@ class AdminViewPost extends Component {
         incomingMessageObj.message = message
 
         this.setState({
-            messages: [...this.state.messages, incomingMessageObj]
+            messages: [...this.state.messages, incomingMessageObj],
+            clientRead: false
         });
 
         this.props.firebase.adminSendMessage(id, month, day, title, message, 'https://skylarmedia.ca/wp-content/uploads/2018/12/SkylarMG_Icon_RGB-1.svg');
+    }
+
+    componentWillUnmount() {
+        this.props.firebase.editReadClient(this.props.match.params.client, this.state.postId, this.state.clientRead)
     }
 
     getType = (url) => {
