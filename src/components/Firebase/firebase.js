@@ -203,7 +203,9 @@ class Firebase {
             return this.db.collection('users').where('email', '==', res.user.email).get();
         })
 
-    doSignOut = () => this.auth.signOut()
+    doSignOut = () => this.auth.signOut().finally(() => {
+        window.location.replace(process.env.PUBLIC_URL);
+    })
 
     doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 

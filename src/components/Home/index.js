@@ -203,6 +203,8 @@ class Home extends Component {
       borderColor: 'red',
     }
 
+    console.log(process.env.PUBLIC_URL, 'public URl')
+
     // const renderPosts = 
 
     const isInvalid =
