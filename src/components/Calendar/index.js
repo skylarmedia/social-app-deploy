@@ -82,6 +82,10 @@ class Calendar extends React.Component {
 
 
     }
+
+    this.setState({
+      authUser: JSON.parse(localStorage.getItem('authUser')).email
+    })
   }
 
   handleDoubleClickItem(event) {
@@ -338,6 +342,7 @@ class Calendar extends React.Component {
     // }
 
     console.log(this.state.categories, 'categories in unmount')
+
   }
 
   render() {
@@ -450,7 +455,7 @@ class Calendar extends React.Component {
               <CategoryList colors={this.state.categories} removeCategory={this.removeCategory} />
             </div>
               :
-              <CircularProgress />
+              <div className="progress-wrapper"><CircularProgress /></div>
           }
         </div>
       </React.Fragment>
@@ -458,7 +463,7 @@ class Calendar extends React.Component {
   }
 }
 
-const condition = authUser => authUser && JSON.parse(localStorage.getItem('authUser')).email == 'sky5@hotmail.com'
+const condition = authUser => JSON.parse(localStorage.getItem('authUser')).email == 'sky5@hotmail.com' && authUser
 export default compose(
   withFirebase,
   withAuthorization(condition)

@@ -36,6 +36,8 @@ import './index.css';
 import NavigationWrapper from '../NavigationWrapper';
 import Header from '../Header';
 
+import { TransitionGroup, Transition } from "react-transition-group";
+
 // class App extends Component {
 //   constructor(props) {
 //     super(props)
@@ -66,6 +68,7 @@ const App = () => (
     <div id="outer-container">
       <Header />
       <NavigationWrapper />
+
       <Switch>
         <Route exact path={`${process.env.PUBLIC_URL + '/'}`} component={SignInPage} />
         <Route path={`/add-post/:year/:month/:day/:clientId`} component={AddPost} />
@@ -81,6 +84,8 @@ const App = () => (
         <Route path="/calendar/:year/:month/:clientId" component={Calendar} />
         <Route component={NoMatch} />
       </Switch>
+      )
+
     </div>
   </Router>
 )
@@ -89,8 +94,6 @@ const App = () => (
 const NoMatch = ({ location }) => (
   <div>Sorry this page at {location.pathname} doesn't exist</div>
 )
-
-
 
 
 

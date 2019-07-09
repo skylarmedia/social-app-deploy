@@ -260,7 +260,7 @@ class Dates extends Component {
                         </div>
                     </div>
                     :
-                    <CircularProgress />)
+                    <div className="progress-wrapper"><CircularProgress /></div>)
 
 
         )
